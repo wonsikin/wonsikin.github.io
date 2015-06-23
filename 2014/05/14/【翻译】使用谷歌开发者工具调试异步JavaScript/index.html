@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【翻译】使用谷歌开发者工具调试异步JavaScript | Arthur Wang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="介绍JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【翻译】使用谷歌开发者工具调试异步JavaScript">
+<meta property="og:url" content="http://ppoffice.github.io/2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/index.html">
+<meta property="og:site_name" content="Arthur Wang's Blog">
+<meta property="og:description" content="介绍JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/enable-async-toggle.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/gmail-retrying.png">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async-flow.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-before.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-click.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-retry-shortened.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/watch-expressions.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/time-travel.gif">
+<meta property="og:image" content="http://www.html5rocks.com/static/images/profiles/pearlchen.png">
+<meta property="og:updated_time" content="2014-10-25T14:48:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【翻译】使用谷歌开发者工具调试异步JavaScript">
+<meta name="twitter:description" content="介绍JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href='//fonts.useso.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+  
+
+  
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="/" id="logo"><i class="logo"></i><span class="site-title">Arthur Wang&#39;s Blog</span></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+      <nav id="sub-nav">
+        <div class="profile" id="profile-nav">
+          <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+        </div>
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tr>
+      
+        <td><a class="main-nav-link" href="/">Home</a></td>
+      
+        <td><a class="main-nav-link" href="/tags">Tags</a></td>
+      
+        <td><a class="main-nav-link" href="/about">About</a></td>
+      
+      <td>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </td>
+      </tr>
+    </table>
+  </div>
+</header>
+    <div class="outer">
+      
+        <aside id="profile">
+  <div class="inner profile-inner">
+  	<div class="base-info profile-block">
+		  <img id="avatar" src="/css/images/avatar.png">
+      <h2 id="name">WonSikin</h2>
+      <h3 id="title">FE Developer &amp; Gopher</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
+      <a id="follow" href="https://github.com/wonsikin/">FOLLOW</a>
+  	</div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        21
+        <span>posts</span>
+      </div>
+      <div class="article-info-block">
+        53
+        <span>tags</span>
+      </div>
+    </div>
+    
+    <div class="contact-info profile-block">
+      <table class="contact-list">
+        <tr>
+        
+          <td><a href="https://github.com/wonsikin/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+        
+          <td><a href="http://weibo.com/wonsikin/" target="_blank" title="weibo"><i class="fa fa-weibo"></i></a></td>
+        
+          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+        
+        </tr>
+      </table>
+    </div>
+    
+  </div>
+</aside>
+      
+      <section id="main"><article id="post-【翻译】使用谷歌开发者工具调试异步JavaScript" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【翻译】使用谷歌开发者工具调试异步JavaScript
+    </h1>
+  
+
+        <div class="article-meta">
+          <div class="article-date">
+  <i class="fa fa-calendar"></i>
+  <a href="/2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/">
+    <time datetime="2014-05-14T09:44:46.000Z" itemprop="datePublished">2014-05-14</time>
+  </a>
+</div>
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="介绍"><strong>介绍</strong></h3><p>JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。</p>
+<a id="more"></a>
+<p>幸运地，现在在谷歌开发者工具（Canary版本），你可以看到异步JavaScript回调函数的完整调用堆栈。</p>
+<center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async.gif" alt=""><br></center><br><center><strong><em>一个快速的异步调用堆栈事例</em></strong><br>（我们将会很快的分解这个事例的工作流程）</center>
+
+<p>一旦你在谷歌开发者工具中启用异步调用堆栈的功能，你将能够适时地转进在你的网页应用中的各种各样的断点中。然后遍历事件监听器、setInterval、setTimeout、XMLHttpRequest、promises、requestAnimationFrame、MutationObservers等等的完整堆栈踪迹。</p>
+<p>随着你在遍历堆栈踪迹的过程中，你也可以分析运行时执行的代码的特定断点处任意变量的值。这就像一个时光机，能让你查看各种表达式！</p>
+<p>让我们启用这个功能，然后看一看几个场景。</p>
+<h3 id="在Chrome浏览器（Canary版本）中启用异步调试"><strong>在Chrome浏览器（Canary版本）中启用异步调试</strong></h3><p>通过在Chrome浏览器（35版本或更高）中启用异步调试这个功能来尝试这个新特性。点中谷歌开发者工具中的 <strong>Source</strong> 面板。</p>
+<p>接下来在右手边的 <strong>Call Stack</strong> 面板，有一个“Async”的复选框。点击复选框可以打开或者关闭异步调试的功能。（尽管一旦打开了它，你可能不再想要关闭它了。）</p>
+<center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/enable-async-toggle.gif" alt=""><br></center>
+
+<h3 id="捕获延时计时器事件和XHR响应回应"><strong>捕获延时计时器事件和XHR响应回应</strong></h3><p>你也许以前在Gmail中看到以下场景：</p>
+<center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/gmail-retrying.png" alt=""><br></center>
+
+<p>如果在发送请求的时候出现问题（不是服务器出现问题就是客户端出现网络连通性问题），Gmail将会在短暂之后自动地尝试重新发送信息。</p>
+<p>为了查看异步调用堆栈式如何帮助我们分析延时计时器事件和XHR响应，我重新创造了一个<a href="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr/demo.html" target="_blank" rel="external">虚拟Gmail事例</a>的流程，完整的JavaScript代码能够在上面的链接找到，但是整个流程就像下面所示：</p>
+<center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async-flow.gif" alt=""><br></center><br><center><strong><em>在上面的图解中，用蓝色高亮的方法是这个新性能最有益的主要热点，因为这些方法是异步工作的</em></strong></center>
+
+<p>在早期版本的开发者工具，仅仅查看调用堆栈面板，在<code>postOnFail()</code>中的断点只能给你一点点<code>postOnFail()</code>被从哪里调用出来的信息而已。然而当你打开了 <strong>异步调用</strong> 的功能，你会看到不一样的地方：</p>
+<div><figure style="float:left;width:49%;text-align: center;display: block;margin-bottom: 1em;"><figcaption style="font-size: 15px;margin-bottom: 20px;font-weight: bold;font-style: italic;">以前</figcaption><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-before.gif" width="320"><figcaption style="margin: 1em auto 2em auto;"><em>没有启用</em> 异步功能的Call Stack面板。<br><p>你能够看到 <code>postOnFail()</code> 是从一个AJAX回调函数创造的，但是没有更详细的信息</p></figcaption></figure><br><figure style="float:right;width:49%;text-align: center;display: block;margin-bottom: 1em;"><figcaption style="font-size: 15px;margin-bottom: 20px;font-weight: bold;font-style: italic;">之后</figcaption><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-click.gif" width="320"><figcaption><em>启用</em> 异步功能的Call Stack面板。<br><p>你能够看到XHR是由<code>submitHandler()</code>创造的，<code>submitHandler()</code>是在scripts.js中绑定的单击处理器，Nice！</p></figcaption></figure></div><br><div style="margin-top:800px;width:100%;"><br>随着异步调用堆栈的打开，你能够查看到全部的调用堆栈来明了地了解请求是由上面示例的<code>submitHandler()</code>创造的或者是下面示例中的<code>retrySubmit()</code>创造的：<br></div><br><center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-retry-shortened.gif" alt=""><br></center><br><br>从Call Stack面板中，你也可以断定断点事件的发起是否比一个UI事件例如“点击”早，或者一个<code>setTimeout()</code>的时延，或者任何常用的异步回调事件。<br><br><br>###<strong>监听表达式的异步方式</strong><br><br>当你遍历整个调用堆栈，你的监听表达式也将会更新，以反映那时的状态。<br><br><center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/watch-expressions.gif" alt=""><br></center><br><br><br>###<strong>从过去的作用域评估代码</strong><br><br>除了能够简化监听表达式，你也能够通过谷歌开发者工具的JavaScript控制台面板中的之前作用域与你的代码互动。<br><br>想象一下你就是<a href="http://zh.wikipedia.org/wiki/%E7%A5%9E%E7%A7%98%E5%8D%9A%E5%A3%AB" target="_blank" rel="external">神秘博士</a>并且你需要一些帮助来比较时钟上从穿梭时光获取的过去时间到“现在”获取的时间。在谷歌开发者工具的控制台中，你可以简单地评估、存储以及跨不同的执行点做任何运算。<br><br><center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/time-travel.gif" alt=""><br></center><br><center><br><strong><em>使用JavaScript控制台结合异步调用堆栈来调试你的代码。点击查看上面的<a href="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/past-scope/demo.html" target="_blank" rel="external">DEMO</a></em></strong><br></center><br><br>保持在谷歌开发者工具中操作你的表达式将会从不得不转到源代码、编辑和刷新浏览器中节省你的时间。<br><br><br><a href="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/" target="_blank" rel="external">原文链接</a><br><br><a style="margin-right: 25px;cursor:pointer;"><img style="width: 80px;height: 80px;border: 3px solid #FFF;box-shadow: 0 1px 2px rgba(0,0,0,0.4);border-radius: 100%;position: relative;" src="http://www.html5rocks.com/static/images/profiles/pearlchen.png" itemprop="photo" alt="Pearl Chen" title="Pearl Chen"></a><div class="authors"><strong>By</strong> Pearl Chen </div><div class="date"><time pubdate=""><strong>Published:</strong> March 26th, 2014</time></div><div class="date"><time class="updated"><strong>Updated:</strong> March 31st, 2014</time></div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ppoffice.github.io/2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/" data-id="cib8mo33a001iu981fl1e38yd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Async/">Async</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/谷歌开发者工具/">谷歌开发者工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/05/27/hexo搭建静态博客网站简要教程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hexo搭建静态博客网站简要教程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/05/12/JAVA图片压缩代码实现/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JAVA图片压缩代码实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+        <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">recents</h3>
+    <div class="widget">
+      <ul id="recent-post" class="">
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/22/hello-world/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/22/hello-world/" class="title">Hello World</a></p>
+              <p class="item-date"><time datetime="2015-06-22T13:59:26.000Z" itemprop="datePublished">2015-06-22</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="title">【翻译】深入理解ES6：箭头函数</a></p>
+              <p class="item-date"><time datetime="2015-06-17T08:49:36.000Z" itemprop="datePublished">2015-06-17</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/05/05/弹幕、抽奖及投票/" class="thumbnail">
+  
+    <span style="background-image:url(http://ww4.sinaimg.cn/mw1024/4da583a7gw1ervpx5zqtej21hc0u0dz1.jpg
+)" alt="弹幕、抽奖及投票" class="thumbnail-image"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/05/05/弹幕、抽奖及投票/" class="title">弹幕、抽奖及投票</a></p>
+              <p class="item-date"><time datetime="2015-05-05T15:10:19.000Z" itemprop="datePublished">2015-05-05</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/04/01/jQuery和Reactjs的思考/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/04/01/jQuery和Reactjs的思考/" class="title">【翻译】jQuery和React.js的思考</a></p>
+              <p class="item-date"><time datetime="2015-04-01T03:27:05.000Z" itemprop="datePublished">2015-04-01</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/03/28/Go开发环境搭建/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/03/28/Go开发环境搭建/" class="title">Linux系统Go开发环境搭建</a></p>
+              <p class="item-date"><time datetime="2015-03-28T08:34:46.000Z" itemprop="datePublished">2015-03-28</time></p>
+            </div>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">tag cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 15px;">AngularJS</a> <a href="/tags/Angularjs/" style="font-size: 10px;">Angularjs</a> <a href="/tags/Async/" style="font-size: 10px;">Async</a> <a href="/tags/Database/" style="font-size: 10px;">Database</a> <a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DevTools/" style="font-size: 10px;">DevTools</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Go/" style="font-size: 10px;">Go</a> <a href="/tags/Golang/" style="font-size: 10px;">Golang</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/JS/" style="font-size: 10px;">JS</a> <a href="/tags/Java-Web/" style="font-size: 15px;">Java Web</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/JavaScript-Performance/" style="font-size: 10px;">JavaScript Performance</a> <a href="/tags/Javascript/" style="font-size: 10px;">Javascript</a> <a href="/tags/Karma/" style="font-size: 15px;">Karma</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MVC/" style="font-size: 20px;">MVC</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/OSX/" style="font-size: 10px;">OSX</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React-js/" style="font-size: 10px;">React.js</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/Struts2/" style="font-size: 10px;">Struts2</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/d3-js/" style="font-size: 10px;">d3.js</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/image/" style="font-size: 10px;">image</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/node-js/" style="font-size: 15px;">node.js</a> <a href="/tags/svg/" style="font-size: 10px;">svg</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/web发展/" style="font-size: 10px;">web发展</a> <a href="/tags/weibo/" style="font-size: 10px;">weibo</a> <a href="/tags/前端技术/" style="font-size: 10px;">前端技术</a> <a href="/tags/图片压缩/" style="font-size: 10px;">图片压缩</a> <a href="/tags/学习笔记/" style="font-size: 10px;">学习笔记</a> <a href="/tags/开发环境/" style="font-size: 10px;">开发环境</a> <a href="/tags/开发者工具/" style="font-size: 10px;">开发者工具</a> <a href="/tags/文件下载/" style="font-size: 10px;">文件下载</a> <a href="/tags/注解/" style="font-size: 10px;">注解</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a> <a href="/tags/自定义指令/" style="font-size: 10px;">自定义指令</a> <a href="/tags/谷歌开发者工具/" style="font-size: 10px;">谷歌开发者工具</a> <a href="/tags/谷歌浏览器/" style="font-size: 10px;">谷歌浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://hexo.io">Hexo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+  <div id="toTop" class="fa fa-chevron-up"></div>
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 WonSikin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+
+<script src="//ajax.useso.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

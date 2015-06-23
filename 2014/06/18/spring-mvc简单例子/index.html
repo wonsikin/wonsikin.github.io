@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Spring MVC 简单例子 | Arthur Wang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简介Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC 简单例子">
+<meta property="og:url" content="http://ppoffice.github.io/2014/06/18/spring-mvc简单例子/index.html">
+<meta property="og:site_name" content="Arthur Wang's Blog">
+<meta property="og:description" content="简介Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！">
+<meta property="og:updated_time" content="2014-06-19T07:24:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC 简单例子">
+<meta name="twitter:description" content="简介Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href='//fonts.useso.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+  
+
+  
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="/" id="logo"><i class="logo"></i><span class="site-title">Arthur Wang&#39;s Blog</span></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+      <nav id="sub-nav">
+        <div class="profile" id="profile-nav">
+          <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+        </div>
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tr>
+      
+        <td><a class="main-nav-link" href="/">Home</a></td>
+      
+        <td><a class="main-nav-link" href="/tags">Tags</a></td>
+      
+        <td><a class="main-nav-link" href="/about">About</a></td>
+      
+      <td>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </td>
+      </tr>
+    </table>
+  </div>
+</header>
+    <div class="outer">
+      
+        <aside id="profile">
+  <div class="inner profile-inner">
+  	<div class="base-info profile-block">
+		  <img id="avatar" src="/css/images/avatar.png">
+      <h2 id="name">WonSikin</h2>
+      <h3 id="title">FE Developer &amp; Gopher</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
+      <a id="follow" href="https://github.com/wonsikin/">FOLLOW</a>
+  	</div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        21
+        <span>posts</span>
+      </div>
+      <div class="article-info-block">
+        53
+        <span>tags</span>
+      </div>
+    </div>
+    
+    <div class="contact-info profile-block">
+      <table class="contact-list">
+        <tr>
+        
+          <td><a href="https://github.com/wonsikin/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+        
+          <td><a href="http://weibo.com/wonsikin/" target="_blank" title="weibo"><i class="fa fa-weibo"></i></a></td>
+        
+          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+        
+        </tr>
+      </table>
+    </div>
+    
+  </div>
+</aside>
+      
+      <section id="main"><article id="post-spring-mvc简单例子" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spring MVC 简单例子
+    </h1>
+  
+
+        <div class="article-meta">
+          <div class="article-date">
+  <i class="fa fa-calendar"></i>
+  <a href="/2014/06/18/spring-mvc简单例子/">
+    <time datetime="2014-06-18T07:37:07.000Z" itemprop="datePublished">2014-06-18</time>
+  </a>
+</div>
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介">简介</h2><p>Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！<br><a id="more"></a></p>
+<h2 id="创建项目">创建项目</h2><p>用Eclipse创建一个Web项目。本例子命名为SpringMVC。</p>
+<h2 id="引用jar包">引用jar包</h2><p>本例子使用的Spring版本是4.0.2。以下列出的jar包就只包含名字，不带版本号。</p>
+<pre><code>.
+├──lib
+<span class="string">|  ├── commons-logging-1.0.4.jar</span>
+<span class="string">|  ├── spring-context.jar</span>
+<span class="string">|  ├── spring-context-support.jar</span>
+<span class="string">|  ├── spring-core.jar</span>
+<span class="string">|  ├── spring-expression.jar</span>
+<span class="string">|  ├── spring-web.jar</span>
+<span class="string">|  ├── spring-webmvc.jar</span>
+<span class="string">|  ├── spring-beans.jar</span>
+</code></pre><h2 id="web-xml配置">web.xml配置</h2><p>要使用Spring MVC，配置DispatcherServlet是第一步。它拦截我们自己定义的请求，依据我们定义的规则分发到目标Controller（既Action类）来处理。</p>
+<p>例子1：</p>
+<pre><code><span class="variable">&lt;servlet&gt;</span>
+    <span class="variable">&lt;servlet-name&gt;</span>springmvc<span class="variable">&lt;/servlet-name&gt;</span>
+    <span class="variable">&lt;servlet-class&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="variable">&lt;/servlet-class&gt;</span>
+    <span class="variable">&lt;load-on-startup&gt;</span>1<span class="variable">&lt;/load-on-startup&gt;</span>
+<span class="variable">&lt;/servlet&gt;</span>
+<span class="variable">&lt;servlet-mapping&gt;</span>
+    <span class="variable">&lt;servlet-name&gt;</span>springmvc<span class="variable">&lt;/servlet-name&gt;</span>
+    <span class="variable">&lt;url-pattern&gt;</span><span class="keyword">*</span>.do<span class="variable">&lt;/url-pattern&gt;</span>
+<span class="variable">&lt;/servlet-mapping&gt;</span>
+</code></pre><p><code><url-pattern>*.do</url-pattern></code>表示会拦截所有以do为后缀的请求。</p>
+<p><code><servlet-name>springmvc</servlet-name></code>表示DispatcherServlet的名字是springmvc。DispatcherServlet可以有多个，通过名字来区别。</p>
+<p>在DispatcherServlet的初始化过程中，框架会在web应用的<code>WEB-INF</code>文件夹下寻找名为<code>[servlet-name]-servlet.xml</code> 的配置文件，生成文件中定义的bean。</p>
+<p>当然，你也可以自己指定配置文件名，不使用默认的配置文件名。如下：</p>
+<pre><code><span class="variable">&lt;servlet&gt;</span>  
+    <span class="variable">&lt;servlet-name&gt;</span>springMVC<span class="variable">&lt;/servlet-name&gt;</span>  
+    <span class="variable">&lt;servlet-class&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="variable">&lt;/servlet-class&gt;</span>  
+    <span class="variable">&lt;init-param&gt;</span>  
+        <span class="variable">&lt;param-name&gt;</span>contextConfigLocation<span class="variable">&lt;/param-name&gt;</span>  
+        <span class="variable">&lt;param-value&gt;</span>classpath<span class="keyword">*</span>:/springMVC.xml<span class="variable">&lt;/param-value&gt;</span>  
+    <span class="variable">&lt;/init-param&gt;</span>  
+    <span class="variable">&lt;load-on-startup&gt;</span>1<span class="variable">&lt;/load-on-startup&gt;</span>  
+<span class="variable">&lt;/servlet&gt;</span>  
+<span class="variable">&lt;servlet-mapping&gt;</span>  
+    <span class="variable">&lt;servlet-name&gt;</span>springMVC<span class="variable">&lt;/servlet-name&gt;</span>  
+    <span class="variable">&lt;url-pattern&gt;</span>/<span class="variable">&lt;/url-pattern&gt;</span>  
+<span class="variable">&lt;/servlet-mapping&gt;</span>  
+</code></pre><p>其中<code><param-value>**.xml</param-value></code>可以有多种配置写法：</p>
+<ol>
+<li>不写,使用默认值:/WEB-INF/<servlet-name>-servlet.xml</servlet-name></li>
+<li><param-value>/WEB-INF/classes/springMVC.xml</param-value></li>
+<li><param-value>classpath*:springMVC-mvc.xml</param-value></li>
+<li>多个值用逗号分隔</li>
+</ol>
+<p><code>PS:</code>本例子使用的是默认的配置文件名。</p>
+<h2 id="springmvc-servlet-xml配置">springmvc-servlet.xml配置</h2><p>直接上代码：</p>
+<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attribute">xmlns:p</span>=<span class="value">"http://www.springframework.org/schema/p"</span>
+    <span class="attribute">xmlns:context</span>=<span class="value">"http://www.springframework.org/schema/context"</span>
+    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"  
+        http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd"</span>&gt;</span>
+
+        <span class="comment">&lt;!-- 视图解释器 --&gt;</span>
+        <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"viewResolver"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.web.servlet.view.InternalResourceViewResolver"</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"viewClass"</span> <span class="attribute">value</span>=<span class="value">"org.springframework.web.servlet.view.JstlView"</span>/&gt;</span>
+            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"prefix"</span> <span class="attribute">value</span>=<span class="value">"/WEB-INF/jsp/"</span>/&gt;</span>
+            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"suffix"</span> <span class="attribute">value</span>=<span class="value">".jsp"</span> /&gt;</span><span class="comment">&lt;!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  --&gt;</span>
+        <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+        <span class="comment">&lt;!-- 控制器 --&gt;</span>
+        <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"loginController"</span> <span class="attribute">class</span>=<span class="value">"com.wsj.controller.LoginController"</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"username"</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">value</span>&gt;</span>admin<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+            <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"password"</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">value</span>&gt;</span>admin<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+            <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+        <span class="comment">&lt;!-- 路径和控制器的映射 --&gt;</span>
+        <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"simpleUrlHandlerMapping"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"mappings"</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">props</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">prop</span> <span class="attribute">key</span>=<span class="value">"/login.do"</span>&gt;</span>loginController<span class="tag">&lt;/<span class="title">prop</span>&gt;</span>
+                <span class="tag">&lt;/<span class="title">props</span>&gt;</span>
+            <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span> 
+</code></pre><h2 id="控制器">控制器</h2><pre><code>package com<span class="built_in">.</span>wsj<span class="built_in">.</span>controller;
+
+<span class="keyword">import</span> javax<span class="built_in">.</span>servlet<span class="built_in">.</span>http<span class="built_in">.</span>HttpServletRequest;
+<span class="keyword">import</span> javax<span class="built_in">.</span>servlet<span class="built_in">.</span>http<span class="built_in">.</span>HttpServletResponse;
+
+<span class="keyword">import</span> org<span class="built_in">.</span>springframework<span class="built_in">.</span>web<span class="built_in">.</span>servlet<span class="built_in">.</span>ModelAndView;
+<span class="keyword">import</span> org<span class="built_in">.</span>springframework<span class="built_in">.</span>web<span class="built_in">.</span>servlet<span class="built_in">.</span>mvc<span class="built_in">.</span>Controller;
+
+<span class="comment">/**
+ * 该示例下，一个controller只有一个方法
+ * */</span>
+<span class="keyword">public</span> class LoginController implements Controller{
+
+    <span class="keyword">private</span> <span class="built_in">String</span> username;
+
+    <span class="keyword">private</span> <span class="built_in">String</span> password;
+
+    @Override
+    <span class="keyword">public</span> ModelAndView handleRequest(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        <span class="comment">// <span class="doctag"><span class="keyword">TODO</span></span> Auto-generated method stub</span>
+        <span class="built_in">String</span> _username <span class="subst">=</span> request<span class="built_in">.</span>getParameter(<span class="string">"username"</span>);
+        <span class="built_in">String</span> _pwd <span class="subst">=</span>  request<span class="built_in">.</span>getParameter(<span class="string">"password"</span>);
+        <span class="keyword">if</span>(username<span class="built_in">.</span><span class="keyword">equals</span>(_username) <span class="subst">&amp;&amp;</span> password<span class="built_in">.</span><span class="keyword">equals</span>(_pwd)){
+            <span class="keyword">return</span> <span class="literal">new</span> ModelAndView(<span class="string">"success"</span>);
+        }
+        <span class="keyword">return</span> <span class="literal">new</span> ModelAndView(<span class="string">"fail"</span>);
+    }
+
+    <span class="comment">/**
+    *getter、setter方法
+    */</span>
+    <span class="attribute">...</span><span class="attribute">...</span>
+
+}
+</code></pre><p>代码中的控制器实现<code>Controller</code>接口。当<code>login.do</code>的请求分发到该控制器时，默认执行<code>handleRequest</code>的方法。</p>
+<p><code>return new ModelAndView(“success”)</code>表示跳转到<code>success.jsp</code>页面。</p>
+<h2 id="视图与运行">视图与运行</h2><p>本例子中的视图只有success.jsp和fail.jsp，分别表示登录成功和失败的页面。具体内容就不贴出来了。</p>
+<p>在浏览器地址中输入<a href="localhost:8081/SpringMVC/login.do?username=admin&amp;password=admin" target="_blank" rel="external">localhost:8081/SpringMVC/login.do?username=admin&amp;password=admin</a>即可调用成功页面。</p>
+<h2 id="能处理多方法的控制器">能处理多方法的控制器</h2><p>一个控制器只处理一个方法，感觉总有点奢侈浪费。Spring MVC是支持一个控制器处理多个方法的。</p>
+<p>在WEB-INF/jsp里面创建一个名为multi的jsp页面：</p>
+<pre><code><span class="xml"></span><span class="vbscript">&lt;%@ page language=<span class="string">"java"</span> import=<span class="string">"java.util.*"</span> pageEncoding=<span class="string">"ISO-8859-1"</span>%&gt;</span><span class="xml">
+</span><span class="vbscript">&lt;%
+<span class="built_in">String</span> path = <span class="built_in">request</span>.getContextPath();
+<span class="built_in">String</span> basePath = <span class="built_in">request</span>.getScheme()+<span class="string">"://"</span>+<span class="built_in">request</span>.getServerName()+<span class="string">":"</span>+<span class="built_in">request</span>.getServerPort()+path+<span class="string">"/"</span>;
+%&gt;</span><span class="xml">
+
+<span class="doctype">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">base</span> <span class="attribute">href</span>=<span class="value">"</span></span></span><span class="vbscript">&lt;%=basePath%&gt;</span><span class="xml"><span class="tag"><span class="value">"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>My JSP 'multi.jsp' starting page<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"pragma"</span> <span class="attribute">content</span>=<span class="value">"no-cache"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"cache-control"</span> <span class="attribute">content</span>=<span class="value">"no-cache"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"expires"</span> <span class="attribute">content</span>=<span class="value">"0"</span>&gt;</span>    
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"keywords"</span> <span class="attribute">content</span>=<span class="value">"keyword1,keyword2,keyword3"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"description"</span> <span class="attribute">content</span>=<span class="value">"This is my page"</span>&gt;</span>
+    <span class="comment">&lt;!--
+    &lt;link rel="stylesheet" type="text/css" href="styles.css"&gt;
+    --&gt;</span>
+
+  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">h1</span>&gt;</span>请求的方法是：${method }<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span></span>
+</code></pre><p>创建一个继承<code>MultiActionController</code>的控制器：</p>
+<pre><code><span class="keyword">package</span> com.wsj.controller;
+
+<span class="keyword">import</span> javax.servlet.http.<span class="type">HttpServletRequest</span>;
+<span class="keyword">import</span> javax.servlet.http.<span class="type">HttpServletResponse</span>;
+
+<span class="keyword">import</span> org.springframework.web.servlet.<span class="type">ModelAndView</span>;
+<span class="keyword">import</span> org.springframework.web.servlet.mvc.multiaction.<span class="type">MultiActionController</span>;
+
+public <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">MultiActionController</span> {</span>
+
+    public <span class="type">ModelAndView</span> add(<span class="type">HttpServletRequest</span> request,
+            <span class="type">HttpServletResponse</span> response) {
+        <span class="type">System</span>.out.println(<span class="string">"Add"</span>);
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">ModelAndView</span>(<span class="string">"/multi"</span>, <span class="string">"method"</span>, <span class="string">"add"</span>);
+    }
+
+    public <span class="type">ModelAndView</span> update(<span class="type">HttpServletRequest</span> request,
+            <span class="type">HttpServletResponse</span> response) {
+        <span class="type">System</span>.out.println(<span class="string">"Update"</span>);
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">ModelAndView</span>(<span class="string">"/multi"</span>, <span class="string">"method"</span>, <span class="string">"update"</span>);
+    }
+}
+</code></pre><p>代码中，两个方法都调用结束后都返回到<code>multi.jsp</code>页面，同时传一个参数名为<code>method</code>的参数，值分别为各自调用的方法名。</p>
+<p>在<code>springmvc-servlet.xml</code>中添加如下配置：</p>
+<pre><code><span class="comment">&lt;!-- 参数名称解析器，处理一个controller的多个方法。value=action，请求的时候指明action="目标方法" --&gt;</span>
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"paramMethodResolver"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"paramName"</span> <span class="attribute">value</span>=<span class="value">"action"</span>/&gt;</span>
+<span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+<span class="comment">&lt;!-- 控制器 --&gt;</span>
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"userController"</span> <span class="attribute">class</span>=<span class="value">"com.wsj.controller.UserController"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"methodNameResolver"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">ref</span> <span class="attribute">bean</span>=<span class="value">"paramMethodResolver"</span>/&gt;</span>
+    <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+<span class="comment">&lt;!-- 路径和控制器的映射 --&gt;</span>
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"simpleUrlHandlerMapping"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"mappings"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">props</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">prop</span> <span class="attribute">key</span>=<span class="value">"/login.do"</span>&gt;</span>loginController<span class="tag">&lt;/<span class="title">prop</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">prop</span> <span class="attribute">key</span>=<span class="value">"/user.do"</span>&gt;</span>userController<span class="tag">&lt;/<span class="title">prop</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">props</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+</code></pre><p>参数名称解析器（ParameterMethodNameResolver）是Spring自带的，我们注入即可使用。这个解析器是靠我们配置的<code>paramName</code>的值<code>action</code>来解析请求的。</p>
+<p>请求的时候，请使用<code>user.do?action=add</code>类似的来请求。</p>
+<p><code>PS:</code></p>
+<ol>
+<li>用注解完成Spring MVC的笔记可以参考<a href="http://www.wonsikin.com/2014/06/19/spring-mvc注解小例子/" target="_blank" rel="external">下一篇博文</a><h2 id="参考">参考</h2></li>
+<li><a href="http://elf8848.iteye.com/blog/875830/" target="_blank" rel="external">赵磊的博客</a></li>
+<li><a href="http://liuzidong.iteye.com/blog/897047" target="_blank" rel="external">咫尺天涯</a></li>
+<li><a href="http://www.blogbus.com/wanping-logs/235898608.html" target="_blank" rel="external">catherine的心路历程</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ppoffice.github.io/2014/06/18/spring-mvc简单例子/" data-id="cib8mo33k0023u981iuigco6g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java-Web/">Java Web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/06/19/spring-mvc注解小例子/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Spring MVC注解小例子
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/06/10/struts2通用文件下载示例/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Struts2通用文件下载示例</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+        <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">recents</h3>
+    <div class="widget">
+      <ul id="recent-post" class="">
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/22/hello-world/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/22/hello-world/" class="title">Hello World</a></p>
+              <p class="item-date"><time datetime="2015-06-22T13:59:26.000Z" itemprop="datePublished">2015-06-22</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="title">【翻译】深入理解ES6：箭头函数</a></p>
+              <p class="item-date"><time datetime="2015-06-17T08:49:36.000Z" itemprop="datePublished">2015-06-17</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/05/05/弹幕、抽奖及投票/" class="thumbnail">
+  
+    <span style="background-image:url(http://ww4.sinaimg.cn/mw1024/4da583a7gw1ervpx5zqtej21hc0u0dz1.jpg
+)" alt="弹幕、抽奖及投票" class="thumbnail-image"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/05/05/弹幕、抽奖及投票/" class="title">弹幕、抽奖及投票</a></p>
+              <p class="item-date"><time datetime="2015-05-05T15:10:19.000Z" itemprop="datePublished">2015-05-05</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/04/01/jQuery和Reactjs的思考/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/04/01/jQuery和Reactjs的思考/" class="title">【翻译】jQuery和React.js的思考</a></p>
+              <p class="item-date"><time datetime="2015-04-01T03:27:05.000Z" itemprop="datePublished">2015-04-01</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/03/28/Go开发环境搭建/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/03/28/Go开发环境搭建/" class="title">Linux系统Go开发环境搭建</a></p>
+              <p class="item-date"><time datetime="2015-03-28T08:34:46.000Z" itemprop="datePublished">2015-03-28</time></p>
+            </div>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">tag cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 15px;">AngularJS</a> <a href="/tags/Angularjs/" style="font-size: 10px;">Angularjs</a> <a href="/tags/Async/" style="font-size: 10px;">Async</a> <a href="/tags/Database/" style="font-size: 10px;">Database</a> <a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DevTools/" style="font-size: 10px;">DevTools</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Go/" style="font-size: 10px;">Go</a> <a href="/tags/Golang/" style="font-size: 10px;">Golang</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/JS/" style="font-size: 10px;">JS</a> <a href="/tags/Java-Web/" style="font-size: 15px;">Java Web</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/JavaScript-Performance/" style="font-size: 10px;">JavaScript Performance</a> <a href="/tags/Javascript/" style="font-size: 10px;">Javascript</a> <a href="/tags/Karma/" style="font-size: 15px;">Karma</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MVC/" style="font-size: 20px;">MVC</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/OSX/" style="font-size: 10px;">OSX</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React-js/" style="font-size: 10px;">React.js</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/Struts2/" style="font-size: 10px;">Struts2</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/d3-js/" style="font-size: 10px;">d3.js</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/image/" style="font-size: 10px;">image</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/node-js/" style="font-size: 15px;">node.js</a> <a href="/tags/svg/" style="font-size: 10px;">svg</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/web发展/" style="font-size: 10px;">web发展</a> <a href="/tags/weibo/" style="font-size: 10px;">weibo</a> <a href="/tags/前端技术/" style="font-size: 10px;">前端技术</a> <a href="/tags/图片压缩/" style="font-size: 10px;">图片压缩</a> <a href="/tags/学习笔记/" style="font-size: 10px;">学习笔记</a> <a href="/tags/开发环境/" style="font-size: 10px;">开发环境</a> <a href="/tags/开发者工具/" style="font-size: 10px;">开发者工具</a> <a href="/tags/文件下载/" style="font-size: 10px;">文件下载</a> <a href="/tags/注解/" style="font-size: 10px;">注解</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a> <a href="/tags/自定义指令/" style="font-size: 10px;">自定义指令</a> <a href="/tags/谷歌开发者工具/" style="font-size: 10px;">谷歌开发者工具</a> <a href="/tags/谷歌浏览器/" style="font-size: 10px;">谷歌浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://hexo.io">Hexo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+  <div id="toTop" class="fa fa-chevron-up"></div>
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 WonSikin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+
+<script src="//ajax.useso.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Angularjs自定义指令小试 | Arthur Wang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简介指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angularjs自定义指令小试">
+<meta property="og:url" content="http://ppoffice.github.io/2014/10/26/Angularjs自定义指令小试/index.html">
+<meta property="og:site_name" content="Arthur Wang's Blog">
+<meta property="og:description" content="简介指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。">
+<meta property="og:updated_time" content="2014-10-26T14:39:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angularjs自定义指令小试">
+<meta name="twitter:description" content="简介指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href='//fonts.useso.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+  
+
+  
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="/" id="logo"><i class="logo"></i><span class="site-title">Arthur Wang&#39;s Blog</span></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+      <nav id="sub-nav">
+        <div class="profile" id="profile-nav">
+          <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+        </div>
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tr>
+      
+        <td><a class="main-nav-link" href="/">Home</a></td>
+      
+        <td><a class="main-nav-link" href="/tags">Tags</a></td>
+      
+        <td><a class="main-nav-link" href="/about">About</a></td>
+      
+      <td>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </td>
+      </tr>
+    </table>
+  </div>
+</header>
+    <div class="outer">
+      
+        <aside id="profile">
+  <div class="inner profile-inner">
+  	<div class="base-info profile-block">
+		  <img id="avatar" src="/css/images/avatar.png">
+      <h2 id="name">WonSikin</h2>
+      <h3 id="title">FE Developer &amp; Gopher</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
+      <a id="follow" href="https://github.com/wonsikin/">FOLLOW</a>
+  	</div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        21
+        <span>posts</span>
+      </div>
+      <div class="article-info-block">
+        53
+        <span>tags</span>
+      </div>
+    </div>
+    
+    <div class="contact-info profile-block">
+      <table class="contact-list">
+        <tr>
+        
+          <td><a href="https://github.com/wonsikin/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+        
+          <td><a href="http://weibo.com/wonsikin/" target="_blank" title="weibo"><i class="fa fa-weibo"></i></a></td>
+        
+          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+        
+        </tr>
+      </table>
+    </div>
+    
+  </div>
+</aside>
+      
+      <section id="main"><article id="post-Angularjs自定义指令小试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Angularjs自定义指令小试
+    </h1>
+  
+
+        <div class="article-meta">
+          <div class="article-date">
+  <i class="fa fa-calendar"></i>
+  <a href="/2014/10/26/Angularjs自定义指令小试/">
+    <time datetime="2014-10-26T14:39:54.000Z" itemprop="datePublished">2014-10-26</time>
+  </a>
+</div>
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介">简介</h2><p>指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。</p>
+<a id="more"></a>
+<p>指令标记在一个DOM元素上（例如一个属性、一个元素名称、注释或者CSS类），告诉Angularjs的HTML编译器（$compile）将指定的行为附加到DOM元素上或者甚至转换DOM元素和它的子元素。</p>
+<p>Angular附带了一系列内建的指令，例如<code>ngBind</code>、<code>ngModel</code>和<code>ngClass</code>，就像你创建控制器和服务，你可以为Angular创建自己的指令来使用。当Angular引导你的应用时，HTML编译器会遍历DOM元素来匹配DOM对应的指令。</p>
+<p>下面简单实现一个年月日下拉框联动选择的Angular自定义指令。</p>
+<h2 id="声明指令">声明指令</h2><p>Angular使用<code>directive()</code>这个方法来定义指令：</p>
+<pre><code>angular.module(<span class="string">'myApp'</span>,[])
+    .directive(<span class="string">'myDirective'</span>,<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{
+        <span class="comment">//定义指令的内容</span>
+    });
+</code></pre><p><code>directive()</code>方法接受两个参数：</p>
+<ol>
+<li>name（字符串）。指令的名称。</li>
+<li>factory_function。该函数返回一个定义了指令的全部行为的对象。</li>
+</ol>
+<p>当Angular启动应用的时候，会把第一个参数作为名称来注册第二个参数返回的对象。Angular会解析DOM元素中使用这个名称的地方，并在这个地方引用对应的指令。</p>
+<pre><code>&lt;<span class="keyword">div</span> <span class="keyword">my</span>-directive&gt;&lt;/<span class="keyword">div</span>&gt;
+</code></pre><p><code>注意</code>：定义的指令名称为驼峰式的字符串，但是使用的时候要用横杆替换。</p>
+<h2 id="指令的配置项">指令的配置项</h2><p>本例子使用到的指令配置项如下</p>
+<h4 id="restrict">restrict</h4><p>restrict是一个可选的参数，它告诉Angular该指令在DOM中可以以何种形式被声明。默认值为<code>A</code>，即以属性的形式来进行声明。该配置项的可选值如下：</p>
+<pre><code>E（元素）
+<span class="tag">&lt;<span class="title">my-directive</span>&gt;</span><span class="tag">&lt;/<span class="title">my-directive</span>&gt;</span>
+A（属性，默认值）
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">my-directive</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+C（类名）
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"my-directive"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+M（注释）
+<span class="comment">&lt;!--directive:my-directive--&gt;</span>
+</code></pre><p>以上可选值可以独立使用，也可以混合使用。但是请注意，如果目标网页应用有兼容低版本IE浏览器的需求时，请勿只使用<code>E</code>选项，明智点的方法是同时使用<code>EA</code>选项。</p>
+<h4 id="replace">replace</h4><p>replace是一个可选的参数，如果设置了其值必须是true，因为默认值就是false。默认值表示指令中定义的模板会被当作自元素插入到调用此指令的元素内部。</p>
+<pre><code>&lt;<span class="keyword">div</span> my-directive&gt;&lt;/<span class="keyword">div</span>&gt;
+.directive('myDirective',function(){
+    <span class="keyword">return</span> {
+        <span class="keyword">template</span>: '&lt;<span class="keyword">div</span>&gt;<span class="type">Some</span> stuff here&lt;/<span class="keyword">div</span>&gt;'
+    }
+});
+
+调用结果如下
+&lt;<span class="keyword">div</span> my-directive&gt;
+    &lt;<span class="keyword">div</span>&gt;<span class="type">Some</span> stuff here&lt;/<span class="keyword">div</span>&gt;
+&lt;/<span class="keyword">div</span>&gt;
+</code></pre><p>当replace的值设为true的时候</p>
+<pre><code>.directive('myDirective',function(){
+    <span class="keyword">return</span> {
+        replace: <span class="literal">true</span>,
+        <span class="keyword">template</span>: '&lt;<span class="keyword">div</span>&gt;<span class="type">Some</span> stuff here&lt;/<span class="keyword">div</span>&gt;'
+    }
+});
+
+结果如下
+&lt;<span class="keyword">div</span>&gt;<span class="type">Some</span> stuff here&lt;/<span class="keyword">div</span>&gt;
+</code></pre><h4 id="scope">scope</h4><p>该选项用于设置指令的作用域信息。选项可以被设为true或者一个对象。默认值为false。</p>
+<p>当选项被设成true的时候，表示会从父作用域继承并创建一个新的作用域对象。</p>
+<p>scope的选项也可以是一个空对象，这表示隔离作用域。隔离作用域是scope三个选项中最难理解的一个，但也是最强大的。楼主能力有限，并且本例子不使用该选项，所以在此略过。</p>
+<p>scope的最后一个选项是绑定策略。Angular提供了几种方法能够将指令内部的隔离作用域同指令外部的作用域进行绑定。</p>
+<pre><code>本地作用域属性：@ <span class="keyword">or</span> @<span class="keyword">attr</span>。将本地作用域同DOM属性的值绑定，指令内部作用域可以使用外部作用域的变量。
+双向绑定：= <span class="keyword">or</span> =<span class="keyword">attr</span>。将本地作用域上的属性同父级作用域上的属性进行双向数据绑定。
+父级作用域绑定：&amp; <span class="keyword">or</span> &amp;<span class="keyword">attr</span>。对父级作用域进行绑定，以便在指令作用域中运行函数。对这个值进行设置时会声称一个指向父级作用域的包装函数。
+</code></pre><h4 id="controller">controller</h4><p>该选项表示指令的控制器，用来控制指令的逻辑行为。控制器中有一些特殊的服务可以被注入到指令当中</p>
+<ol>
+<li>$scope。与指令相关联的当前作用域。</li>
+<li>$element。当前指令对应的元素。</li>
+<li>$attrs。 当前元素的属性组成的对象。</li>
+<li>$transclude。嵌入连接函数会与对应的嵌入作用域进行预绑定。</li>
+</ol>
+<h4 id="template">template</h4><p>该选项可选值如下：</p>
+<ol>
+<li>一段HTML文本。</li>
+<li>可以接受两个参数，参数为tElement和tAttrs，并返回一个代表模板的字符串。</li>
+</ol>
+<h2 id="逻辑">逻辑</h2><p>年月日下拉框联动选择的Angular自定义指令目标是创建三个下拉框，第一个表示年份，第二个表示月份，第三个表示日期，年月日下拉框必须能够联动，并且当选择闰年的二月份的时候，日下拉框必须有29的选项。同时该指令能够将选择的结果返回给父作用域。</p>
+<p>年月日下拉框联动选择（以下简称qbDate）指令的模板如下：</p>
+<pre><code>template: '\
+      <span class="tag">&lt;<span class="title">div</span>&gt;</span>\
+        <span class="tag">&lt;<span class="title">select</span> <span class="attribute">ng-model</span>=<span class="value">"year"</span>&gt;</span>\
+            <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">""</span>&gt;</span><span class="tag">&lt;/<span class="title">option</span>&gt;</span>\
+            <span class="tag">&lt;<span class="title">option</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in yearList"</span> <span class="attribute">value</span>=<span class="value">""</span>&gt;</span><span class="comment"></span><span class="tag">&lt;/<span class="title">option</span>&gt;</span>\
+        <span class="tag">&lt;/<span class="title">select</span>&gt;</span>\
+        <span class="tag">&lt;<span class="title">select</span> <span class="attribute">ng-model</span>=<span class="value">"month"</span>&gt;</span>\
+            <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">""</span>&gt;</span><span class="tag">&lt;/<span class="title">option</span>&gt;</span>\
+            <span class="tag">&lt;<span class="title">option</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in monthList track by $index"</span> <span class="attribute">value</span>=<span class="value">""</span>&gt;</span><span class="comment"></span><span class="tag">&lt;/<span class="title">option</span>&gt;</span>\
+        <span class="tag">&lt;/<span class="title">select</span>&gt;</span>\
+        <span class="tag">&lt;<span class="title">select</span> <span class="attribute">ng-model</span>=<span class="value">"day"</span>&gt;</span>\
+            <span class="tag">&lt;<span class="title">option</span>&gt;</span><span class="tag">&lt;/<span class="title">option</span>&gt;</span>\
+            <span class="tag">&lt;<span class="title">option</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in dayList track by $index"</span> <span class="attribute">value</span>=<span class="value">""</span>&gt;</span><span class="comment"></span><span class="tag">&lt;/<span class="title">option</span>&gt;</span>\
+        <span class="tag">&lt;/<span class="title">select</span>&gt;</span>\
+      <span class="tag">&lt;/<span class="title">div</span>&gt;</span>\
+    '
+</code></pre><p>qbDate的控制器逻辑代码如下</p>
+<pre><code>controller: <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>,<span class="variable">$element</span>)</span></span>{
+    console.log(<span class="variable">$scope</span>.year,<span class="variable">$scope</span>.month,<span class="variable">$scope</span>.day);
+    <span class="variable">$scope</span>.yearList = [];
+    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">1900</span>;i&lt;=<span class="number">2030</span>;i++){
+        <span class="variable">$scope</span>.yearList.push(i);
+    }
+    <span class="variable">$scope</span>.monthList = [];
+    <span class="variable">$scope</span>.dayList = [];
+    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">1</span>;i&lt;=<span class="number">12</span>;i++){
+        <span class="variable">$scope</span>.monthList.push(i);
+    }
+    <span class="variable">$scope</span>.<span class="variable">$watch</span>(<span class="string">'year'</span>,<span class="function"><span class="keyword">function</span><span class="params">(newValue,oldValue)</span></span>{
+        <span class="keyword">if</span>(newValue){
+            <span class="keyword">if</span>(newValue.length &gt; <span class="number">4</span>){
+                <span class="variable">$scope</span>.year = oldValue;
+            }
+            <span class="variable">$scope</span>.dayList = [];
+            <span class="variable">$scope</span>.month = <span class="string">''</span>;
+            <span class="variable">$scope</span>.day = <span class="string">''</span>;
+
+        }
+
+    });
+    <span class="variable">$scope</span>.<span class="variable">$watch</span>(<span class="string">'month'</span>,<span class="function"><span class="keyword">function</span><span class="params">(newValue,oldValue)</span></span>{
+        <span class="keyword">var</span> months31 = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">10</span>,<span class="number">12</span>];
+        <span class="keyword">var</span> months30 = [<span class="number">4</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">11</span>];
+        <span class="keyword">var</span> month = parseInt(newValue);
+        <span class="keyword">var</span> maxDay = <span class="number">31</span>;
+        <span class="keyword">if</span>(months31.indexOf(month) &gt; <span class="number">0</span>){
+            maxDay = <span class="number">31</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (months30.indexOf(month) &gt; <span class="number">0</span>){
+            maxDay = <span class="number">30</span>;    
+        } <span class="keyword">else</span>{
+            <span class="keyword">var</span> year = parseInt(<span class="variable">$scope</span>.year);
+            <span class="keyword">if</span>((year%<span class="number">4</span>==<span class="number">0</span> &amp;&amp; year%<span class="number">100</span>!=<span class="number">0</span>)||(year%<span class="number">100</span>==<span class="number">0</span> &amp;&amp; year%<span class="number">400</span>==<span class="number">0</span>)){
+                maxDay=<span class="number">29</span>;
+            }<span class="keyword">else</span>{
+                maxDay=<span class="number">28</span>;
+            }
+        }
+        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">1</span>;i&lt;=maxDay;i++){
+            <span class="variable">$scope</span>.dayList.push(i);
+        }
+    });
+},
+</code></pre><p>qbDate的作用域设置如下</p>
+<pre><code><span class="tag">scope</span>: {
+        <span class="attribute">year</span>: <span class="string">'=yearModel'</span>,
+        <span class="attribute">month</span>: <span class="string">'=monthModel'</span>,
+        <span class="attribute">day</span>: <span class="string">'=dayModel'</span>
+    },
+</code></pre><p>使用的时候这么用：</p>
+<pre><code>&lt;<span class="keyword">div</span> qb-<span class="type">date</span> <span class="property">year</span>-model=<span class="string">"year"</span> <span class="property">month</span>-model=<span class="string">"month"</span> <span class="property">day</span>-model=<span class="string">"day"</span>&gt;&lt;<span class="keyword">div</span>&gt;
+</code></pre><p>结合qbDate的作用域设置详情，qbDate 的作用域里面的year属性将绑定到qbDate指令的属性yearModel，而yearModel的值为qbDate指令父作用域year的值。由于qbDate指令是双向绑定的，所以指令内部的值变化将会反应到父作用域的值变化。</p>
+<h2 id="源码">源码</h2><p>本例子源码已经放在<a href="http://jsfiddle.net/fnghwsj/p3x9ufhe/3/" target="_blank" rel="external">JSFiddle</a>上。</p>
+<p>仓促赶工，如有谬误，还望指正。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ppoffice.github.io/2014/10/26/Angularjs自定义指令小试/" data-id="cib8mo34b003pu981hdsjs3hs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Angularjs/">Angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自定义指令/">自定义指令</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/11/01/【翻译】分析JavaScript性能/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【翻译】分析JavaScript性能
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/08/02/AngularJS动态路由/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">AngularJS动态路由</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+        <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">recents</h3>
+    <div class="widget">
+      <ul id="recent-post" class="">
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/22/hello-world/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/22/hello-world/" class="title">Hello World</a></p>
+              <p class="item-date"><time datetime="2015-06-22T13:59:26.000Z" itemprop="datePublished">2015-06-22</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="title">【翻译】深入理解ES6：箭头函数</a></p>
+              <p class="item-date"><time datetime="2015-06-17T08:49:36.000Z" itemprop="datePublished">2015-06-17</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/05/05/弹幕、抽奖及投票/" class="thumbnail">
+  
+    <span style="background-image:url(http://ww4.sinaimg.cn/mw1024/4da583a7gw1ervpx5zqtej21hc0u0dz1.jpg
+)" alt="弹幕、抽奖及投票" class="thumbnail-image"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/05/05/弹幕、抽奖及投票/" class="title">弹幕、抽奖及投票</a></p>
+              <p class="item-date"><time datetime="2015-05-05T15:10:19.000Z" itemprop="datePublished">2015-05-05</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/04/01/jQuery和Reactjs的思考/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/04/01/jQuery和Reactjs的思考/" class="title">【翻译】jQuery和React.js的思考</a></p>
+              <p class="item-date"><time datetime="2015-04-01T03:27:05.000Z" itemprop="datePublished">2015-04-01</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/03/28/Go开发环境搭建/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/03/28/Go开发环境搭建/" class="title">Linux系统Go开发环境搭建</a></p>
+              <p class="item-date"><time datetime="2015-03-28T08:34:46.000Z" itemprop="datePublished">2015-03-28</time></p>
+            </div>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">tag cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 15px;">AngularJS</a> <a href="/tags/Angularjs/" style="font-size: 10px;">Angularjs</a> <a href="/tags/Async/" style="font-size: 10px;">Async</a> <a href="/tags/Database/" style="font-size: 10px;">Database</a> <a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DevTools/" style="font-size: 10px;">DevTools</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Go/" style="font-size: 10px;">Go</a> <a href="/tags/Golang/" style="font-size: 10px;">Golang</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/JS/" style="font-size: 10px;">JS</a> <a href="/tags/Java-Web/" style="font-size: 15px;">Java Web</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/JavaScript-Performance/" style="font-size: 10px;">JavaScript Performance</a> <a href="/tags/Javascript/" style="font-size: 10px;">Javascript</a> <a href="/tags/Karma/" style="font-size: 15px;">Karma</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MVC/" style="font-size: 20px;">MVC</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/OSX/" style="font-size: 10px;">OSX</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React-js/" style="font-size: 10px;">React.js</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/Struts2/" style="font-size: 10px;">Struts2</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/d3-js/" style="font-size: 10px;">d3.js</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/image/" style="font-size: 10px;">image</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/node-js/" style="font-size: 15px;">node.js</a> <a href="/tags/svg/" style="font-size: 10px;">svg</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/web发展/" style="font-size: 10px;">web发展</a> <a href="/tags/weibo/" style="font-size: 10px;">weibo</a> <a href="/tags/前端技术/" style="font-size: 10px;">前端技术</a> <a href="/tags/图片压缩/" style="font-size: 10px;">图片压缩</a> <a href="/tags/学习笔记/" style="font-size: 10px;">学习笔记</a> <a href="/tags/开发环境/" style="font-size: 10px;">开发环境</a> <a href="/tags/开发者工具/" style="font-size: 10px;">开发者工具</a> <a href="/tags/文件下载/" style="font-size: 10px;">文件下载</a> <a href="/tags/注解/" style="font-size: 10px;">注解</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a> <a href="/tags/自定义指令/" style="font-size: 10px;">自定义指令</a> <a href="/tags/谷歌开发者工具/" style="font-size: 10px;">谷歌开发者工具</a> <a href="/tags/谷歌浏览器/" style="font-size: 10px;">谷歌浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://hexo.io">Hexo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+  <div id="toTop" class="fa fa-chevron-up"></div>
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 WonSikin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+
+<script src="//ajax.useso.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

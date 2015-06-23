@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【翻译】jQuery和React.js的思考 | Arthur Wang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原文链接: jQuery versus React.js thinking
+本质上，我不喜欢辩论技术之间的好坏。我认为每一个相当成功的库或者框架在它刚开始推出来到成功都是有很好的理由的。我将会从概念上来比较jQuery和React的不同。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【翻译】jQuery和React.js的思考">
+<meta property="og:url" content="http://ppoffice.github.io/2015/04/01/jQuery和Reactjs的思考/index.html">
+<meta property="og:site_name" content="Arthur Wang's Blog">
+<meta property="og:description" content="原文链接: jQuery versus React.js thinking
+本质上，我不喜欢辩论技术之间的好坏。我认为每一个相当成功的库或者框架在它刚开始推出来到成功都是有很好的理由的。我将会从概念上来比较jQuery和React的不同。">
+<meta property="og:updated_time" content="2015-04-01T03:29:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【翻译】jQuery和React.js的思考">
+<meta name="twitter:description" content="原文链接: jQuery versus React.js thinking
+本质上，我不喜欢辩论技术之间的好坏。我认为每一个相当成功的库或者框架在它刚开始推出来到成功都是有很好的理由的。我将会从概念上来比较jQuery和React的不同。">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href='//fonts.useso.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+  
+
+  
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="/" id="logo"><i class="logo"></i><span class="site-title">Arthur Wang&#39;s Blog</span></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+      <nav id="sub-nav">
+        <div class="profile" id="profile-nav">
+          <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+        </div>
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tr>
+      
+        <td><a class="main-nav-link" href="/">Home</a></td>
+      
+        <td><a class="main-nav-link" href="/tags">Tags</a></td>
+      
+        <td><a class="main-nav-link" href="/about">About</a></td>
+      
+      <td>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </td>
+      </tr>
+    </table>
+  </div>
+</header>
+    <div class="outer">
+      
+        <aside id="profile">
+  <div class="inner profile-inner">
+  	<div class="base-info profile-block">
+		  <img id="avatar" src="/css/images/avatar.png">
+      <h2 id="name">WonSikin</h2>
+      <h3 id="title">FE Developer &amp; Gopher</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
+      <a id="follow" href="https://github.com/wonsikin/">FOLLOW</a>
+  	</div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        21
+        <span>posts</span>
+      </div>
+      <div class="article-info-block">
+        53
+        <span>tags</span>
+      </div>
+    </div>
+    
+    <div class="contact-info profile-block">
+      <table class="contact-list">
+        <tr>
+        
+          <td><a href="https://github.com/wonsikin/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+        
+          <td><a href="http://weibo.com/wonsikin/" target="_blank" title="weibo"><i class="fa fa-weibo"></i></a></td>
+        
+          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+        
+        </tr>
+      </table>
+    </div>
+    
+  </div>
+</aside>
+      
+      <section id="main"><article id="post-jQuery和Reactjs的思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【翻译】jQuery和React.js的思考
+    </h1>
+  
+
+        <div class="article-meta">
+          <div class="article-date">
+  <i class="fa fa-calendar"></i>
+  <a href="/2015/04/01/jQuery和Reactjs的思考/">
+    <time datetime="2015-04-01T03:27:05.000Z" itemprop="datePublished">2015-04-01</time>
+  </a>
+</div>
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>原文链接: <a href="http://blog.zigomir.com/react.js/jquery/2015/01/11/jquery-versus-react-thinking.html" target="_blank" rel="external">jQuery versus React.js thinking</a></p>
+<p>本质上，我不喜欢辩论技术之间的好坏。我认为每一个相当成功的库或者框架在它刚开始推出来到成功都是有很好的理由的。我将会从概念上来比较jQuery和React的不同。</p>
+<a id="more"></a>
+<h2 id="问题">问题</h2><p>一组列表。每一项都有一个默认隐藏的详细信息。任何时候，用户点击列表中的一项，那一项都会展开并且展示它的详细信息，其它项将会变成灰色。如果我们再次点击同一项，它将会收缩并且所有项都会变成它们的初始状态，折叠的并且字体变成黑色的。我们也可以从一个展开的项转移到另一项，折叠前一项，展开新的那项。</p>
+<h2 id="两种解决方法">两种解决方法</h2><h3 id="jQuery(JSBin)">jQuery(<a href="http://jsbin.com/zunev/3/edit" target="_blank" rel="external">JSBin</a>)</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'li'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> $clickedItemDetails = $(e.currentTarget).find(<span class="string">'.details'</span>);</span><br><span class="line">    <span class="keyword">var</span> $allDetails = $(<span class="string">'li .details'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ($clickedItemDetails.is(<span class="string">':hidden'</span>)) &#123;</span><br><span class="line">      $allDetails.hide().parent().removeClass(<span class="string">'collapsed'</span>);</span><br><span class="line">      $clickedItemDetails.show();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      $clickedItemDetails.hide();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $allDetails.each(<span class="function"><span class="keyword">function</span>(<span class="params">index, el</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> ($(el).is(<span class="string">':hidden'</span>)) &#123;</span><br><span class="line">        $(el).parent().addClass(<span class="string">'collapsed'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ($(<span class="string">'li.collapsed'</span>).length === $(<span class="string">'li'</span>).length) &#123;</span><br><span class="line">      $(<span class="string">'li'</span>).removeClass(<span class="string">'collapsed'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>我们的数据和它的状态不是有组织化的，并且分布在DOM中。数据、状态和展示的分隔是模糊的。</p>
+<p>我们用jQuery的选择器（类似：<code>is(&#39;:hidden&#39;)</code>和<code>.find(&#39;.details&#39;)</code>）从DOM中查找数据。然后我们用<code>hide()</code>,<code>show()</code>,<code>addClass()</code>和<code>removeClass()</code>函数直接在DOM上修改状态。</p>
+<p>在最开始的时候，我这样子写过一些代码，现在回过来想读它的时候，我需要整理下思绪来重新读懂它。因为功能是如此的有限所以我可以不用破坏它的代码就能重构，但是当我想给它添加更复杂的功能的话将不会是件容易的事。</p>
+<h3 id="React(JSBin)">React(<a href="http://jsbin.com/hotod/12/edit" target="_blank" rel="external">JSBin</a>)</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** @jsx React.DOM */</span></span><br><span class="line"><span class="keyword">var</span> PRODUCTS = [</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">1</span>, <span class="string">"name"</span>: <span class="string">"Bag of suck"</span>, <span class="string">"price"</span>: <span class="number">100</span>,</span><br><span class="line">    <span class="string">"details"</span>: <span class="string">"You don't want to own this!"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">2</span>, <span class="string">"name"</span>: <span class="string">"Bag of luck"</span>, <span class="string">"price"</span>: <span class="number">200</span>,</span><br><span class="line">    <span class="string">"details"</span>: <span class="string">"You might want to own this!"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">3</span>, <span class="string">"name"</span>: <span class="string">"Bag of fuck"</span>, <span class="string">"price"</span>: <span class="number">300</span>,</span><br><span class="line">    <span class="string">"details"</span>: <span class="string">"You really want to own this!"</span></span><br><span class="line">  &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ItemsList = React.createClass(&#123;</span><br><span class="line">  getInitialState: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      expandedProductId: <span class="literal">null</span></span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  handleProductClick: <span class="function"><span class="keyword">function</span>(<span class="params">product</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> newSelectedProductId = product.id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.state.expandedProductId === product.id) &#123;</span><br><span class="line">      newSelectedProductId = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;expandedProductId: newSelectedProductId&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  render: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>, noneSelected = <span class="keyword">this</span>.state.expandedProductId === <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> products = PRODUCTS.map(<span class="function"><span class="keyword">function</span>(<span class="params">product</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> details, isExpanded = self.state.expandedProductId === product.id;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (isExpanded) &#123;</span><br><span class="line">        details = <span class="xml"><span class="tag">&lt;<span class="title">div</span>&gt;</span>&#123;product.details&#125;<span class="tag">&lt;/<span class="title">div</span>&gt;</span>;</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> (</span><br><span class="line">        <span class="xml"><span class="tag">&lt;<span class="title">li</span> <span class="attribute">key</span>=<span class="value">&#123;product.id&#125;</span></span><br><span class="line">            <span class="attribute">onClick</span>=<span class="value">&#123;self.handleProductClick.bind(self,</span> <span class="attribute">product</span>)&#125;</span><br><span class="line">            <span class="attribute">className</span>=<span class="value">&#123;isExpanded</span> || <span class="attribute">noneSelected</span> ? '' <span class="attribute">:</span> '<span class="attribute">collapsed</span>'&#125;&gt;</span></span><br><span class="line">          &#123;product.name&#125; (&#123;product.price&#125;)</span><br><span class="line">          &#123;details&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">      )</span>;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="xml"><span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">        &#123;products&#125;</span><br><span class="line">      <span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br><span class="line">    )</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">React.render(<span class="xml"><span class="tag">&lt;<span class="title">ItemsList</span> /&gt;</span>, document.body);</span></span><br></pre></td></tr></table></figure>
+<p>我最开始反应“哇，更多的代码，感觉更糟了”，但是没有，为什么呢？</p>
+<ul>
+<li>数据非常好地在<code>PRODUCTS</code>数组中隔离开。</li>
+<li>所有的状态我们都存储在<code>expandedProductId</code>。</li>
+<li>所有的表现逻辑都写在<code>render</code>方法中。</li>
+<li>我们可以从上到下读取代码。</li>
+<li>快速地浏览后，我可以轻易的理解它做的所有事（你也许还不知道React，但是它非常容易学习）。</li>
+</ul>
+<h2 id="结论">结论</h2><p>我知道这是个相当微不足道的例子。但是它确实显示了不同库（框架）之间根本上的不同，并且它们是怎样帮助你隔离关注点。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ppoffice.github.io/2015/04/01/jQuery和Reactjs的思考/" data-id="cib8mo33u002ku981b5zsoght" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-js/">React.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web发展/">web发展</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端技术/">前端技术</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/05/05/弹幕、抽奖及投票/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          弹幕、抽奖及投票
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/03/28/Go开发环境搭建/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Linux系统Go开发环境搭建</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+        <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">recents</h3>
+    <div class="widget">
+      <ul id="recent-post" class="">
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/22/hello-world/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/22/hello-world/" class="title">Hello World</a></p>
+              <p class="item-date"><time datetime="2015-06-22T13:59:26.000Z" itemprop="datePublished">2015-06-22</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="title">【翻译】深入理解ES6：箭头函数</a></p>
+              <p class="item-date"><time datetime="2015-06-17T08:49:36.000Z" itemprop="datePublished">2015-06-17</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/05/05/弹幕、抽奖及投票/" class="thumbnail">
+  
+    <span style="background-image:url(http://ww4.sinaimg.cn/mw1024/4da583a7gw1ervpx5zqtej21hc0u0dz1.jpg
+)" alt="弹幕、抽奖及投票" class="thumbnail-image"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/05/05/弹幕、抽奖及投票/" class="title">弹幕、抽奖及投票</a></p>
+              <p class="item-date"><time datetime="2015-05-05T15:10:19.000Z" itemprop="datePublished">2015-05-05</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/04/01/jQuery和Reactjs的思考/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/04/01/jQuery和Reactjs的思考/" class="title">【翻译】jQuery和React.js的思考</a></p>
+              <p class="item-date"><time datetime="2015-04-01T03:27:05.000Z" itemprop="datePublished">2015-04-01</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/03/28/Go开发环境搭建/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/03/28/Go开发环境搭建/" class="title">Linux系统Go开发环境搭建</a></p>
+              <p class="item-date"><time datetime="2015-03-28T08:34:46.000Z" itemprop="datePublished">2015-03-28</time></p>
+            </div>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">tag cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 15px;">AngularJS</a> <a href="/tags/Angularjs/" style="font-size: 10px;">Angularjs</a> <a href="/tags/Async/" style="font-size: 10px;">Async</a> <a href="/tags/Database/" style="font-size: 10px;">Database</a> <a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DevTools/" style="font-size: 10px;">DevTools</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Go/" style="font-size: 10px;">Go</a> <a href="/tags/Golang/" style="font-size: 10px;">Golang</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/JS/" style="font-size: 10px;">JS</a> <a href="/tags/Java-Web/" style="font-size: 15px;">Java Web</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/JavaScript-Performance/" style="font-size: 10px;">JavaScript Performance</a> <a href="/tags/Javascript/" style="font-size: 10px;">Javascript</a> <a href="/tags/Karma/" style="font-size: 15px;">Karma</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MVC/" style="font-size: 20px;">MVC</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/OSX/" style="font-size: 10px;">OSX</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React-js/" style="font-size: 10px;">React.js</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/Struts2/" style="font-size: 10px;">Struts2</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/d3-js/" style="font-size: 10px;">d3.js</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/image/" style="font-size: 10px;">image</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/node-js/" style="font-size: 15px;">node.js</a> <a href="/tags/svg/" style="font-size: 10px;">svg</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/web发展/" style="font-size: 10px;">web发展</a> <a href="/tags/weibo/" style="font-size: 10px;">weibo</a> <a href="/tags/前端技术/" style="font-size: 10px;">前端技术</a> <a href="/tags/图片压缩/" style="font-size: 10px;">图片压缩</a> <a href="/tags/学习笔记/" style="font-size: 10px;">学习笔记</a> <a href="/tags/开发环境/" style="font-size: 10px;">开发环境</a> <a href="/tags/开发者工具/" style="font-size: 10px;">开发者工具</a> <a href="/tags/文件下载/" style="font-size: 10px;">文件下载</a> <a href="/tags/注解/" style="font-size: 10px;">注解</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a> <a href="/tags/自定义指令/" style="font-size: 10px;">自定义指令</a> <a href="/tags/谷歌开发者工具/" style="font-size: 10px;">谷歌开发者工具</a> <a href="/tags/谷歌浏览器/" style="font-size: 10px;">谷歌浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://hexo.io">Hexo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+  <div id="toTop" class="fa fa-chevron-up"></div>
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 WonSikin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+
+<script src="//ajax.useso.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

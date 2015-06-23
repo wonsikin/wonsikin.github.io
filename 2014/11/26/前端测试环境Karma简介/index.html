@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>前端测试环境Karma简介 | Arthur Wang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在开发软件的过程中，进行单元测试是非常不错的工作，也是有必要的工作。它帮助你觉得你的代码是无懈可击的，确保产品的可靠性。作为一名追求进步的的前端码农，学习前端的测试很有必要。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端测试环境Karma简介">
+<meta property="og:url" content="http://ppoffice.github.io/2014/11/26/前端测试环境Karma简介/index.html">
+<meta property="og:site_name" content="Arthur Wang's Blog">
+<meta property="og:description" content="在开发软件的过程中，进行单元测试是非常不错的工作，也是有必要的工作。它帮助你觉得你的代码是无懈可击的，确保产品的可靠性。作为一名追求进步的的前端码农，学习前端的测试很有必要。">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/4da583a7jw1emok4chz8rj21960mydko.jpg">
+<meta property="og:updated_time" content="2014-11-26T10:46:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端测试环境Karma简介">
+<meta name="twitter:description" content="在开发软件的过程中，进行单元测试是非常不错的工作，也是有必要的工作。它帮助你觉得你的代码是无懈可击的，确保产品的可靠性。作为一名追求进步的的前端码农，学习前端的测试很有必要。">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href='//fonts.useso.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+  
+
+  
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="/" id="logo"><i class="logo"></i><span class="site-title">Arthur Wang&#39;s Blog</span></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+      <nav id="sub-nav">
+        <div class="profile" id="profile-nav">
+          <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+        </div>
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tr>
+      
+        <td><a class="main-nav-link" href="/">Home</a></td>
+      
+        <td><a class="main-nav-link" href="/tags">Tags</a></td>
+      
+        <td><a class="main-nav-link" href="/about">About</a></td>
+      
+      <td>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ppoffice.github.io"></form>
+      </td>
+      </tr>
+    </table>
+  </div>
+</header>
+    <div class="outer">
+      
+        <aside id="profile">
+  <div class="inner profile-inner">
+  	<div class="base-info profile-block">
+		  <img id="avatar" src="/css/images/avatar.png">
+      <h2 id="name">WonSikin</h2>
+      <h3 id="title">FE Developer &amp; Gopher</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
+      <a id="follow" href="https://github.com/wonsikin/">FOLLOW</a>
+  	</div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        21
+        <span>posts</span>
+      </div>
+      <div class="article-info-block">
+        53
+        <span>tags</span>
+      </div>
+    </div>
+    
+    <div class="contact-info profile-block">
+      <table class="contact-list">
+        <tr>
+        
+          <td><a href="https://github.com/wonsikin/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+        
+          <td><a href="http://weibo.com/wonsikin/" target="_blank" title="weibo"><i class="fa fa-weibo"></i></a></td>
+        
+          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+        
+        </tr>
+      </table>
+    </div>
+    
+  </div>
+</aside>
+      
+      <section id="main"><article id="post-前端测试环境Karma简介" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      前端测试环境Karma简介
+    </h1>
+  
+
+        <div class="article-meta">
+          <div class="article-date">
+  <i class="fa fa-calendar"></i>
+  <a href="/2014/11/26/前端测试环境Karma简介/">
+    <time datetime="2014-11-26T08:11:28.000Z" itemprop="datePublished">2014-11-26</time>
+  </a>
+</div>
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在开发软件的过程中，进行单元测试是非常不错的工作，也是有必要的工作。它帮助你觉得你的代码是无懈可击的，确保产品的可靠性。作为一名追求进步的的前端码农，学习前端的测试很有必要。<br><a id="more"></a></p>
+<h3 id="Karma简介">Karma简介</h3><p>Karma是由Angular团队创造的JavaScript测试运行器，实际上，它更是一个测试环境，它让你更方便的运行测试，在不知不觉中监听着源码或者测试代码的改变，然后自动执行测试。</p>
+<p>在前端测试上，传统时代的测试方法是在js脚本中写上几个<code>console</code>或者<code>alert</code>语句，然后刷新浏览器，查看打印或者弹出的信息。再后来，有了火狐的firebug和Chrome DevTools，js的测试进入了打断点的时代。然而，使用Chrome DevTools也是需要刷新浏览器，然后手动的点击跳步等操作。以上两个时代，前端的测试预期说是测试，不如说是调试，因为此时的测试是代码混着调试语句，在网页应用中（浏览器上）运行。Karma改变了前端测试的工作流程，它让开发者在开发过程中只需关注编写测试用例，编写实现方法等，而无需花费太多精力在无关代码的工作上。</p>
+<h3 id="Karma安装">Karma安装</h3><p>Karma运行在Node.js上，你可以从NPM包里面获取到。</p>
+<p>假设你已经安装了Node.js，按照官方推荐的方法，你可以如下安装Karma以及相关的插件：</p>
+<pre><code># <span class="operator"><span class="keyword">Install</span> Karma:
+$ npm <span class="keyword">install</span> karma <span class="comment">--save-dev</span>
+
+# <span class="keyword">Install</span> plugins that your project needs:
+$ npm <span class="keyword">install</span> karma-jasmine karma-chrome-launcher <span class="comment">--save-dev</span></span>
+</code></pre><p>以上命令将会在你的当前目录下的<code>node_modules</code>下安装<code>karma</code>、<code>karma-jasmine</code>、<code>karma-chrome-launcher</code>。并且将开发依赖包保存进package.json,方便项目的其他开发人员只需在该目录下运行<code>npm install</code>就能够安装所有的开发依赖包。</p>
+<pre><code># Run <span class="string">Karma:</span>
+$ .<span class="regexp">/node_modules/</span>karma<span class="regexp">/bin/</span>karma start
+</code></pre><p>以上的命令是运行Karma，但是每次都打这么长的命令很费劲啊，所以，你可以如下安装<code>karma-cli</code>，并配置到全局中:</p>
+<pre><code>$ npm install -<span class="keyword">g</span> karma-<span class="keyword">cli</span>
+</code></pre><p>成功之后，只需运行<code>karma start</code>就能启动Karma测试了。</p>
+<h3 id="Karma配置">Karma配置</h3><p>但是启动之前有个很重要的步骤－－配置Karma的测试环境。运行<code>karma init</code>可以生成配置文件：</p>
+<pre><code>$ karma init my.<span class="keyword">conf</span>.js
+
+Which testing framework <span class="keyword">do</span> you want <span class="keyword">to</span> use ?
+Press <span class="keyword">tab</span> <span class="keyword">to</span> <span class="keyword">list</span> possible <span class="keyword">options</span>. Enter <span class="keyword">to</span> <span class="keyword">move</span> <span class="keyword">to</span> the <span class="keyword">next</span> question.
+&gt; jasmine
+
+Do you want <span class="keyword">to</span> use Require.js ?
+This will <span class="built_in">add</span> Require.js plugin.
+Press <span class="keyword">tab</span> <span class="keyword">to</span> <span class="keyword">list</span> possible <span class="keyword">options</span>. Enter <span class="keyword">to</span> <span class="keyword">move</span> <span class="keyword">to</span> the <span class="keyword">next</span> question.
+&gt; <span class="keyword">no</span>
+
+Do you want <span class="keyword">to</span> capture <span class="keyword">a</span> browser automatically ?
+Press <span class="keyword">tab</span> <span class="keyword">to</span> <span class="keyword">list</span> possible <span class="keyword">options</span>. Enter <span class="built_in">empty</span> <span class="built_in">string</span> <span class="keyword">to</span> <span class="keyword">move</span> <span class="keyword">to</span> the <span class="keyword">next</span> question.
+&gt; Chrome
+&gt; Safari
+&gt;
+
+What <span class="keyword">is</span> the location of your <span class="keyword">source</span> <span class="built_in">and</span> test <span class="keyword">files</span> ?
+You can use <span class="built_in">glob</span> patterns, eg. <span class="string">"js/*.js"</span> <span class="built_in">or</span> <span class="string">"test/**/*Spec.js"</span>.
+Enter <span class="built_in">empty</span> <span class="built_in">string</span> <span class="keyword">to</span> <span class="keyword">move</span> <span class="keyword">to</span> the <span class="keyword">next</span> question.
+&gt; *.js
+&gt; test/*Spec.js
+&gt;
+
+Should any of the <span class="keyword">files</span> included by the <span class="keyword">previous</span> patterns <span class="keyword">be</span> excluded ?
+You can use <span class="built_in">glob</span> patterns, eg. <span class="string">"**/*.swp"</span>.
+Enter <span class="built_in">empty</span> <span class="built_in">string</span> <span class="keyword">to</span> <span class="keyword">move</span> <span class="keyword">to</span> the <span class="keyword">next</span> question.
+&gt;
+
+Do you want Karma <span class="keyword">to</span> watch <span class="keyword">all</span> the <span class="keyword">files</span> <span class="built_in">and</span> run the tests <span class="keyword">on</span> <span class="keyword">change</span> ?
+Press <span class="keyword">tab</span> <span class="keyword">to</span> <span class="keyword">list</span> possible <span class="keyword">options</span>.
+&gt; yes
+
+Config <span class="keyword">file</span> generated at <span class="string">"/path/to/your/project/my.conf.js"</span>.
+</code></pre><p>配置文件的详细语法和选项说明请参考Karma官网的<a href="http://karma-runner.github.io/0.12/config/configuration-file.html" target="_blank" rel="external">configuration file docs</a>。</p>
+<h3 id="Karma运行">Karma运行</h3><p>当启动Karma的时候，配置文件的路径会作为第一个参数传递过去。默认地，Karma会在当前目录下查找<code>karma.conf.js</code>或者<code>karma.conf.coffee</code>。但是你也可以指定配置文件启动Karma，例如，启动上一步骤生成的<code>my.conf.js</code>配置文件：</p>
+<pre><code># <span class="operator"><span class="keyword">Start</span> Karma <span class="keyword">using</span> your configuration:
+$ karma <span class="keyword">start</span> my.conf.js</span>
+</code></pre><h3 id="第一个测试">第一个测试</h3><p>在当前目录下创建一个test目录，然后新建一个js文件，命名为<code>testSpec.js</code>。</p>
+<pre><code><span class="string">|--module</span>
+<span class="string">|--test</span>
+  <span class="string">|--testSpec.js</span>
+<span class="string">|--my.conf.js</span>
+</code></pre><p>在<code>testSpec.js</code>中以下内容：</p>
+<pre><code><span class="comment">/**
+* Created by ArthurWANG on 14/11/26.
+*/</span>
+describe(<span class="string">'hello world'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{
+  it(<span class="string">'should contains world'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{
+    expect(<span class="string">'Hello world'</span>).toContain(<span class="string">'world'</span>);
+  });
+});
+</code></pre><p>上面测试用例用的是Jasmine语法。Jasmine是一个专为JavaScript代码测试的行为驱动开发框架。它不依赖其它的JavaScript框架，不需要DOM。并且它有一个整洁明朗，一目了然的语法，让你能够简单地写测试用例。详细说明与语法介绍请<a href="http://jasmine.github.io/edge/introduction.html" target="_blank" rel="external">戳此</a>。</p>
+<p>打开<code>my.conf.js</code>，修改files配置如下：</p>
+<pre><code>// list <span class="operator">of</span> <span class="built_in">files</span> / patterns <span class="built_in">to</span> <span class="built_in">load</span> <span class="operator">in</span> <span class="operator">the</span> browser
+<span class="built_in">files</span>: [
+  <span class="string">'test/*Spec.js'</span>
+],
+</code></pre><p>启动Karma测试环境：</p>
+<p><img src="http://ww3.sinaimg.cn/large/4da583a7jw1emok4chz8rj21960mydko.jpg" alt="启动成功"><br>开启你的Karma测试之旅！</p>
+<h3 id="参考">参考</h3><ol>
+<li><a href="http://karma-runner.github.io/0.12/index.html" target="_blank" rel="external">Karma官网</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ppoffice.github.io/2014/11/26/前端测试环境Karma简介/" data-id="cib8mo32x000ku98114gwlgmy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Karma/">Karma</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试/">测试</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/02/08/使用Karma测试Angularjs代码/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用Karma测试AngularJS代码
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/11/01/【翻译】分析JavaScript性能/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【翻译】分析JavaScript性能</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+        <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">recents</h3>
+    <div class="widget">
+      <ul id="recent-post" class="">
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/22/hello-world/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/22/hello-world/" class="title">Hello World</a></p>
+              <p class="item-date"><time datetime="2015-06-22T13:59:26.000Z" itemprop="datePublished">2015-06-22</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/06/17/【翻译】深入理解ES6：箭头函数/" class="title">【翻译】深入理解ES6：箭头函数</a></p>
+              <p class="item-date"><time datetime="2015-06-17T08:49:36.000Z" itemprop="datePublished">2015-06-17</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/05/05/弹幕、抽奖及投票/" class="thumbnail">
+  
+    <span style="background-image:url(http://ww4.sinaimg.cn/mw1024/4da583a7gw1ervpx5zqtej21hc0u0dz1.jpg
+)" alt="弹幕、抽奖及投票" class="thumbnail-image"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/05/05/弹幕、抽奖及投票/" class="title">弹幕、抽奖及投票</a></p>
+              <p class="item-date"><time datetime="2015-05-05T15:10:19.000Z" itemprop="datePublished">2015-05-05</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/04/01/jQuery和Reactjs的思考/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/04/01/jQuery和Reactjs的思考/" class="title">【翻译】jQuery和React.js的思考</a></p>
+              <p class="item-date"><time datetime="2015-04-01T03:27:05.000Z" itemprop="datePublished">2015-04-01</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              <a href="/2015/03/28/Go开发环境搭建/" class="thumbnail">
+  
+    <span class="thumbnail-image thumbnail-none"></span>
+  
+</a>
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"></p>
+              <p class="item-title"><a href="/2015/03/28/Go开发环境搭建/" class="title">Linux系统Go开发环境搭建</a></p>
+              <p class="item-date"><time datetime="2015-03-28T08:34:46.000Z" itemprop="datePublished">2015-03-28</time></p>
+            </div>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">tag cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 15px;">AngularJS</a> <a href="/tags/Angularjs/" style="font-size: 10px;">Angularjs</a> <a href="/tags/Async/" style="font-size: 10px;">Async</a> <a href="/tags/Database/" style="font-size: 10px;">Database</a> <a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DevTools/" style="font-size: 10px;">DevTools</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Go/" style="font-size: 10px;">Go</a> <a href="/tags/Golang/" style="font-size: 10px;">Golang</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/JS/" style="font-size: 10px;">JS</a> <a href="/tags/Java-Web/" style="font-size: 15px;">Java Web</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/JavaScript-Performance/" style="font-size: 10px;">JavaScript Performance</a> <a href="/tags/Javascript/" style="font-size: 10px;">Javascript</a> <a href="/tags/Karma/" style="font-size: 15px;">Karma</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MVC/" style="font-size: 20px;">MVC</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/OSX/" style="font-size: 10px;">OSX</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React-js/" style="font-size: 10px;">React.js</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/Struts2/" style="font-size: 10px;">Struts2</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/d3-js/" style="font-size: 10px;">d3.js</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/image/" style="font-size: 10px;">image</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/node-js/" style="font-size: 15px;">node.js</a> <a href="/tags/svg/" style="font-size: 10px;">svg</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/web发展/" style="font-size: 10px;">web发展</a> <a href="/tags/weibo/" style="font-size: 10px;">weibo</a> <a href="/tags/前端技术/" style="font-size: 10px;">前端技术</a> <a href="/tags/图片压缩/" style="font-size: 10px;">图片压缩</a> <a href="/tags/学习笔记/" style="font-size: 10px;">学习笔记</a> <a href="/tags/开发环境/" style="font-size: 10px;">开发环境</a> <a href="/tags/开发者工具/" style="font-size: 10px;">开发者工具</a> <a href="/tags/文件下载/" style="font-size: 10px;">文件下载</a> <a href="/tags/注解/" style="font-size: 10px;">注解</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a> <a href="/tags/自定义指令/" style="font-size: 10px;">自定义指令</a> <a href="/tags/谷歌开发者工具/" style="font-size: 10px;">谷歌开发者工具</a> <a href="/tags/谷歌浏览器/" style="font-size: 10px;">谷歌浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://hexo.io">Hexo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+  <div id="toTop" class="fa fa-chevron-up"></div>
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 WonSikin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+
+<script src="//ajax.useso.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
