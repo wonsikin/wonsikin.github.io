@@ -571,9 +571,9 @@ bower install angular-mocks --save-dev
     
       <category term="AngularJS" scheme="http://yoursite.com/tags/AngularJS/"/>
     
-      <category term="Karma" scheme="http://yoursite.com/tags/Karma/"/>
-    
       <category term="Test" scheme="http://yoursite.com/tags/Test/"/>
+    
+      <category term="Karma" scheme="http://yoursite.com/tags/Karma/"/>
     
   </entry>
   
@@ -678,9 +678,9 @@ files: [
     
       <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
     
-      <category term="Karma" scheme="http://yoursite.com/tags/Karma/"/>
-    
       <category term="Test" scheme="http://yoursite.com/tags/Test/"/>
+    
+      <category term="Karma" scheme="http://yoursite.com/tags/Karma/"/>
     
   </entry>
   
