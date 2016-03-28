@@ -1,0 +1,798 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JavaScript,Chrome DevTools,Async,Debug," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WonSikin's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="###介绍
+JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【翻译】使用谷歌开发者工具调试异步JavaScript">
+<meta property="og:url" content="http://yoursite.com/2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/index.html">
+<meta property="og:site_name" content="WonSikin's Blog">
+<meta property="og:description" content="###介绍
+JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/enable-async-toggle.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/gmail-retrying.png">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async-flow.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-before.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-click.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-retry-shortened.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/watch-expressions.gif">
+<meta property="og:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/time-travel.gif">
+<meta property="og:image" content="http://www.html5rocks.com/static/images/profiles/pearlchen.png">
+<meta property="og:updated_time" content="2016-03-28T12:58:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【翻译】使用谷歌开发者工具调试异步JavaScript">
+<meta name="twitter:description" content="###介绍
+JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。">
+<meta name="twitter:image" content="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 【翻译】使用谷歌开发者工具调试异步JavaScript | WonSikin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">WonSikin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                【翻译】使用谷歌开发者工具调试异步JavaScript
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2014-05-14T17:44:46+08:00" content="2014-05-14">
+              2014-05-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>###<strong>介绍</strong></p>
+<p>JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。</p>
+<a id="more"></a>
+<p>幸运地，现在在谷歌开发者工具（Canary版本），你可以看到异步JavaScript回调函数的完整调用堆栈。</p>
+<center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async.gif" alt=""><br></center><br><center><strong><em>一个快速的异步调用堆栈事例</em></strong><br>（我们将会很快的分解这个事例的工作流程）</center>
+
+<p>一旦你在谷歌开发者工具中启用异步调用堆栈的功能，你将能够适时地转进在你的网页应用中的各种各样的断点中。然后遍历事件监听器、setInterval、setTimeout、XMLHttpRequest、promises、requestAnimationFrame、MutationObservers等等的完整堆栈踪迹。</p>
+<p>随着你在遍历堆栈踪迹的过程中，你也可以分析运行时执行的代码的特定断点处任意变量的值。这就像一个时光机，能让你查看各种表达式！</p>
+<p>让我们启用这个功能，然后看一看几个场景。</p>
+<p>###<strong>在Chrome浏览器（Canary版本）中启用异步调试</strong></p>
+<p>通过在Chrome浏览器（35版本或更高）中启用异步调试这个功能来尝试这个新特性。点中谷歌开发者工具中的 <strong>Source</strong> 面板。</p>
+<p>接下来在右手边的 <strong>Call Stack</strong> 面板，有一个“Async”的复选框。点击复选框可以打开或者关闭异步调试的功能。（尽管一旦打开了它，你可能不再想要关闭它了。）</p>
+<center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/enable-async-toggle.gif" alt=""><br></center>
+
+<p>###<strong>捕获延时计时器事件和XHR响应回应</strong></p>
+<p>你也许以前在Gmail中看到以下场景：</p>
+<center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/gmail-retrying.png" alt=""><br></center>
+
+<p>如果在发送请求的时候出现问题（不是服务器出现问题就是客户端出现网络连通性问题），Gmail将会在短暂之后自动地尝试重新发送信息。</p>
+<p>为了查看异步调用堆栈式如何帮助我们分析延时计时器事件和XHR响应，我重新创造了一个<a href="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr/demo.html" target="_blank" rel="external">虚拟Gmail事例</a>的流程，完整的JavaScript代码能够在上面的链接找到，但是整个流程就像下面所示：</p>
+<center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async-flow.gif" alt=""><br></center><br><center><strong><em>在上面的图解中，用蓝色高亮的方法是这个新性能最有益的主要热点，因为这些方法是异步工作的</em></strong></center>
+
+<p>在早期版本的开发者工具，仅仅查看调用堆栈面板，在<code>postOnFail()</code>中的断点只能给你一点点<code>postOnFail()</code>被从哪里调用出来的信息而已。然而当你打开了 <strong>异步调用</strong> 的功能，你会看到不一样的地方：</p>
+<div><figure style="float:left;width:49%;text-align: center;display: block;margin-bottom: 1em;"><figcaption style="font-size: 15px;margin-bottom: 20px;font-weight: bold;font-style: italic;">以前</figcaption><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-before.gif" width="320"><figcaption style="margin: 1em auto 2em auto;"><em>没有启用</em> 异步功能的Call Stack面板。<br><p>你能够看到 <code>postOnFail()</code> 是从一个AJAX回调函数创造的，但是没有更详细的信息</p></figcaption></figure><br><figure style="float:right;width:49%;text-align: center;display: block;margin-bottom: 1em;"><figcaption style="font-size: 15px;margin-bottom: 20px;font-weight: bold;font-style: italic;">之后</figcaption><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-click.gif" width="320"><figcaption><em>启用</em> 异步功能的Call Stack面板。<br><p>你能够看到XHR是由<code>submitHandler()</code>创造的，<code>submitHandler()</code>是在scripts.js中绑定的单击处理器，Nice！</p></figcaption></figure></div><br><div style="margin-top:800px;width:100%;"><br>随着异步调用堆栈的打开，你能够查看到全部的调用堆栈来明了地了解请求是由上面示例的<code>submitHandler()</code>创造的或者是下面示例中的<code>retrySubmit()</code>创造的：<br></div><br><center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-retry-shortened.gif" alt=""><br></center><br><br>从Call Stack面板中，你也可以断定断点事件的发起是否比一个UI事件例如“点击”早，或者一个<code>setTimeout()</code>的时延，或者任何常用的异步回调事件。<br><br><br>###<strong>监听表达式的异步方式</strong><br><br>当你遍历整个调用堆栈，你的监听表达式也将会更新，以反映那时的状态。<br><br><center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/watch-expressions.gif" alt=""><br></center><br><br><br>###<strong>从过去的作用域评估代码</strong><br><br>除了能够简化监听表达式，你也能够通过谷歌开发者工具的JavaScript控制台面板中的之前作用域与你的代码互动。<br><br>想象一下你就是<a href="http://zh.wikipedia.org/wiki/%E7%A5%9E%E7%A7%98%E5%8D%9A%E5%A3%AB" target="_blank" rel="external">神秘博士</a>并且你需要一些帮助来比较时钟上从穿梭时光获取的过去时间到“现在”获取的时间。在谷歌开发者工具的控制台中，你可以简单地评估、存储以及跨不同的执行点做任何运算。<br><br><center><br><img src="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/time-travel.gif" alt=""><br></center><br><center><br><strong><em>使用JavaScript控制台结合异步调用堆栈来调试你的代码。点击查看上面的<a href="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/past-scope/demo.html" target="_blank" rel="external">DEMO</a></em></strong><br></center><br><br>保持在谷歌开发者工具中操作你的表达式将会从不得不转到源代码、编辑和刷新浏览器中节省你的时间。<br><br><br><a href="http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/" target="_blank" rel="external">原文链接</a><br><br><a style="margin-right: 25px;cursor:pointer;"><img style="width: 80px;height: 80px;border: 3px solid #FFF;box-shadow: 0 1px 2px rgba(0,0,0,0.4);border-radius: 100%;position: relative;" src="http://www.html5rocks.com/static/images/profiles/pearlchen.png" itemprop="photo" alt="Pearl Chen" title="Pearl Chen"></a><div class="authors"><strong>By</strong> Pearl Chen </div><div class="date"><time pubdate=""><strong>Published:</strong> March 26th, 2014</time></div><div class="date"><time class="updated"><strong>Updated:</strong> March 31st, 2014</time></div>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag">#JavaScript</a>
+          
+            <a href="/tags/Chrome-DevTools/" rel="tag">#Chrome DevTools</a>
+          
+            <a href="/tags/Async/" rel="tag">#Async</a>
+          
+            <a href="/tags/Debug/" rel="tag">#Debug</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/05/12/JAVA图片压缩代码实现/" rel="next" title="JAVA图片压缩代码实现">
+                <i class="fa fa-chevron-left"></i> JAVA图片压缩代码实现
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/05/27/hexo搭建静态博客网站简要教程/" rel="prev" title="Hexo搭建静态博客网站简要教程">
+                Hexo搭建静态博客网站简要教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/"
+     data-title="【翻译】使用谷歌开发者工具调试异步JavaScript"
+     data-content=""
+     data-url="http://yoursite.com/2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/"
+           data-title="【翻译】使用谷歌开发者工具调试异步JavaScript" data-url="http://yoursite.com/2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               alt="WonSikin" />
+          <p class="site-author-name" itemprop="name">WonSikin</p>
+          <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> Github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WonSikin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wonsikin"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,966 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MVC,Spring,Java Web," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WonSikin's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="##简介Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC 简单例子">
+<meta property="og:url" content="http://yoursite.com/2014/06/18/spring-mvc简单例子/index.html">
+<meta property="og:site_name" content="WonSikin's Blog">
+<meta property="og:description" content="##简介Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！">
+<meta property="og:updated_time" content="2016-03-28T12:58:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC 简单例子">
+<meta name="twitter:description" content="##简介Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Spring MVC 简单例子 | WonSikin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">WonSikin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring MVC 简单例子
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2014-06-18T15:37:07+08:00" content="2014-06-18">
+              2014-06-18
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/06/18/spring-mvc简单例子/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/06/18/spring-mvc简单例子/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##简介<br>Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！<br><a id="more"></a></p>
+<p>##创建项目<br>用Eclipse创建一个Web项目。本例子命名为SpringMVC。</p>
+<p>##引用jar包<br>本例子使用的Spring版本是4.0.2。以下列出的jar包就只包含名字，不带版本号。</p>
+<pre><code>.
+├──lib
+|  ├── commons-logging-1.0.4.jar
+|  ├── spring-context.jar
+|  ├── spring-context-support.jar
+|  ├── spring-core.jar
+|  ├── spring-expression.jar
+|  ├── spring-web.jar
+|  ├── spring-webmvc.jar
+|  ├── spring-beans.jar
+</code></pre><p>##web.xml配置<br>要使用Spring MVC，配置DispatcherServlet是第一步。它拦截我们自己定义的请求，依据我们定义的规则分发到目标Controller（既Action类）来处理。</p>
+<p>例子1：</p>
+<pre><code>&lt;servlet&gt;
+    &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+</code></pre><p><code><url-pattern>*.do</url-pattern></code>表示会拦截所有以do为后缀的请求。</p>
+<p><code><servlet-name>springmvc</servlet-name></code>表示DispatcherServlet的名字是springmvc。DispatcherServlet可以有多个，通过名字来区别。</p>
+<p>在DispatcherServlet的初始化过程中，框架会在web应用的<code>WEB-INF</code>文件夹下寻找名为<code>[servlet-name]-servlet.xml</code> 的配置文件，生成文件中定义的bean。</p>
+<p>当然，你也可以自己指定配置文件名，不使用默认的配置文件名。如下：</p>
+<pre><code>&lt;servlet&gt;  
+    &lt;servlet-name&gt;springMVC&lt;/servlet-name&gt;  
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;  
+    &lt;init-param&gt;  
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;  
+        &lt;param-value&gt;classpath*:/springMVC.xml&lt;/param-value&gt;  
+    &lt;/init-param&gt;  
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;  
+&lt;/servlet&gt;  
+&lt;servlet-mapping&gt;  
+    &lt;servlet-name&gt;springMVC&lt;/servlet-name&gt;  
+    &lt;url-pattern&gt;/&lt;/url-pattern&gt;  
+&lt;/servlet-mapping&gt;  
+</code></pre><p>其中<code><param-value>**.xml</param-value></code>可以有多种配置写法：</p>
+<ol>
+<li>不写,使用默认值:/WEB-INF/<servlet-name>-servlet.xml</servlet-name></li>
+<li><param-value>/WEB-INF/classes/springMVC.xml</param-value></li>
+<li><param-value>classpath*:springMVC-mvc.xml</param-value></li>
+<li>多个值用逗号分隔</li>
+</ol>
+<p><code>PS:</code>本例子使用的是默认的配置文件名。</p>
+<p>##springmvc-servlet.xml配置<br>直接上代码：</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;  
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd&quot;&gt;
+
+        &lt;!-- 视图解释器 --&gt;
+        &lt;bean id=&quot;viewResolver&quot; class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+            &lt;property name=&quot;viewClass&quot; value=&quot;org.springframework.web.servlet.view.JstlView&quot;/&gt;
+            &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/jsp/&quot;/&gt;
+            &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot; /&gt;&lt;!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  --&gt;
+        &lt;/bean&gt;
+
+        &lt;!-- 控制器 --&gt;
+        &lt;bean id=&quot;loginController&quot; class=&quot;com.wsj.controller.LoginController&quot;&gt;
+            &lt;property name=&quot;username&quot;&gt;
+                &lt;value&gt;admin&lt;/value&gt;
+            &lt;/property&gt;
+            &lt;property name=&quot;password&quot;&gt;
+                &lt;value&gt;admin&lt;/value&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+
+        &lt;!-- 路径和控制器的映射 --&gt;
+        &lt;bean id=&quot;simpleUrlHandlerMapping&quot; class=&quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&quot;&gt;
+            &lt;property name=&quot;mappings&quot;&gt;
+                &lt;props&gt;
+                    &lt;prop key=&quot;/login.do&quot;&gt;loginController&lt;/prop&gt;
+                &lt;/props&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre><p>##控制器</p>
+<pre><code>package com.wsj.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+/**
+ * 该示例下，一个controller只有一个方法
+ * */
+public class LoginController implements Controller{
+
+    private String username;
+
+    private String password;
+
+    @Override
+    public ModelAndView handleRequest(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        // TODO Auto-generated method stub
+        String _username = request.getParameter(&quot;username&quot;);
+        String _pwd =  request.getParameter(&quot;password&quot;);
+        if(username.equals(_username) &amp;&amp; password.equals(_pwd)){
+            return new ModelAndView(&quot;success&quot;);
+        }
+        return new ModelAndView(&quot;fail&quot;);
+    }
+
+    /**
+    *getter、setter方法
+    */
+    ......
+
+}
+</code></pre><p>代码中的控制器实现<code>Controller</code>接口。当<code>login.do</code>的请求分发到该控制器时，默认执行<code>handleRequest</code>的方法。</p>
+<p><code>return new ModelAndView(“success”)</code>表示跳转到<code>success.jsp</code>页面。</p>
+<p>##视图与运行<br>本例子中的视图只有success.jsp和fail.jsp，分别表示登录成功和失败的页面。具体内容就不贴出来了。</p>
+<p>在浏览器地址中输入<a href="localhost:8081/SpringMVC/login.do?username=admin&amp;password=admin" target="_blank" rel="external">localhost:8081/SpringMVC/login.do?username=admin&amp;password=admin</a>即可调用成功页面。</p>
+<p>##能处理多方法的控制器<br>一个控制器只处理一个方法，感觉总有点奢侈浪费。Spring MVC是支持一个控制器处理多个方法的。</p>
+<p>在WEB-INF/jsp里面创建一个名为multi的jsp页面：</p>
+<pre><code>&lt;%@ page language=&quot;java&quot; import=&quot;java.util.*&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;%
+String path = request.getContextPath();
+String basePath = request.getScheme()+&quot;://&quot;+request.getServerName()+&quot;:&quot;+request.getServerPort()+path+&quot;/&quot;;
+%&gt;
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;base href=&quot;&lt;%=basePath%&gt;&quot;&gt;
+
+    &lt;title&gt;My JSP &apos;multi.jsp&apos; starting page&lt;/title&gt;
+
+    &lt;meta http-equiv=&quot;pragma&quot; content=&quot;no-cache&quot;&gt;
+    &lt;meta http-equiv=&quot;cache-control&quot; content=&quot;no-cache&quot;&gt;
+    &lt;meta http-equiv=&quot;expires&quot; content=&quot;0&quot;&gt;
+    &lt;meta http-equiv=&quot;keywords&quot; content=&quot;keyword1,keyword2,keyword3&quot;&gt;
+    &lt;meta http-equiv=&quot;description&quot; content=&quot;This is my page&quot;&gt;
+    &lt;!--
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;styles.css&quot;&gt;
+    --&gt;
+
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;请求的方法是：${method }&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>创建一个继承<code>MultiActionController</code>的控制器：</p>
+<pre><code>package com.wsj.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+public class UserController extends MultiActionController {
+
+    public ModelAndView add(HttpServletRequest request,
+            HttpServletResponse response) {
+        System.out.println(&quot;Add&quot;);
+        return new ModelAndView(&quot;/multi&quot;, &quot;method&quot;, &quot;add&quot;);
+    }
+
+    public ModelAndView update(HttpServletRequest request,
+            HttpServletResponse response) {
+        System.out.println(&quot;Update&quot;);
+        return new ModelAndView(&quot;/multi&quot;, &quot;method&quot;, &quot;update&quot;);
+    }
+}
+</code></pre><p>代码中，两个方法都调用结束后都返回到<code>multi.jsp</code>页面，同时传一个参数名为<code>method</code>的参数，值分别为各自调用的方法名。</p>
+<p>在<code>springmvc-servlet.xml</code>中添加如下配置：</p>
+<pre><code>&lt;!-- 参数名称解析器，处理一个controller的多个方法。value=action，请求的时候指明action=&quot;目标方法&quot; --&gt;
+&lt;bean id=&quot;paramMethodResolver&quot; class=&quot;org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver&quot;&gt;
+    &lt;property name=&quot;paramName&quot; value=&quot;action&quot;/&gt;
+&lt;/bean&gt;
+&lt;!-- 控制器 --&gt;
+&lt;bean id=&quot;userController&quot; class=&quot;com.wsj.controller.UserController&quot;&gt;
+    &lt;property name=&quot;methodNameResolver&quot;&gt;
+        &lt;ref bean=&quot;paramMethodResolver&quot;/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+&lt;!-- 路径和控制器的映射 --&gt;
+&lt;bean id=&quot;simpleUrlHandlerMapping&quot; class=&quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&quot;&gt;
+    &lt;property name=&quot;mappings&quot;&gt;
+        &lt;props&gt;
+            &lt;prop key=&quot;/login.do&quot;&gt;loginController&lt;/prop&gt;
+            &lt;prop key=&quot;/user.do&quot;&gt;userController&lt;/prop&gt;
+        &lt;/props&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><p>参数名称解析器（ParameterMethodNameResolver）是Spring自带的，我们注入即可使用。这个解析器是靠我们配置的<code>paramName</code>的值<code>action</code>来解析请求的。</p>
+<p>请求的时候，请使用<code>user.do?action=add</code>类似的来请求。</p>
+<p><code>PS:</code></p>
+<ol>
+<li>用注解完成Spring MVC的笔记可以参考<a href="http://www.wonsikin.com/2014/06/19/spring-mvc注解小例子/" target="_blank" rel="external">下一篇博文</a><br>##参考</li>
+<li><a href="http://elf8848.iteye.com/blog/875830/" target="_blank" rel="external">赵磊的博客</a></li>
+<li><a href="http://liuzidong.iteye.com/blog/897047" target="_blank" rel="external">咫尺天涯</a></li>
+<li><a href="http://www.blogbus.com/wanping-logs/235898608.html" target="_blank" rel="external">catherine的心路历程</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MVC/" rel="tag">#MVC</a>
+          
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
+          
+            <a href="/tags/Java-Web/" rel="tag">#Java Web</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/06/10/struts2通用文件下载示例/" rel="next" title="Struts2通用文件下载示例">
+                <i class="fa fa-chevron-left"></i> Struts2通用文件下载示例
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/06/19/spring-mvc注解小例子/" rel="prev" title="Spring MVC注解小例子">
+                Spring MVC注解小例子 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/06/18/spring-mvc简单例子/"
+     data-title="Spring MVC 简单例子"
+     data-content=""
+     data-url="http://yoursite.com/2014/06/18/spring-mvc简单例子/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2014/06/18/spring-mvc简单例子/"
+           data-title="Spring MVC 简单例子" data-url="http://yoursite.com/2014/06/18/spring-mvc简单例子/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               alt="WonSikin" />
+          <p class="site-author-name" itemprop="name">WonSikin</p>
+          <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> Github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WonSikin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wonsikin"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

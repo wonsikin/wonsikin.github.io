@@ -1,0 +1,904 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="AngularJS,Directives," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WonSikin's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="##简介指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angularjs自定义指令小试">
+<meta property="og:url" content="http://yoursite.com/2014/10/26/Angularjs自定义指令小试/index.html">
+<meta property="og:site_name" content="WonSikin's Blog">
+<meta property="og:description" content="##简介指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。">
+<meta property="og:updated_time" content="2016-03-28T12:58:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angularjs自定义指令小试">
+<meta name="twitter:description" content="##简介指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Angularjs自定义指令小试 | WonSikin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">WonSikin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Angularjs自定义指令小试
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2014-10-26T22:39:54+08:00" content="2014-10-26">
+              2014-10-26
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/10/26/Angularjs自定义指令小试/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/10/26/Angularjs自定义指令小试/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##简介<br>指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。</p>
+<a id="more"></a>
+<p>指令标记在一个DOM元素上（例如一个属性、一个元素名称、注释或者CSS类），告诉Angularjs的HTML编译器（$compile）将指定的行为附加到DOM元素上或者甚至转换DOM元素和它的子元素。</p>
+<p>Angular附带了一系列内建的指令，例如<code>ngBind</code>、<code>ngModel</code>和<code>ngClass</code>，就像你创建控制器和服务，你可以为Angular创建自己的指令来使用。当Angular引导你的应用时，HTML编译器会遍历DOM元素来匹配DOM对应的指令。</p>
+<p>下面简单实现一个年月日下拉框联动选择的Angular自定义指令。</p>
+<p>##声明指令<br>Angular使用<code>directive()</code>这个方法来定义指令：</p>
+<pre><code>angular.module(&apos;myApp&apos;,[])
+    .directive(&apos;myDirective&apos;,function(){
+        //定义指令的内容
+    });
+</code></pre><p><code>directive()</code>方法接受两个参数：</p>
+<ol>
+<li>name（字符串）。指令的名称。</li>
+<li>factory_function。该函数返回一个定义了指令的全部行为的对象。</li>
+</ol>
+<p>当Angular启动应用的时候，会把第一个参数作为名称来注册第二个参数返回的对象。Angular会解析DOM元素中使用这个名称的地方，并在这个地方引用对应的指令。</p>
+<pre><code>&lt;div my-directive&gt;&lt;/div&gt;
+</code></pre><p><code>注意</code>：定义的指令名称为驼峰式的字符串，但是使用的时候要用横杆替换。</p>
+<p>##指令的配置项</p>
+<p>本例子使用到的指令配置项如下</p>
+<p>####restrict</p>
+<p>restrict是一个可选的参数，它告诉Angular该指令在DOM中可以以何种形式被声明。默认值为<code>A</code>，即以属性的形式来进行声明。该配置项的可选值如下：</p>
+<pre><code>E（元素）
+&lt;my-directive&gt;&lt;/my-directive&gt;
+A（属性，默认值）
+&lt;div my-directive&gt;&lt;/div&gt;
+C（类名）
+&lt;div class=&quot;my-directive&quot;&gt;&lt;/div&gt;
+M（注释）
+&lt;!--directive:my-directive--&gt;
+</code></pre><p>以上可选值可以独立使用，也可以混合使用。但是请注意，如果目标网页应用有兼容低版本IE浏览器的需求时，请勿只使用<code>E</code>选项，明智点的方法是同时使用<code>EA</code>选项。</p>
+<p>####replace</p>
+<p>replace是一个可选的参数，如果设置了其值必须是true，因为默认值就是false。默认值表示指令中定义的模板会被当作自元素插入到调用此指令的元素内部。</p>
+<pre><code>&lt;div my-directive&gt;&lt;/div&gt;
+.directive(&apos;myDirective&apos;,function(){
+    return {
+        template: &apos;&lt;div&gt;Some stuff here&lt;/div&gt;&apos;
+    }
+});
+
+调用结果如下
+&lt;div my-directive&gt;
+    &lt;div&gt;Some stuff here&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p>当replace的值设为true的时候</p>
+<pre><code>.directive(&apos;myDirective&apos;,function(){
+    return {
+        replace: true,
+        template: &apos;&lt;div&gt;Some stuff here&lt;/div&gt;&apos;
+    }
+});
+
+结果如下
+&lt;div&gt;Some stuff here&lt;/div&gt;
+</code></pre><p>####scope<br>该选项用于设置指令的作用域信息。选项可以被设为true或者一个对象。默认值为false。</p>
+<p>当选项被设成true的时候，表示会从父作用域继承并创建一个新的作用域对象。</p>
+<p>scope的选项也可以是一个空对象，这表示隔离作用域。隔离作用域是scope三个选项中最难理解的一个，但也是最强大的。楼主能力有限，并且本例子不使用该选项，所以在此略过。</p>
+<p>scope的最后一个选项是绑定策略。Angular提供了几种方法能够将指令内部的隔离作用域同指令外部的作用域进行绑定。</p>
+<pre><code>本地作用域属性：@ or @attr。将本地作用域同DOM属性的值绑定，指令内部作用域可以使用外部作用域的变量。
+双向绑定：= or =attr。将本地作用域上的属性同父级作用域上的属性进行双向数据绑定。
+父级作用域绑定：&amp; or &amp;attr。对父级作用域进行绑定，以便在指令作用域中运行函数。对这个值进行设置时会声称一个指向父级作用域的包装函数。
+</code></pre><p>####controller<br>该选项表示指令的控制器，用来控制指令的逻辑行为。控制器中有一些特殊的服务可以被注入到指令当中</p>
+<ol>
+<li>$scope。与指令相关联的当前作用域。</li>
+<li>$element。当前指令对应的元素。</li>
+<li>$attrs。 当前元素的属性组成的对象。</li>
+<li>$transclude。嵌入连接函数会与对应的嵌入作用域进行预绑定。</li>
+</ol>
+<p>####template<br>该选项可选值如下：</p>
+<ol>
+<li>一段HTML文本。</li>
+<li>可以接受两个参数，参数为tElement和tAttrs，并返回一个代表模板的字符串。</li>
+</ol>
+<p>##逻辑<br>年月日下拉框联动选择的Angular自定义指令目标是创建三个下拉框，第一个表示年份，第二个表示月份，第三个表示日期，年月日下拉框必须能够联动，并且当选择闰年的二月份的时候，日下拉框必须有29的选项。同时该指令能够将选择的结果返回给父作用域。</p>
+<p>年月日下拉框联动选择（以下简称qbDate）指令的模板如下：</p>
+<pre><code>template: &apos;\
+      &lt;div&gt;\
+        &lt;select ng-model=&quot;year&quot;&gt;\
+            &lt;option value=&quot;&quot;&gt;&lt;/option&gt;\
+            &lt;option ng-repeat=&quot;item in yearList&quot; value=&quot;{{item}}&quot;&gt;{{item}}&lt;/option&gt;\
+        &lt;/select&gt;\
+        &lt;select ng-model=&quot;month&quot;&gt;\
+            &lt;option value=&quot;&quot;&gt;&lt;/option&gt;\
+            &lt;option ng-repeat=&quot;item in monthList track by $index&quot; value=&quot;{{item}}&quot;&gt;{{item}}&lt;/option&gt;\
+        &lt;/select&gt;\
+        &lt;select ng-model=&quot;day&quot;&gt;\
+            &lt;option&gt;&lt;/option&gt;\
+            &lt;option ng-repeat=&quot;item in dayList track by $index&quot; value=&quot;{{item}}&quot;&gt;{{item}}&lt;/option&gt;\
+        &lt;/select&gt;\
+      &lt;/div&gt;\
+    &apos;
+</code></pre><p>qbDate的控制器逻辑代码如下</p>
+<pre><code>controller: function($scope,$element){
+    console.log($scope.year,$scope.month,$scope.day);
+    $scope.yearList = [];
+    for(var i = 1900;i&lt;=2030;i++){
+        $scope.yearList.push(i);
+    }
+    $scope.monthList = [];
+    $scope.dayList = [];
+    for(var i = 1;i&lt;=12;i++){
+        $scope.monthList.push(i);
+    }
+    $scope.$watch(&apos;year&apos;,function(newValue,oldValue){
+        if(newValue){
+            if(newValue.length &gt; 4){
+                $scope.year = oldValue;
+            }
+            $scope.dayList = [];
+            $scope.month = &apos;&apos;;
+            $scope.day = &apos;&apos;;
+
+        }
+
+    });
+    $scope.$watch(&apos;month&apos;,function(newValue,oldValue){
+        var months31 = [1,3,5,7,8,10,12];
+        var months30 = [4,6,9,11];
+        var month = parseInt(newValue);
+        var maxDay = 31;
+        if(months31.indexOf(month) &gt; 0){
+            maxDay = 31;
+        } else if (months30.indexOf(month) &gt; 0){
+            maxDay = 30;
+        } else{
+            var year = parseInt($scope.year);
+            if((year%4==0 &amp;&amp; year%100!=0)||(year%100==0 &amp;&amp; year%400==0)){
+                maxDay=29;
+            }else{
+                maxDay=28;
+            }
+        }
+        for(var i = 1;i&lt;=maxDay;i++){
+            $scope.dayList.push(i);
+        }
+    });
+},
+</code></pre><p>qbDate的作用域设置如下</p>
+<pre><code>scope: {
+        year: &apos;=yearModel&apos;,
+        month: &apos;=monthModel&apos;,
+        day: &apos;=dayModel&apos;
+    },
+</code></pre><p>使用的时候这么用：</p>
+<pre><code>&lt;div qb-date year-model=&quot;year&quot; month-model=&quot;month&quot; day-model=&quot;day&quot;&gt;&lt;div&gt;
+</code></pre><p>结合qbDate的作用域设置详情，qbDate 的作用域里面的year属性将绑定到qbDate指令的属性yearModel，而yearModel的值为qbDate指令父作用域year的值。由于qbDate指令是双向绑定的，所以指令内部的值变化将会反应到父作用域的值变化。</p>
+<p>##源码<br>本例子源码已经放在<a href="http://jsfiddle.net/fnghwsj/p3x9ufhe/3/" target="_blank" rel="external">JSFiddle</a>上。</p>
+<p>仓促赶工，如有谬误，还望指正。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AngularJS/" rel="tag">#AngularJS</a>
+          
+            <a href="/tags/Directives/" rel="tag">#Directives</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/08/02/AngularJS动态路由/" rel="next" title="AngularJS动态路由">
+                <i class="fa fa-chevron-left"></i> AngularJS动态路由
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/11/01/【翻译】分析JavaScript性能/" rel="prev" title="【翻译】分析JavaScript性能">
+                【翻译】分析JavaScript性能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/10/26/Angularjs自定义指令小试/"
+     data-title="Angularjs自定义指令小试"
+     data-content=""
+     data-url="http://yoursite.com/2014/10/26/Angularjs自定义指令小试/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2014/10/26/Angularjs自定义指令小试/"
+           data-title="Angularjs自定义指令小试" data-url="http://yoursite.com/2014/10/26/Angularjs自定义指令小试/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               alt="WonSikin" />
+          <p class="site-author-name" itemprop="name">WonSikin</p>
+          <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> Github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WonSikin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wonsikin"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

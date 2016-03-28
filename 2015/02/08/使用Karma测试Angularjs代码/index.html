@@ -1,0 +1,884 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="AngularJS,Karma,Test," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WonSikin's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="###前言这是一篇难产的博文，从去年写到了今年……
+七月底到目前，已经使用了AngularJS开发了两三个项目。与之前使用的jQuery相比，Angualr非常强大，减少了一大堆的代码，印象最深的是它的双向数据绑定，一旦建立双向绑定，用户的任何变量操作都能立马同步到它绑定的变量，页面上的效果是这个值实时更新。这就意味着，当我们想要与后台服务器交互的时候，我们节省了收集数据的步骤，只需把绑定的对象放">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Karma测试AngularJS代码">
+<meta property="og:url" content="http://yoursite.com/2015/02/08/使用Karma测试Angularjs代码/index.html">
+<meta property="og:site_name" content="WonSikin's Blog">
+<meta property="og:description" content="###前言这是一篇难产的博文，从去年写到了今年……
+七月底到目前，已经使用了AngularJS开发了两三个项目。与之前使用的jQuery相比，Angualr非常强大，减少了一大堆的代码，印象最深的是它的双向数据绑定，一旦建立双向绑定，用户的任何变量操作都能立马同步到它绑定的变量，页面上的效果是这个值实时更新。这就意味着，当我们想要与后台服务器交互的时候，我们节省了收集数据的步骤，只需把绑定的对象放">
+<meta property="og:updated_time" content="2016-03-28T12:58:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Karma测试AngularJS代码">
+<meta name="twitter:description" content="###前言这是一篇难产的博文，从去年写到了今年……
+七月底到目前，已经使用了AngularJS开发了两三个项目。与之前使用的jQuery相比，Angualr非常强大，减少了一大堆的代码，印象最深的是它的双向数据绑定，一旦建立双向绑定，用户的任何变量操作都能立马同步到它绑定的变量，页面上的效果是这个值实时更新。这就意味着，当我们想要与后台服务器交互的时候，我们节省了收集数据的步骤，只需把绑定的对象放">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 使用Karma测试AngularJS代码 | WonSikin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">WonSikin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用Karma测试AngularJS代码
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-02-08T18:03:15+08:00" content="2015-02-08">
+              2015-02-08
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/02/08/使用Karma测试Angularjs代码/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/08/使用Karma测试Angularjs代码/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>###前言<br>这是一篇难产的博文，从去年写到了今年……</p>
+<p>七月底到目前，已经使用了AngularJS开发了两三个项目。与之前使用的jQuery相比，Angualr非常强大，减少了一大堆的代码，印象最深的是它的双向数据绑定，一旦建立双向绑定，用户的任何变量操作都能立马同步到它绑定的变量，页面上的效果是这个值实时更新。这就意味着，当我们想要与后台服务器交互的时候，我们节省了收集数据的步骤，只需把绑定的对象放在参数里就行。</p>
+<p>然而，AngularJS的强大不止如此。<a id="more"></a>AngularJS的设计目标包括如下两点：</p>
+<ul>
+<li>将应用逻辑与对DOM的操作解耦。这会提高代码的可测试性。</li>
+<li>将应用程序的测试看的跟应用程序的编写一样重要。代码的构成方式对测试的难度有巨大的影响。</li>
+</ul>
+<p>没错，AngularJS最强大的功能之一就是它的高可测试性。<br>我们在浏览AngularJS的<a href="https://docs.angularjs.org/api" target="_blank" rel="external">官方文档</a>的时候总能看到每个指令后面都会有一个测试代码片段。</p>
+<p>###开始之前</p>
+<p>下面我将编写一个简单的网页应用，将联系人存储到本地存储（LocalStorage）中。编写这个应用时，我将践行<a href="http://zh.wikipedia.org/wiki/%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91" target="_blank" rel="external">测试驱动开发(TDD)</a>的精神。同时，路由导航方面，我不会用angular－router，而是使用ui－router。</p>
+<p>###搭建项目<br>用<code>bower</code>搭建项目框架：</p>
+<pre><code>mkdir karmaDmo
+bower init
+bower install bootstrap --save-dev
+bower install angularjs --save-dev
+bower install ui-router --save-dev
+bower install angular-mocks --save-dev
+</code></pre><p>初始化karma配置以及karma的使用，请参考我之前的文章 <a href="http://www.wonsikin.com/2014/11/26/%E5%89%8D%E7%AB%AF%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83Karma%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">前端测试环境Karma简介</a>。</p>
+<p>###编写测试用例</p>
+<p>Karma的测试用例语法是<a href="http://jasmine.github.io/edge/introduction.html" target="_blank" rel="external">Jasmine</a>。</p>
+<pre><code>describe(&apos;app.services test&apos;, function () {
+  var service;
+  beforeEach(function () {
+    //clear localStorage,inject the service before running test
+    if(window.localStorage) {
+      window.localStorage.clear();
+    }
+    module(&apos;app.services&apos;);
+
+    inject(function (storageService) {
+      service = storageService;
+    });
+  });
+
+  it(&apos;should be a string&apos;, function () {
+    expect(angular.isString(service.storageKey)).toBeTruthy();
+  });
+
+  it(&apos;should be a object&apos;, function () {
+    expect(angular.isObject(service.getInstance())).toBeTruthy();
+  });
+
+  it(&apos;should be an array&apos;, function () {
+    expect(angular.isArray(service.getAll())).toBeTruthy();
+  });
+
+  it(&apos;should be an empty array&apos;, function () {
+    expect(service.getAll().length).toEqual(0);
+  });
+
+  it(&apos;should be one item in the array&apos;, function () {
+    var item = {
+      name: &apos;Arthur&apos;,
+      mobile: &apos;+86-13452121990&apos;
+    };
+    service.save(item);
+    expect(service.getAll().length).toEqual(1);
+  });
+});
+</code></pre><p>###编写实现代码</p>
+<p>启动Karma测试环境，然后编辑本app的业务逻辑：</p>
+<pre><code>angular.module(&apos;app.services&apos;, [])
+  .factory(&apos;storageService&apos;, function () {
+    var factory = {
+      storageKey: &apos;contactApp&apos;,
+      getInstance: function() {
+        if(window.localStorage) {
+          var storage = window.localStorage.getItem(factory.storageKey) || { author: &apos;Arthur&apos;, description: &apos;save contacts to localStorage&apos;, data: []};
+          return angular.fromJson(storage);
+        }else{
+          return;
+        }
+      },
+      saveInstance: function(instance){
+        var string = angular.toJson(instance);
+        window.localStorage.setItem(factory.storageKey, string);
+      },
+      getAll: function(){
+        var result = null,
+        instance = factory.getInstance();
+        if(instance) {
+          result = instance.data || [];
+        }else{
+          result = [];
+        }
+        return result;
+      },
+      save: function(item){
+        if(item.key) {
+          factory.update(item);
+        }else{
+          factory.add(item);
+        }
+      },
+      add: function(item){
+        var instance = factory.getInstance();
+        item.key = new Date().getTime();
+        instance.data.push(item);
+        factory.saveInstance(instance);
+      },
+      update: function(item){
+        var instance = factory.getInstance(),
+            datas = instance.data;
+        for(var i in datas) {
+          if(datas[i].key === item.key) {
+            datas[i] = item;
+            break;
+          }
+        };
+        factory.saveInstance(instance);
+      }
+
+    };
+    return factory;
+  });
+</code></pre><p>编写完毕后，Karma监控台的所有所有测试用例都亮绿灯的话，表明业务逻辑代码都是OK的。</p>
+<p>本文章例子的源代码都发布到Github上，<a href="https://github.com/wonsikin/KarmaDemo" target="_blank" rel="external">戳此查看</a>。</p>
+<p>###一些思考<br>对于测试驱动开发的优劣点讨论这里不深入，但是有一点我记得很深刻。在最近的一个项目开发过程中，出现了一个bug让我们非常诧异的，因为之前的某个版本是正常的，但是在那个时候，它出问题了。我一位同事废了好大劲才发现这个bug是因为修改旧的bug才导致出现新的bug。于是我就思考，如果当时也运行着一套类似Karma这样的测试环境，我们肯定能避免这样子的问题出现的。</p>
+<p>###参考</p>
+<ol>
+<li><a href="http://karma-runner.github.io/0.12/index.html" target="_blank" rel="external">Karma官网</a></li>
+<li><a href="http://www.ibm.com/developerworks/cn/linux/l-tdd/" target="_blank" rel="external">浅谈测试驱动开发（TDD）</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AngularJS/" rel="tag">#AngularJS</a>
+          
+            <a href="/tags/Karma/" rel="tag">#Karma</a>
+          
+            <a href="/tags/Test/" rel="tag">#Test</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/11/26/前端测试环境Karma简介/" rel="next" title="前端测试环境Karma简介">
+                <i class="fa fa-chevron-left"></i> 前端测试环境Karma简介
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/08/Install-MySQL-In-OSX/" rel="prev" title="在OSX系统上安装MySQL">
+                在OSX系统上安装MySQL <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/02/08/使用Karma测试Angularjs代码/"
+     data-title="使用Karma测试AngularJS代码"
+     data-content=""
+     data-url="http://yoursite.com/2015/02/08/使用Karma测试Angularjs代码/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/02/08/使用Karma测试Angularjs代码/"
+           data-title="使用Karma测试AngularJS代码" data-url="http://yoursite.com/2015/02/08/使用Karma测试Angularjs代码/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               alt="WonSikin" />
+          <p class="site-author-name" itemprop="name">WonSikin</p>
+          <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> Github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WonSikin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wonsikin"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

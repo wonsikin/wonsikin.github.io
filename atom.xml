@@ -1,0 +1,2037 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>WonSikin&#39;s Blog</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2016-03-28T13:30:53.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>WonSikin</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【翻译】On the ES6 module syntax</title>
+    <link href="http://yoursite.com/2016/03/28/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91On%20the%20ES6%20module%20syntax/"/>
+    <id>http://yoursite.com/2016/03/28/【翻译】On the ES6 module syntax/</id>
+    <published>2016-03-28T13:29:09.000Z</published>
+    <updated>2016-03-28T13:30:53.000Z</updated>
+    
+    <content type="html">&lt;p&gt;这篇文章将会探索ES6的模块以及它与Node的模块（commonJS）的不同。模块系统本质上就是一种从一个文件中引用另一个文件的方法。基本上任何东西都可以被赋值给一个变量。模块系统选择一系列标准的愈发来使得它更容易书写。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;先前，我只使用过Node的模块系统。随着我最近探索ES6，我发现Node和ES6的模块系统之间有一些不一样的。本质上，它们做的是同样的事，但是它们的语法有些轻微的不同。&lt;/p&gt;
+&lt;p&gt;让我们以一个可以给你推荐一杯鸡尾酒的函数作为例子。为了保持简单，这个函数总是会给你推荐一杯“Sazerac”鸡尾酒（这不是一个坏事情）。&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Sazerac&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在Node中，如果你想在一个文件中定义这个函数，然后在另一个文件中使用它，你将会使用&lt;code&gt;module.exports&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cocktail.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Sazerac&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;module&lt;/span&gt;.exports = getCocktail;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;要想在另一个文件中使用它，你必须使用&lt;code&gt;require&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;app.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; getCocktail = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&#39;./cocktail&#39;&lt;/span&gt;);   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// you don&#39;t need the file extension here&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// ./ means that you are including a file from the same directory&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// the variable getCocktail is now set to the function getCocktail() from cocktail.js&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// this means we can call it:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(getCocktail()) &lt;span class=&quot;comment&quot;&gt;// logs &quot;Sazerac&quot;;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这就是Node处理模块系统的方法，ES6的模块方法则有些不一样。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cocktail.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    retrun &lt;span class=&quot;string&quot;&gt;&quot;Sazerac&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt; getCocktail;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;code&gt;app.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;getCocktail&#39;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;./cocktail&#39;&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;// you don&#39;t net the file extension here either;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(getCocktail()); &lt;span class=&quot;comment&quot;&gt;// &quot;Sazerac&quot;;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;让我们来总结下Node和ES6的不同， 如何引入：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;require(&amp;#39;module&amp;#39;)&lt;/code&gt; // Node&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;import thing from &amp;#39;module&amp;#39;&lt;/code&gt; // ES6&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以及如何导出：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;module.exports = thing // Node&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;export default thing&lt;/code&gt; // ES6&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;导出多种东西&quot;&gt;&lt;a href=&quot;#导出多种东西&quot; class=&quot;headerlink&quot; title=&quot;导出多种东西&quot;&gt;&lt;/a&gt;导出多种东西&lt;/h3&gt;&lt;p&gt;模块系统的一个共同用例是一个模块可以导出好几个关联的东西。我们来扩展鸡尾酒例子，让它能够给你推荐威士忌、杜松子酒和处女鸡尾酒。&lt;/p&gt;
+&lt;p&gt;在Node中，你可以导出一个包含多样东西的对象：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cocktail.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getWhiskyCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Sazerac&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getGinCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Martini&quot;&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;// stirred, obviously&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getVirginCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Virgin Mary&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;module&lt;/span&gt;.exports = &amp;#123;getGinCocktail, getVirginCocktail, getWhiskyCocktail&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;为了调用它，你得通过一个对象才能做到：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;app.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; cockttails = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&#39;./cocktail&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(cocktails.getGinCocktail()); &lt;span class=&quot;comment&quot;&gt;// Martini&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(cocktails.getVirginCocktail()); &lt;span class=&quot;comment&quot;&gt;// Virgin Mary&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;我个人认为， ES6在这方面做个稍微好点。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cocktail.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getWhiskyCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Sazerac&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getGinCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Martini&quot;&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;// stirred, obviously&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getVirginCocktail&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Virgin Mary&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;export&lt;/span&gt; &amp;#123;getGinCocktail, getVirginCocktail, getWhiskyCocktail&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;code&gt;app.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; &amp;#123;getGinCocktail, getVirginCocktail&amp;#125; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;./cocktail&#39;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(cocktails.getGinCocktail()); &lt;span class=&quot;comment&quot;&gt;// Martini&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(cocktails.getVirginCocktail()); &lt;span class=&quot;comment&quot;&gt;// Virgin Mary&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;正如你所见，首先，你可以直接调用函数而不必通过一个对象。另外，ES6模块系统能够让你只引入你需要的函数（所以如果你不是一个威士忌粉丝， 这将非常适合你）。如果你正在性能优化，这也许会节约一些内存使用，但是我不确定。（谁能够证实或否定它？）&lt;/p&gt;
+&lt;p&gt;细心的观众可能注意到第一个ES6例子使用 &lt;code&gt;export default thing&lt;/code&gt;，而第二个例子使用 &lt;code&gt;export {thing, otherThing}&lt;/code&gt;。如果你正在写一个模块并且你推测一个方法将会比其他方法使用得更频繁，你可以将它设置成默认。你可以同时使用默认或者非默认（命名）导出。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cocktail.js&lt;/code&gt;:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt; getWhiskyCocktail;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;export&lt;/span&gt; &amp;#123;getGinCocktail, getVirginCocktail&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;所以如果你只是对默认的威士忌酒感兴趣，你可以这么写：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;app.js&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; getWhiskyCocktail &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;./cocktail&#39;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(getWhiskyCocktail()); &lt;span class=&quot;comment&quot;&gt;// Sazerac&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;或者你既想要默认的威士忌酒也想要处女鸡尾酒：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;app.js&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; getWhiskyCocktail, &amp;#123;getVirginCocktail&amp;#125; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;./cocktail&#39;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(getWhiskyCocktail()); &lt;span class=&quot;comment&quot;&gt;// Sazerac&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(getVirginCocktail()); &lt;span class=&quot;comment&quot;&gt;// Virgin Mary&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;必需注意到ES6表示导入命名的导出方法是它被花括号包围着，即使你只是导入它们中的一个，这非常重要。如果你没有使用花括号，你将会试图是访问默认的导出方法。我一开始就在这上面踩了坑。&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;export&lt;/span&gt; &amp;#123;getGinCocktail, getVirginCocktail, getWhiskyCocktail&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; getWhiskyCocktail &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;./cocktail&#39;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(getWhiskyCocktail()); &lt;span class=&quot;comment&quot;&gt;// error!&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;如果你愿意的话，你也可以在导入方法的时候使用&lt;code&gt;as newName&lt;/code&gt;来重命名它们。&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; &amp;#123;getWhiskyCocktail &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; getCocktail&amp;#125; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;./cocktail&#39;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(getCocktail()); &lt;span class=&quot;comment&quot;&gt;// Sazerac&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;关于ES6模块系统还有更多的东西，我今天只是覆盖了一点点。如果你想要链接更多，我给你推荐一下的资源：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en/docs/web/javascript/reference/statements/import&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MDN article on import&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en/docs/web/javascript/reference/statements/export&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MDN article on export&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;http://exploringjs.com/es6/ch_modules.html#ch_modules&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ExploringJS article on ES6 modules&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我讲完了，非常感谢你的阅读。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://tiljs.jegtnes.co.uk/es6-module-syntax/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;原文链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;作者： Alex Jegtnes&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这篇文章将会探索ES6的模块以及它与Node的模块（commonJS）的不同。模块系统本质上就是一种从一个文件中引用另一个文件的方法。基本上任何东西都可以被赋值给一个变量。模块系统选择一系列标准的愈发来使得它更容易书写。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="ES6" scheme="http://yoursite.com/tags/ES6/"/>
+    
+      <category term="module" scheme="http://yoursite.com/tags/module/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【翻译】深入理解ES6：箭头函数</title>
+    <link href="http://yoursite.com/2015/06/17/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3ES6%EF%BC%9A%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/"/>
+    <id>http://yoursite.com/2015/06/17/【翻译】深入理解ES6：箭头函数/</id>
+    <published>2015-06-17T08:49:36.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://hacks.mozilla.org/category/es6-in-depth/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;深入理解ES6&lt;/a&gt;  是介绍ECMAScript 6.0版标准（简称 ES6）中加入到JavaScript编程语言新特性的系列文章。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;箭头在一开始就已经成为JavaScript的一部分。在最开始的JavaScript教程就建议把行内脚本包裹在HTML注释里面。这将会阻止不支持JS的浏览器错误地将JS代码显示在文本中。你可能会这样子写：&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;script language=&lt;span class=&quot;string&quot;&gt;&quot;javascript&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;!--&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  document.bgColor = &quot;brown&quot;;  // red&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;// --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;旧的浏览器将会解析成两个不支持的标签和一段注释；而新的浏览器将会解析成JS代码。&lt;/p&gt;
+&lt;p&gt;为了支持这种古怪的技巧，浏览器中的JavaScript引擎将会把字符 &amp;lt;!– 当作单行注释的开始。这并不是在开玩笑，而是一直以来都是JavaScript语言的一部分，直到现在，不仅仅是在行内&amp;lt;script&amp;gt;标签的顶部能够正常运行，而且是在JS代码的任何地方，甚至包括在Node中。&lt;/p&gt;
+&lt;p&gt;碰巧的是这种风格的注释第一次在ES6中被标准化。不过这不是我们在这里谈论的箭头。&lt;/p&gt;
+&lt;p&gt;箭头序列 –&amp;gt; 也表示一个单行注释。奇怪的是，在HTML中，–&amp;gt;之前的字符表示注释的一部分，而在JS中，–&amp;gt; 所在行后面剩下的部分表示注释。&lt;/p&gt;
+&lt;p&gt;这变得更奇怪了。只有当 –&amp;gt; 箭头出现在一行的开始部分，它才表示一个注释。这是因为在别的JS上下文中，–&amp;gt; 是一个操作符，表示“goes to”。&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;countdown&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;n&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (n --&amp;gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)  &lt;span class=&quot;comment&quot;&gt;// &quot;n goes to zero&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    alert(n);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  blastoff();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;a href=&quot;http://codepen.io/anon/pen/oXZaBY?editors=001&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;上面的代码是真的能够运行的。&lt;/a&gt;当n变成0的时候，循环才会停止。这不是ES6的新特性，而是已有特性的组合，所以会带来一点误导。你能弄清楚这是怎么回事吗？照例你可以在&lt;a href=&quot;http://stackoverflow.com/questions/1642028/what-is-the-name-of-the-operator&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Stack Overflow&lt;/a&gt;上找到问题的答案。&lt;/p&gt;
+&lt;p&gt;当然还有一个小于或等于的操作符，&amp;lt;=。也许你能够在你的JS代码中找出更多的箭头，但是我们就此打住，你应该注意到我们遗落了一个箭头符号。&lt;/p&gt;
+&lt;table style=&quot;width: 250px;margin: 0 auto;&quot;&gt;&lt;br&gt;    &lt;tr style=&quot;border:1px solid #ddd;&quot;&gt;&lt;td&gt;&amp;lt;!–    single-line comment&lt;/td&gt;&lt;/tr&gt;&lt;br&gt;    &lt;tr style=&quot;border:1px solid #ddd;&quot;&gt;&lt;td&gt;–&amp;gt;    “goes to” operator&lt;/td&gt;&lt;/tr&gt;&lt;br&gt;    &lt;tr style=&quot;border:1px solid #ddd;&quot;&gt;&lt;td&gt;&amp;lt;=    less than or equal to&lt;/td&gt;&lt;/tr&gt;&lt;br&gt;    &lt;tr style=&quot;border:1px solid #ddd;&quot;&gt;&lt;td&gt;=&amp;gt;    ???&lt;/td&gt;&lt;/tr&gt;&lt;br&gt;&lt;/table&gt;
+
+&lt;p&gt;=&amp;gt; 操作符到底发生了什么？今天我们就要探究这个问题。&lt;/p&gt;
+&lt;p&gt;首先我们先谈论下函数。&lt;/p&gt;
+&lt;p&gt;###无处不在的函数表达式&lt;/p&gt;
+&lt;p&gt;JavaScript中一个有趣的特性是，任何时候，当你需要一个函数，你只需在运行的代码的右侧输入函数就可以。&lt;/p&gt;
+&lt;p&gt;举个例子，假设你正打算让用户点击了浏览器上特定按钮的时候，浏览器做点什么，于是你敲了下面的代码：&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$(&lt;span class=&quot;string&quot;&gt;&quot;#confetti-btn&quot;&lt;/span&gt;).click(&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;jQuery的 .click() 方法需要一个参数：一个函数。没问题，你正好在右侧输入一个函数：&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$(&lt;span class=&quot;string&quot;&gt;&quot;#confetti-btn&quot;&lt;/span&gt;).click(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;event&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  playTrumpet();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  fireConfettiCannon();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这样子写代码对我们现在来说是相当自然而然的。在JavaScript推广这种编程方式之前，很多语言都没有这种特征，所以我们会觉得很奇怪。当然Lisp早在1958年就有函数表达式，也称作lambda函数。但是像 C++、Python、C#以及Java在很长的时间里是没有函数表达式。&lt;/p&gt;
+&lt;p&gt;现在，上面的四种语言不再没有lambda函数了。新出现的编程语言无一例外地拥有内建的lambda函数。我们得感谢JavaScript和早期的JavaScript程序员，因为他们无畏地建立了许多严重依赖lambda的函数库，并且使得这种特征被广泛地采纳。&lt;/p&gt;
+&lt;p&gt;然而略带忧伤的是，上面我所提到的编程语言中，JavaScript的lambda函数语法被证明是最啰嗦的。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;// A very simple function in six languages.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;function (a) &amp;#123; return a &amp;gt; 0; &amp;#125; // JS&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[](int a) &amp;#123; return a &amp;gt; 0; &amp;#125;  // C++&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;(lambda (a) (&amp;gt; a 0))  ;; Lisp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;lambda a: a &amp;gt; 0  # Python&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;a =&amp;gt; a &amp;gt; 0  // C#&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;a -&amp;gt; a &amp;gt; 0  // Java&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://hacks.mozilla.org/category/es6-in-depth/&quot;&gt;深入理解ES6&lt;/a&gt;  是介绍ECMAScript 6.0版标准（简称 ES6）中加入到JavaScript编程语言新特性的系列文章。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="ES6" scheme="http://yoursite.com/tags/ES6/"/>
+    
+      <category term="lambda" scheme="http://yoursite.com/tags/lambda/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>弹幕、抽奖及投票</title>
+    <link href="http://yoursite.com/2015/05/05/%E5%BC%B9%E5%B9%95%E3%80%81%E6%8A%BD%E5%A5%96%E5%8F%8A%E6%8A%95%E7%A5%A8/"/>
+    <id>http://yoursite.com/2015/05/05/弹幕、抽奖及投票/</id>
+    <published>2015-05-05T15:10:19.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;#前言&lt;a href=&quot;#introduction&quot;&gt;&lt;/a&gt;#&lt;/p&gt;
+&lt;p&gt;距离年会还有一两个月…&lt;/p&gt;
+&lt;p&gt;赵总: 我们今年的年会要搞得有点创意。&lt;/p&gt;
+&lt;p&gt;众程序猿: 什么是有点创意？&lt;/p&gt;
+&lt;p&gt;赵总: 至少那个奖项投票结果要像星光大道那样，有动画!&lt;/p&gt;
+&lt;p&gt;众程序猿: 哦…&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;#抽奖(老虎机)#&lt;br&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/mw1024/4da583a7gw1ervpx5zqtej21hc0u0dz1.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;###requestAnimationFrame###&lt;/p&gt;
+&lt;p&gt;######requestAnimationFrame是什么？######&lt;/p&gt;
+&lt;p&gt;在浏览器动画程序中，我们通常使用一个定时器来循环每隔几毫秒移动目标物体一次，来让它动起来。这个requestAnimationFrame()函数就是针对动画效果的API，你可以把它用在DOM上的风格变化或画布动画或WebGL中。&lt;/p&gt;
+&lt;p&gt;######使用requestAnimationFrame有什么好处？######&lt;/p&gt;
+&lt;p&gt;浏览器可以优化并行的动画动作，更合理的重新排列动作序列，并把能够合并的动作放在一个渲染周期内完成，从而呈现出更流畅的动画效果。&lt;/p&gt;
+&lt;p&gt;参考： &lt;a href=&quot;http://www.webhek.com/requestanimationframe&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HTML5探秘：用requestAnimationFrame优化Web动画&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;###js对象封装###&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//定义&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; name = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; variate1, variate2, variate3....;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; method1 = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//do something&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; method2 = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//do something&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; method3 = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//do something&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    publicMethod: method1,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    method2: method2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//使用&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;name.publicMethod();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;name.method2();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;######好处######&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;代码结构清晰&lt;/li&gt;
+&lt;li&gt;防止方法名被覆盖&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;###提高js运行的小经验###&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用for()循环替代for…in循 环。因为for…in循环在开始循环之前需要Script引擎创建一个含有所有可循环属性的 List，需要多检查一次;&lt;/li&gt;
+&lt;li&gt;fullName += ‘John’; fullName += ‘Holdings’;执行速度快于fullName += ‘John’ + ‘Holdings’;&lt;/li&gt;
+&lt;li&gt;如果你需要把多个字符串连接起来，最好是把他们做成一个数组，然后调用join()方法实现这个操作。这种方式在生成HTML片段时尤其 有效。&lt;/li&gt;
+&lt;li&gt;对于简单的任务，最好使用基本操作方式来实现，而不是使用函数调用实现。例如val1 &amp;lt; val2 ? val1 : val2;执行速度快于Math.min(val1, val2);，类似的，myArr.push(newEle);慢于myArr[myArr.length] = newEle;&lt;/li&gt;
+&lt;li&gt;当你对对象的成员（属性或方法）进行反复操作时，先存储对它们的引用。例如var getTags = document.getElementsByTagName; getTags(‘div’);&lt;/li&gt;
+&lt;li&gt;for(var i=0; i &amp;lt; someArray.length; i++) {…}的执行效率慢于for (var i=0, loopLen=someArray.length; i&amp;lt;loopLen; i++) {…}。&lt;/li&gt;
+&lt;li&gt;尽可能的使用原始JavaScript。限制JavaScript框架的使用。&lt;/li&gt;
+&lt;li&gt;…&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;参考： &lt;a href=&quot;http://www.vaikan.com/30-best-practices-to-boost-your-web-application-performance/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;30个提高Web程序执行效率的好经验&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;###动画核心(scrollTop属性)###&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;scrollTop&lt;/code&gt;属性设置或者返回一个元素在垂直方向上的滚动像素值&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; animate = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;now&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!start) start = now;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; t = now - start || &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//定义滚动动画，从第stepFlag开始到结束，头一个慢慢减速停止，剩下的无序滚动&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; i = stepFlag; i &amp;lt; layout; ++i) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (i &amp;lt;= stepFlag) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            $reels[i].scrollTop = (speeds[i] / tMax / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt; * (tMax - t) * (tMax - t)) % (employees.length * imgHeight) + r[i] * imgHeight | &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            $reels[i].scrollTop += (&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() &amp;gt; &lt;span class=&quot;number&quot;&gt;0.5&lt;/span&gt; ? &lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt; : &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;) * imgHeight * &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;参考：&lt;a href=&quot;http://www.w3schools.com/jsref/prop_element_scrolltop.asp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HTML DOM scrollTop Property&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;###背景音乐(HTML5 audio)###&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//播放背景音乐&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; playSong = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; song = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&#39;song&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    song.volume = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    song.play();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//暂停背景音乐&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; stopSong = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//渐渐关小音量&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; song = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&#39;song&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; fadeOut = setInterval(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (song.volume &amp;gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            song.volume -= &lt;span class=&quot;number&quot;&gt;0.1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            song.volume = &lt;span class=&quot;built_in&quot;&gt;parseFloat&lt;/span&gt;(song.volume.toFixed(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(song.volume);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            song.pause();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            clearInterval(fadeOut);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;, &lt;span class=&quot;number&quot;&gt;300&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;参考：&lt;a href=&quot;http://www.w3schools.com/tags/tag_audio.asp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HTML audio Tag&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;#投票结果展示#&lt;br&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/mw1024/4da583a7gw1ervpx871byj21hc0u07ft.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;###D3.js###&lt;br&gt;d3.js是一个优秀的数据可视化库，可以让我们方便快捷地实现数据到图形的变换。但是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;d3.js不是一个图形绘制库，不像&lt;a href=&quot;http://echarts.baidu.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;echarts&lt;/a&gt;、&lt;a href=&quot;http://www.hcharts.cn/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;highcharts&lt;/a&gt;等图形库，提供了各种图形的接口供用户使用。&lt;/li&gt;
+&lt;li&gt;d3.js是一个基于集合概念的 DOM操作库。类似jQuery，依赖于选择符选中一组元素，建立一个集合，然后使用集合对象的方法操作DOM。&lt;/li&gt;
+&lt;li&gt;d3.js的大量功能集中在&lt;code&gt;数据处理&lt;/code&gt;方面。将数据映射到图形，做诸如数据范围的变换、插值的计算、布局的计算等等。&lt;/li&gt;
+&lt;li&gt;d3.js的核心是对&lt;code&gt;数据&lt;/code&gt;和&lt;code&gt;可视化元素&lt;/code&gt;的匹配。d3将数据可视化抽象为数据与可视化元素的匹配，一个&lt;code&gt;数据&lt;/code&gt;对应一个&lt;code&gt;可视化元素&lt;/code&gt;，一个&lt;code&gt;数值&lt;/code&gt;对应一个可视化元素的&lt;code&gt;属性&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/mw1024/4da583a7jw1erts091r3xj20l00kuwjj.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;###SVG和Html5 Canvas###&lt;/p&gt;
+&lt;p&gt;#####Canvas&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于像素（canvas 实质上是一种带有绘图 API 的图像元素）&lt;/li&gt;
+&lt;li&gt;单个 HTML 元素，其行为类似于 &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;通过脚本以编程方式创建和修改视觉呈现&lt;/li&gt;
+&lt;li&gt;事件模型/用户交互是粗粒度的—仅在 canvas 元素级别；必须通过鼠标坐标对交互进行手动编程设置&lt;/li&gt;
+&lt;li&gt;API 不支持可访问性；除了 canvas，还必须使用基于标记的技术&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;#####SVG&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于对象模型（SVG 元素类似于 HTML 元素）&lt;/li&gt;
+&lt;li&gt;多个图形元素，是文档对象模型 (DOM) 的一部分&lt;/li&gt;
+&lt;li&gt;使用标记创建视觉呈现，并通过 CSS 或通过脚本以编程方式修改视觉呈现&lt;/li&gt;
+&lt;li&gt;事件模型/用户交互是基于对象的，在最基本的图像元素级别进行——线条、矩形、路径&lt;/li&gt;
+&lt;li&gt;SVG 标记和对象模型直接支持可访问性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Canvas 是一种位图，采用直接模式 (immediate mode)的图形应用程序编程接口 (API) 在其上进行绘图。 Canvas 是一种“发后不理”(Fire and Forget) 模型，在这种模式下，将直接向位图呈现其图形，之后对绘制的形状并不知晓；最后只呈现生成的位图。&lt;/p&gt;
+&lt;p&gt;SVG 是一种保留模式 (retained mode)的图形模型，是一种在内存中进行持久处理的模型。类似于 HTML，SVG 构建了包含图元、属性和样式的对象模型。&lt;br&gt;在 HTML5 文档中出现 &lt;code&gt;&amp;lt;svg&amp;gt;&lt;/code&gt; 元素时，它的作用类似于一个内联块，并且是 HTML 文档树的一部分。&lt;/p&gt;
+&lt;p&gt;可以认为 Canvas 类似于 Windows GDI API，您通过编程方式向窗口中绘制图形；而 SVG 类似于 HTML 标记，具有元素、样式、事件和基于 DOM 的编程能力。Canvas 是过程性的，而 SVG 是声明性的。&lt;/p&gt;
+&lt;p&gt;#####结论&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i-msdn.sec.s-msft.com/hh377884.15(zh-cn,MSDN.10).jpg&quot; alt=&quot;111&quot;&gt;&lt;/p&gt;
+&lt;p&gt;#弹幕#&lt;/p&gt;
+&lt;p&gt;###功能介绍&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;弹幕——连接手机和大屏幕，在屏幕上更大胆的表达和吐槽。&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/mw1024/4da583a7jw1erts9eyvjuj21he0kgwjq.jpg&quot; alt=&quot;&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;###技术实现&lt;br&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/mw1024/4da583a7jw1erts9hdeoyj21ck0pwwia.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;###局限性和想象&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;表现方式较单一&lt;ul&gt;
+&lt;li&gt;声音&lt;/li&gt;
+&lt;li&gt;动画&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;可以尝试加入@功能&lt;/li&gt;
+&lt;li&gt;Source Code&lt;br&gt;&lt;a href=&quot;https://github.com/CardInfoLink/danmu/tree/develop/windows&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/CardInfoLink/danmu/tree/develop/windows
+&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;#前言&lt;a href=&quot;#introduction&quot;&gt;&lt;/a&gt;#&lt;/p&gt;
+&lt;p&gt;距离年会还有一两个月…&lt;/p&gt;
+&lt;p&gt;赵总: 我们今年的年会要搞得有点创意。&lt;/p&gt;
+&lt;p&gt;众程序猿: 什么是有点创意？&lt;/p&gt;
+&lt;p&gt;赵总: 至少那个奖项投票结果要像星光大道那样，有动画!&lt;/p&gt;
+&lt;p&gt;众程序猿: 哦…&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="svg" scheme="http://yoursite.com/tags/svg/"/>
+    
+      <category term="canvas" scheme="http://yoursite.com/tags/canvas/"/>
+    
+      <category term="d3.js" scheme="http://yoursite.com/tags/d3-js/"/>
+    
+      <category term="html5" scheme="http://yoursite.com/tags/html5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【翻译】jQuery和React.js的思考</title>
+    <link href="http://yoursite.com/2015/04/01/jQuery%E5%92%8CReactjs%E7%9A%84%E6%80%9D%E8%80%83/"/>
+    <id>http://yoursite.com/2015/04/01/jQuery和Reactjs的思考/</id>
+    <published>2015-04-01T03:27:05.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;原文链接: &lt;a href=&quot;http://blog.zigomir.com/react.js/jquery/2015/01/11/jquery-versus-react-thinking.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;jQuery versus React.js thinking&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本质上，我不喜欢辩论技术之间的好坏。我认为每一个相当成功的库或者框架在它刚开始推出来到成功都是有很好的理由的。我将会从概念上来比较jQuery和React的不同。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;##问题&lt;br&gt;一组列表。每一项都有一个默认隐藏的详细信息。任何时候，用户点击列表中的一项，那一项都会展开并且展示它的详细信息，其它项将会变成灰色。如果我们再次点击同一项，它将会收缩并且所有项都会变成它们的初始状态，折叠的并且字体变成黑色的。我们也可以从一个展开的项转移到另一项，折叠前一项，展开新的那项。&lt;/p&gt;
+&lt;p&gt;##两种解决方法&lt;/p&gt;
+&lt;p&gt;###jQuery(&lt;a href=&quot;http://jsbin.com/zunev/3/edit&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JSBin&lt;/a&gt;)&lt;br&gt;&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  $(&lt;span class=&quot;string&quot;&gt;&#39;li&#39;&lt;/span&gt;).on(&lt;span class=&quot;string&quot;&gt;&#39;click&#39;&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;e&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; $clickedItemDetails = $(e.currentTarget).find(&lt;span class=&quot;string&quot;&gt;&#39;.details&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; $allDetails = $(&lt;span class=&quot;string&quot;&gt;&#39;li .details&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; ($clickedItemDetails.is(&lt;span class=&quot;string&quot;&gt;&#39;:hidden&#39;&lt;/span&gt;)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      $allDetails.hide().parent().removeClass(&lt;span class=&quot;string&quot;&gt;&#39;collapsed&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      $clickedItemDetails.show();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      $clickedItemDetails.hide();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    $allDetails.each(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;index, el&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; ($(el).is(&lt;span class=&quot;string&quot;&gt;&#39;:hidden&#39;&lt;/span&gt;)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        $(el).parent().addClass(&lt;span class=&quot;string&quot;&gt;&#39;collapsed&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; ($(&lt;span class=&quot;string&quot;&gt;&#39;li.collapsed&#39;&lt;/span&gt;).length === $(&lt;span class=&quot;string&quot;&gt;&#39;li&#39;&lt;/span&gt;).length) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      $(&lt;span class=&quot;string&quot;&gt;&#39;li&#39;&lt;/span&gt;).removeClass(&lt;span class=&quot;string&quot;&gt;&#39;collapsed&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;我们的数据和它的状态不是有组织化的，并且分布在DOM中。数据、状态和展示的分隔是模糊的。&lt;/p&gt;
+&lt;p&gt;我们用jQuery的选择器（类似：&lt;code&gt;is(&amp;#39;:hidden&amp;#39;)&lt;/code&gt;和&lt;code&gt;.find(&amp;#39;.details&amp;#39;)&lt;/code&gt;）从DOM中查找数据。然后我们用&lt;code&gt;hide()&lt;/code&gt;,&lt;code&gt;show()&lt;/code&gt;,&lt;code&gt;addClass()&lt;/code&gt;和&lt;code&gt;removeClass()&lt;/code&gt;函数直接在DOM上修改状态。&lt;/p&gt;
+&lt;p&gt;在最开始的时候，我这样子写过一些代码，现在回过来想读它的时候，我需要整理下思绪来重新读懂它。因为功能是如此的有限所以我可以不用破坏它的代码就能重构，但是当我想给它添加更复杂的功能的话将不会是件容易的事。&lt;/p&gt;
+&lt;p&gt;###React(&lt;a href=&quot;http://jsbin.com/hotod/12/edit&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JSBin&lt;/a&gt;)&lt;br&gt;&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/** @jsx React.DOM */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; PRODUCTS = [&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Bag of suck&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;price&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;details&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;You don&#39;t want to own this!&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Bag of luck&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;price&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;details&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;You might want to own this!&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Bag of fuck&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;price&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;300&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;details&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;You really want to own this!&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; ItemsList = React.createClass(&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  getInitialState: &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      expandedProductId: &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  handleProductClick: &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;product&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; newSelectedProductId = product.id;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.state.expandedProductId === product.id) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      newSelectedProductId = &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.setState(&amp;#123;expandedProductId: newSelectedProductId&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  render: &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; self = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, noneSelected = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.state.expandedProductId === &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; products = PRODUCTS.map(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;product&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; details, isExpanded = self.state.expandedProductId === product.id;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (isExpanded) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        details = &amp;lt;div&amp;gt;&amp;#123;product.details&amp;#125;&amp;lt;/div&amp;gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;li key=&amp;#123;product.id&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            onClick=&amp;#123;self.handleProductClick.bind(self, product)&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            className=&amp;#123;isExpanded || noneSelected ? &#39;&#39; : &#39;collapsed&#39;&amp;#125;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &amp;#123;product.name&amp;#125; (&amp;#123;product.price&amp;#125;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &amp;#123;details&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/li&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      );&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;lt;ul&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;products&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;lt;/ul&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    );&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;React.render(&amp;lt;ItemsList /&amp;gt;, document.body);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;我最开始反应“哇，更多的代码，感觉更糟了”，但是没有，为什么呢？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据非常好地在&lt;code&gt;PRODUCTS&lt;/code&gt;数组中隔离开。&lt;/li&gt;
+&lt;li&gt;所有的状态我们都存储在&lt;code&gt;expandedProductId&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;所有的表现逻辑都写在&lt;code&gt;render&lt;/code&gt;方法中。&lt;/li&gt;
+&lt;li&gt;我们可以从上到下读取代码。&lt;/li&gt;
+&lt;li&gt;快速地浏览后，我可以轻易的理解它做的所有事（你也许还不知道React，但是它非常容易学习）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;##结论&lt;br&gt;我知道这是个相当微不足道的例子。但是它确实显示了不同库（框架）之间根本上的不同，并且它们是怎样帮助你隔离关注点。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;原文链接: &lt;a href=&quot;http://blog.zigomir.com/react.js/jquery/2015/01/11/jquery-versus-react-thinking.html&quot;&gt;jQuery versus React.js thinking&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本质上，我不喜欢辩论技术之间的好坏。我认为每一个相当成功的库或者框架在它刚开始推出来到成功都是有很好的理由的。我将会从概念上来比较jQuery和React的不同。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="jQuery" scheme="http://yoursite.com/tags/jQuery/"/>
+    
+      <category term="React.js" scheme="http://yoursite.com/tags/React-js/"/>
+    
+      <category term="Front end" scheme="http://yoursite.com/tags/Front-end/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux系统Go开发环境搭建</title>
+    <link href="http://yoursite.com/2015/03/28/Go%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <id>http://yoursite.com/2015/03/28/Go开发环境搭建/</id>
+    <published>2015-03-28T08:34:46.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;Go 语言是由谷歌的科学家开发的，并开源的新语言，被誉为“21世纪的C语言”，它的主要目标是将静态语言的安全性和高效性与动态语言的易开发性进行有机结合，达到完美平衡，从而使编程变得更加有乐趣，而不是在艰难抉择中痛苦前行。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;最近有一个项目是处理瞬间高并发的请求，考虑到Go语言的原生支持并发的特性，以及新年之后多个项目用Go语言开发，项目组决定用Go语言开发前端抗洪服务器。工欲善其事，必先利其器，下面贴出Linux系统下Go开发环境的搭建。&lt;/p&gt;
+&lt;p&gt;网上有很多关于Go环境搭建的资料，都是先从安装&lt;code&gt;mercurial&lt;/code&gt;开始，然后下载Go语言源码安装的。但是因为众所周知的原因，在中国大陆无法稳定地访问谷歌的服务器，所以上面那个方法很多情况下是不可行的，除非使用了代理。以下介绍一个非常简单而且非常有效的方法来搭建Go开发环境。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;注意&lt;/code&gt;:在Linux下安装Go开发环境请使用root用户。&lt;/p&gt;
+&lt;p&gt;####下载Go文件压缩包&lt;br&gt;到&lt;a href=&quot;http://www.golangtc.com/download&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Golang中国社区&lt;/a&gt;下载Go语言的源码，Linux命令行下可以执行如下命令：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wget http://www.golangtc.com/static/go/go1.4.2.linux-amd64.tar.gz&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;下载完后解压文件：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;tar -zxvf go1.4.2.linux-amd64.tar.gz&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;得到一个&lt;code&gt;go&lt;/code&gt;目录，执行以下命令，移动到&lt;code&gt;/usr/local/&lt;/code&gt;目录下：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mv go/ /usr/local/&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;####Go配置环境变量&lt;br&gt;使用vim编辑器打开&lt;code&gt;/etc/profile&lt;/code&gt;文件：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;vim /etc/profile&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;在最底部加入如下内容，配置Go语言环境变量：&lt;br&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#set go environment&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;GOROOT=/usr/local/go&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;GOBIN=$GOROOT/bin&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PATH=$PATH:$GOBIN&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;export GOROOT GOBIN PATH&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;环境变量配置在code&amp;gt;/etc/profile文件里能保证该机器上每个用户都能使用这个环境变量。执行如下命令使环境变量生效：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;source /etc/profile&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;验证环境变量是否生效,如果控制台输出上面配置的路径，则说明配置成功：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;echo $GOROOT&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;切换到部署Go服务的用户下，当然可以继续是root用户下，配置&lt;code&gt;GOPATH&lt;/code&gt;环境变量：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;vim ~/.profile&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;在最下面编辑如下内容：&lt;br&gt;&lt;figure class=&quot;highlight vim&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;export GOPATH=~/gowork&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;然后在运行如下命令使环境变量生效：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;source ~/.profile&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;在&lt;code&gt;~/gowork&lt;/code&gt;目录下创建一个&lt;code&gt;main.go&lt;/code&gt;文件，写入以下内容：&lt;br&gt;&lt;figure class=&quot;highlight go&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; main&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;fmt&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;func&lt;/span&gt; main() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fmt.Println(&lt;span class=&quot;string&quot;&gt;&quot;Hello, 世界！&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;保存后运行：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;go run ~/gowork/main.go&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Hello, 世界！&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;成功打印出信息就表示安装成功了！！&lt;/p&gt;
+&lt;p&gt;Go相关资料:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.golangtc.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Golang中国社区&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/Unknwon/the-way-to-go_ZH_CN&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《Go入门指南》无闻翻译&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://gowalker.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Go语言项目在线文档&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Go 语言是由谷歌的科学家开发的，并开源的新语言，被誉为“21世纪的C语言”，它的主要目标是将静态语言的安全性和高效性与动态语言的易开发性进行有机结合，达到完美平衡，从而使编程变得更加有乐趣，而不是在艰难抉择中痛苦前行。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
+    
+      <category term="Development environment" scheme="http://yoursite.com/tags/Development-environment/"/>
+    
+      <category term="Go" scheme="http://yoursite.com/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在OSX系统上安装MySQL</title>
+    <link href="http://yoursite.com/2015/03/08/Install-MySQL-In-OSX/"/>
+    <id>http://yoursite.com/2015/03/08/Install-MySQL-In-OSX/</id>
+    <published>2015-03-08T08:13:25.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;项目需要，得在自个儿的电脑上安装MySQL，按照网上搜索出来的结果操作时遇到了一些问题，但也最终顺利安装成功，所以就写下这篇文章，记录一下。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;#安装MySQL#&lt;br&gt;到官网下载最新版本的MySQL，写这边文章的时候Mac最新的MySQL版本为5.6.23.&lt;/p&gt;
+&lt;p&gt;Mac下安装MySQL有两种方式，一种为压缩包形式 另一种为.dmg文件安装包。&lt;/p&gt;
+&lt;p&gt;##压缩包形式的安装方法##&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo mv mysql-5.1.45-osx10.6-x86_64 /usr/local/mysql&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ cd /usr/local&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo chown -R mysql:mysql mysql&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ cd mysql&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo scripts/mysql_install_db --user=mysql&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo chown -R root .&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo chown -R mysql data&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;修改密码，默认的密码为空，显然不大好&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo ./mysql_secure_installation&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;启动MySQL&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo ./mysqld_safe&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;输入刚才设置的root密码来登录MySQL&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo ./mysql -u root -p 新密码&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;停止MySQL&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo ./mysqld_safe stop&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;##安装包文件形式的安装方法##&lt;/p&gt;
+&lt;p&gt;安装包文件的后缀为.dmg。双击该文件即可安装。&lt;/p&gt;
+&lt;p&gt;###启动MySQL服务###&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;如果你已经安装了MySQLStartupItem.pkg，重新启动电脑即可。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果你有安装MySQLStartupItem.pkg或者不想启动电脑，运行：应用程序－实用工具－终端，在终端中输入命令：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo /Library/StartupItems/MySQLCOM/MySQLCOM start，然后输入你的系统管理员密码即可。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;最简单的方法就是打开系统偏好设置，会看到有一项MySQL，里面有一个启动MySQL的按钮。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;###关闭MySQL###&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;终端中输入命令,然后输入你的系统管理员密码即可。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo /Library/StartupItems/MySQLCOM/MySQLCOM stop&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;同启动MySQL服务的第三点&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;###更改MySQL root账户密码###&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo /usr/local/mysql/bin/mysqladmin -u root password&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;项目需要，得在自个儿的电脑上安装MySQL，按照网上搜索出来的结果操作时遇到了一些问题，但也最终顺利安装成功，所以就写下这篇文章，记录一下。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://yoursite.com/tags/Database/"/>
+    
+      <category term="MySQL" scheme="http://yoursite.com/tags/MySQL/"/>
+    
+      <category term="OSX" scheme="http://yoursite.com/tags/OSX/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Karma测试AngularJS代码</title>
+    <link href="http://yoursite.com/2015/02/08/%E4%BD%BF%E7%94%A8Karma%E6%B5%8B%E8%AF%95Angularjs%E4%BB%A3%E7%A0%81/"/>
+    <id>http://yoursite.com/2015/02/08/使用Karma测试Angularjs代码/</id>
+    <published>2015-02-08T10:03:15.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;###前言&lt;br&gt;这是一篇难产的博文，从去年写到了今年……&lt;/p&gt;
+&lt;p&gt;七月底到目前，已经使用了AngularJS开发了两三个项目。与之前使用的jQuery相比，Angualr非常强大，减少了一大堆的代码，印象最深的是它的双向数据绑定，一旦建立双向绑定，用户的任何变量操作都能立马同步到它绑定的变量，页面上的效果是这个值实时更新。这就意味着，当我们想要与后台服务器交互的时候，我们节省了收集数据的步骤，只需把绑定的对象放在参数里就行。&lt;/p&gt;
+&lt;p&gt;然而，AngularJS的强大不止如此。&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;AngularJS的设计目标包括如下两点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将应用逻辑与对DOM的操作解耦。这会提高代码的可测试性。&lt;/li&gt;
+&lt;li&gt;将应用程序的测试看的跟应用程序的编写一样重要。代码的构成方式对测试的难度有巨大的影响。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;没错，AngularJS最强大的功能之一就是它的高可测试性。&lt;br&gt;我们在浏览AngularJS的&lt;a href=&quot;https://docs.angularjs.org/api&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;的时候总能看到每个指令后面都会有一个测试代码片段。&lt;/p&gt;
+&lt;p&gt;###开始之前&lt;/p&gt;
+&lt;p&gt;下面我将编写一个简单的网页应用，将联系人存储到本地存储（LocalStorage）中。编写这个应用时，我将践行&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;测试驱动开发(TDD)&lt;/a&gt;的精神。同时，路由导航方面，我不会用angular－router，而是使用ui－router。&lt;/p&gt;
+&lt;p&gt;###搭建项目&lt;br&gt;用&lt;code&gt;bower&lt;/code&gt;搭建项目框架：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir karmaDmo
+bower init
+bower install bootstrap --save-dev
+bower install angularjs --save-dev
+bower install ui-router --save-dev
+bower install angular-mocks --save-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;初始化karma配置以及karma的使用，请参考我之前的文章 &lt;a href=&quot;http://www.wonsikin.com/2014/11/26/%E5%89%8D%E7%AB%AF%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83Karma%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;前端测试环境Karma简介&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;###编写测试用例&lt;/p&gt;
+&lt;p&gt;Karma的测试用例语法是&lt;a href=&quot;http://jasmine.github.io/edge/introduction.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Jasmine&lt;/a&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;describe(&amp;apos;app.services test&amp;apos;, function () {
+  var service;
+  beforeEach(function () {
+    //clear localStorage,inject the service before running test
+    if(window.localStorage) {
+      window.localStorage.clear();
+    }
+    module(&amp;apos;app.services&amp;apos;);
+
+    inject(function (storageService) {
+      service = storageService;
+    });
+  });
+
+  it(&amp;apos;should be a string&amp;apos;, function () {
+    expect(angular.isString(service.storageKey)).toBeTruthy();
+  });
+
+  it(&amp;apos;should be a object&amp;apos;, function () {
+    expect(angular.isObject(service.getInstance())).toBeTruthy();
+  });
+
+  it(&amp;apos;should be an array&amp;apos;, function () {
+    expect(angular.isArray(service.getAll())).toBeTruthy();
+  });
+
+  it(&amp;apos;should be an empty array&amp;apos;, function () {
+    expect(service.getAll().length).toEqual(0);
+  });
+
+  it(&amp;apos;should be one item in the array&amp;apos;, function () {
+    var item = {
+      name: &amp;apos;Arthur&amp;apos;,
+      mobile: &amp;apos;+86-13452121990&amp;apos;
+    };
+    service.save(item);
+    expect(service.getAll().length).toEqual(1);
+  });
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;###编写实现代码&lt;/p&gt;
+&lt;p&gt;启动Karma测试环境，然后编辑本app的业务逻辑：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;angular.module(&amp;apos;app.services&amp;apos;, [])
+  .factory(&amp;apos;storageService&amp;apos;, function () {
+    var factory = {
+      storageKey: &amp;apos;contactApp&amp;apos;,
+      getInstance: function() {
+        if(window.localStorage) {
+          var storage = window.localStorage.getItem(factory.storageKey) || { author: &amp;apos;Arthur&amp;apos;, description: &amp;apos;save contacts to localStorage&amp;apos;, data: []};
+          return angular.fromJson(storage);
+        }else{
+          return;
+        }
+      },
+      saveInstance: function(instance){
+        var string = angular.toJson(instance);
+        window.localStorage.setItem(factory.storageKey, string);
+      },
+      getAll: function(){
+        var result = null,
+        instance = factory.getInstance();
+        if(instance) {
+          result = instance.data || [];
+        }else{
+          result = [];
+        }
+        return result;
+      },
+      save: function(item){
+        if(item.key) {
+          factory.update(item);
+        }else{
+          factory.add(item);
+        }
+      },
+      add: function(item){
+        var instance = factory.getInstance();
+        item.key = new Date().getTime();
+        instance.data.push(item);
+        factory.saveInstance(instance);
+      },
+      update: function(item){
+        var instance = factory.getInstance(),
+            datas = instance.data;
+        for(var i in datas) {
+          if(datas[i].key === item.key) {
+            datas[i] = item;
+            break;
+          }
+        };
+        factory.saveInstance(instance);
+      }
+
+    };
+    return factory;
+  });
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;编写完毕后，Karma监控台的所有所有测试用例都亮绿灯的话，表明业务逻辑代码都是OK的。&lt;/p&gt;
+&lt;p&gt;本文章例子的源代码都发布到Github上，&lt;a href=&quot;https://github.com/wonsikin/KarmaDemo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;戳此查看&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;###一些思考&lt;br&gt;对于测试驱动开发的优劣点讨论这里不深入，但是有一点我记得很深刻。在最近的一个项目开发过程中，出现了一个bug让我们非常诧异的，因为之前的某个版本是正常的，但是在那个时候，它出问题了。我一位同事废了好大劲才发现这个bug是因为修改旧的bug才导致出现新的bug。于是我就思考，如果当时也运行着一套类似Karma这样的测试环境，我们肯定能避免这样子的问题出现的。&lt;/p&gt;
+&lt;p&gt;###参考&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://karma-runner.github.io/0.12/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Karma官网&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.ibm.com/developerworks/cn/linux/l-tdd/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;浅谈测试驱动开发（TDD）&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;###前言&lt;br&gt;这是一篇难产的博文，从去年写到了今年……&lt;/p&gt;
+&lt;p&gt;七月底到目前，已经使用了AngularJS开发了两三个项目。与之前使用的jQuery相比，Angualr非常强大，减少了一大堆的代码，印象最深的是它的双向数据绑定，一旦建立双向绑定，用户的任何变量操作都能立马同步到它绑定的变量，页面上的效果是这个值实时更新。这就意味着，当我们想要与后台服务器交互的时候，我们节省了收集数据的步骤，只需把绑定的对象放在参数里就行。&lt;/p&gt;
+&lt;p&gt;然而，AngularJS的强大不止如此。
+    
+    </summary>
+    
+    
+      <category term="AngularJS" scheme="http://yoursite.com/tags/AngularJS/"/>
+    
+      <category term="Karma" scheme="http://yoursite.com/tags/Karma/"/>
+    
+      <category term="Test" scheme="http://yoursite.com/tags/Test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前端测试环境Karma简介</title>
+    <link href="http://yoursite.com/2014/11/26/%E5%89%8D%E7%AB%AF%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83Karma%E7%AE%80%E4%BB%8B/"/>
+    <id>http://yoursite.com/2014/11/26/前端测试环境Karma简介/</id>
+    <published>2014-11-26T08:11:28.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;在开发软件的过程中，进行单元测试是非常不错的工作，也是有必要的工作。它帮助你觉得你的代码是无懈可击的，确保产品的可靠性。作为一名追求进步的的前端码农，学习前端的测试很有必要。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;###Karma简介&lt;br&gt;Karma是由Angular团队创造的JavaScript测试运行器，实际上，它更是一个测试环境，它让你更方便的运行测试，在不知不觉中监听着源码或者测试代码的改变，然后自动执行测试。&lt;/p&gt;
+&lt;p&gt;在前端测试上，传统时代的测试方法是在js脚本中写上几个&lt;code&gt;console&lt;/code&gt;或者&lt;code&gt;alert&lt;/code&gt;语句，然后刷新浏览器，查看打印或者弹出的信息。再后来，有了火狐的firebug和Chrome DevTools，js的测试进入了打断点的时代。然而，使用Chrome DevTools也是需要刷新浏览器，然后手动的点击跳步等操作。以上两个时代，前端的测试预期说是测试，不如说是调试，因为此时的测试是代码混着调试语句，在网页应用中（浏览器上）运行。Karma改变了前端测试的工作流程，它让开发者在开发过程中只需关注编写测试用例，编写实现方法等，而无需花费太多精力在无关代码的工作上。&lt;/p&gt;
+&lt;p&gt;###Karma安装&lt;br&gt;Karma运行在Node.js上，你可以从NPM包里面获取到。&lt;/p&gt;
+&lt;p&gt;假设你已经安装了Node.js，按照官方推荐的方法，你可以如下安装Karma以及相关的插件：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Install Karma:
+$ npm install karma --save-dev
+
+# Install plugins that your project needs:
+$ npm install karma-jasmine karma-chrome-launcher --save-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以上命令将会在你的当前目录下的&lt;code&gt;node_modules&lt;/code&gt;下安装&lt;code&gt;karma&lt;/code&gt;、&lt;code&gt;karma-jasmine&lt;/code&gt;、&lt;code&gt;karma-chrome-launcher&lt;/code&gt;。并且将开发依赖包保存进package.json,方便项目的其他开发人员只需在该目录下运行&lt;code&gt;npm install&lt;/code&gt;就能够安装所有的开发依赖包。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Run Karma:
+$ ./node_modules/karma/bin/karma start
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以上的命令是运行Karma，但是每次都打这么长的命令很费劲啊，所以，你可以如下安装&lt;code&gt;karma-cli&lt;/code&gt;，并配置到全局中:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ npm install -g karma-cli
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;成功之后，只需运行&lt;code&gt;karma start&lt;/code&gt;就能启动Karma测试了。&lt;/p&gt;
+&lt;p&gt;###Karma配置&lt;/p&gt;
+&lt;p&gt;但是启动之前有个很重要的步骤－－配置Karma的测试环境。运行&lt;code&gt;karma init&lt;/code&gt;可以生成配置文件：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ karma init my.conf.js
+
+Which testing framework do you want to use ?
+Press tab to list possible options. Enter to move to the next question.
+&amp;gt; jasmine
+
+Do you want to use Require.js ?
+This will add Require.js plugin.
+Press tab to list possible options. Enter to move to the next question.
+&amp;gt; no
+
+Do you want to capture a browser automatically ?
+Press tab to list possible options. Enter empty string to move to the next question.
+&amp;gt; Chrome
+&amp;gt; Safari
+&amp;gt;
+
+What is the location of your source and test files ?
+You can use glob patterns, eg. &amp;quot;js/*.js&amp;quot; or &amp;quot;test/**/*Spec.js&amp;quot;.
+Enter empty string to move to the next question.
+&amp;gt; *.js
+&amp;gt; test/*Spec.js
+&amp;gt;
+
+Should any of the files included by the previous patterns be excluded ?
+You can use glob patterns, eg. &amp;quot;**/*.swp&amp;quot;.
+Enter empty string to move to the next question.
+&amp;gt;
+
+Do you want Karma to watch all the files and run the tests on change ?
+Press tab to list possible options.
+&amp;gt; yes
+
+Config file generated at &amp;quot;/path/to/your/project/my.conf.js&amp;quot;.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置文件的详细语法和选项说明请参考Karma官网的&lt;a href=&quot;http://karma-runner.github.io/0.12/config/configuration-file.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;configuration file docs&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;###Karma运行&lt;/p&gt;
+&lt;p&gt;当启动Karma的时候，配置文件的路径会作为第一个参数传递过去。默认地，Karma会在当前目录下查找&lt;code&gt;karma.conf.js&lt;/code&gt;或者&lt;code&gt;karma.conf.coffee&lt;/code&gt;。但是你也可以指定配置文件启动Karma，例如，启动上一步骤生成的&lt;code&gt;my.conf.js&lt;/code&gt;配置文件：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Start Karma using your configuration:
+$ karma start my.conf.js
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;###第一个测试&lt;br&gt;在当前目录下创建一个test目录，然后新建一个js文件，命名为&lt;code&gt;testSpec.js&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;|--module
+|--test
+  |--testSpec.js
+|--my.conf.js
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在&lt;code&gt;testSpec.js&lt;/code&gt;中以下内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/**
+* Created by ArthurWANG on 14/11/26.
+*/
+describe(&amp;apos;hello world&amp;apos;, function () {
+  it(&amp;apos;should contains world&amp;apos;, function () {
+    expect(&amp;apos;Hello world&amp;apos;).toContain(&amp;apos;world&amp;apos;);
+  });
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面测试用例用的是Jasmine语法。Jasmine是一个专为JavaScript代码测试的行为驱动开发框架。它不依赖其它的JavaScript框架，不需要DOM。并且它有一个整洁明朗，一目了然的语法，让你能够简单地写测试用例。详细说明与语法介绍请&lt;a href=&quot;http://jasmine.github.io/edge/introduction.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;戳此&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;打开&lt;code&gt;my.conf.js&lt;/code&gt;，修改files配置如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// list of files / patterns to load in the browser
+files: [
+  &amp;apos;test/*Spec.js&amp;apos;
+],
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;启动Karma测试环境：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/4da583a7jw1emok4chz8rj21960mydko.jpg&quot; alt=&quot;启动成功&quot;&gt;&lt;br&gt;开启你的Karma测试之旅！&lt;/p&gt;
+&lt;p&gt;###参考&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://karma-runner.github.io/0.12/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Karma官网&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在开发软件的过程中，进行单元测试是非常不错的工作，也是有必要的工作。它帮助你觉得你的代码是无懈可击的，确保产品的可靠性。作为一名追求进步的的前端码农，学习前端的测试很有必要。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="Karma" scheme="http://yoursite.com/tags/Karma/"/>
+    
+      <category term="Test" scheme="http://yoursite.com/tags/Test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【翻译】分析JavaScript性能</title>
+    <link href="http://yoursite.com/2014/11/01/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E5%88%86%E6%9E%90JavaScript%E6%80%A7%E8%83%BD/"/>
+    <id>http://yoursite.com/2014/11/01/【翻译】分析JavaScript性能/</id>
+    <published>2014-11-01T07:48:54.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;###JavaScript分析数据图表介绍&lt;/p&gt;
+&lt;p&gt;使用谷歌Chrome浏览器，打开V8测试套件页面，点击&lt;code&gt;开始分析&lt;/code&gt;按钮或者按&lt;span class=&quot;kbd&quot;&gt;Cmd&lt;/span&gt;＋&lt;span class=&quot;kbd&quot;&gt;E&lt;/span&gt;快捷键开始记录JavascriptCPU分析。现在，刷新V8测试套件页面。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;当页面重新加载完毕，一个基准测试结果的评分将会出现。回到DevTools，点击&lt;code&gt;停止&lt;/code&gt;按钮或者再次按&lt;span class=&quot;kbd&quot;&gt;Cmd&lt;/span&gt;＋&lt;span class=&quot;kbd&quot;&gt;E&lt;/span&gt;快捷键来停止记录。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/bmiddle/4da583a7jw1elvixmb7mpj213k0jedlg.jpg&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;p&gt;上图的&lt;code&gt;Bottom Up&lt;/code&gt;视图列出了影响性能的函数，它也能够用来检查这些函数的调用路径。&lt;/p&gt;
+&lt;p&gt;现在，通过点击Bottom Up / Top Down选择按钮来选择&lt;code&gt;Top Down&lt;/code&gt;视图，然后点击函数列左边的小箭头，&lt;code&gt;Top Down&lt;/code&gt;视图展示了一个调用结构的总体情况，从调用栈的顶部开始。&lt;/p&gt;
+&lt;p&gt;在函数列中选择一个函数，然后点击&lt;code&gt;Focus selected function&lt;/code&gt;按钮(眼睛图标)。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/bmiddle/4da583a7jw1elvixjoqxjj213y0di41n.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;这将过滤分析结果，只展示选中的函数和它的调用程序。点击&lt;code&gt;Reload&lt;/code&gt;按钮（刷新图标）来恢复分析及过的原始状态。&lt;/p&gt;
+&lt;p&gt;选择函数列中的一个函数，然后点击&lt;code&gt;Exclude selected function&lt;/code&gt;按钮（X图标）。根据你选择的函数，你会看到类似如下图片的东西：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/bmiddle/4da583a7jw1elvj2itu8bj213q0dmadj.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Exclude selected function&lt;/code&gt;按钮的作用是从分析结果中移除选中的函数，然后计算排除之前函数后，调用函数的总时间。点击&lt;code&gt;Reload&lt;/code&gt;按钮（刷新图标）来恢复分析及过的原始状态。&lt;/p&gt;
+&lt;p&gt;你可以记录多份分析数据图表。点击&lt;code&gt;开始分析&lt;/code&gt;按钮，重新载入V8基准测试页面，然后点击&lt;code&gt;停止分析&lt;/code&gt;按钮。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/bmiddle/4da583a7jw1elvj2fwicoj21fy0dodkz.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;左侧的侧边栏列出了你记录的分析数据图表，右边的树形视图展示了选中的分析数据图表的信息集。&lt;/p&gt;
+&lt;p&gt;###使用烈焰图&lt;/p&gt;
+&lt;p&gt;烈焰图视图提供了一个JavaScript执行过程的可视化表示，和&lt;code&gt;Timeline&lt;/code&gt;与&lt;code&gt;Network&lt;/code&gt;展示的相似。执行完一个JavaScriptCPU数据分析后，通过详细视图中的烈焰图的功能，你可以以另一种方式来查看分析数据图表的数据。&lt;/p&gt;
+&lt;p&gt;#####可视化执行路径&lt;/p&gt;
+&lt;p&gt;通过分析和理解函数调用进程，你能够对你的应用的执行路径在视觉上得到一个更好的理解。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/bmiddle/4da583a7jw1elvix6271vj21400g7aei.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;#####通过颜色码识别异常值&lt;br&gt;当缩小烈焰图，你可以识别出能够优化的重复图样，或者更重要的，你能够更加轻易地识别出异常值或者意想不到的执行过程。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/bmiddle/4da583a7jw1elvix3jzvmj20sg0b0gni.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;#####时间量度(类似时间轴)上的可视化JavaScript分析数据&lt;br&gt;其它的JavaScript分析结果的数据是随着时间推移的累积，而烈焰图的报告数据是按时间显示的。这表明当你看到时间发生的时候，你就能跳进他们的时间量度里面，获取一些JavaScript执行过程的概览。举个例子，当你看到时间轴上黄色大条纹，这是一个能够查看问题的完美方法。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/bmiddle/4da583a7jw1elvix9n1tij21400nen2v.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;也许你甚至想要在记录JavaScript分析数据的同时，也做一个时间轴记录，这里有一个样例你可以这么做：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(function() {
+  console.timeline();
+  console.profile();
+  setTimeout(function() {
+      console.timelineEnd();
+      console.profileEnd();
+  }, 3000);
+})();
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：水平轴表示时间，垂直轴是调用栈。耗性能的函数会显得很宽。调用栈在Y轴上表示，所以一个高的火焰图是不必关心的，请密切关注宽敞的柱状图，无论它们在调用栈的哪个位置。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;######如何使用烈焰图:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开DevTools，到Profiles面板。&lt;/li&gt;
+&lt;li&gt;选择Record JavaScript CPU profile选项然后点击开始按钮。&lt;/li&gt;
+&lt;li&gt;当你已经做完数据选择，点击停止按钮。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在分析数据视图，从选择菜单中选择可视化的烈焰图。&lt;br&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/bmiddle/4da583a7jw1elvixbgdryj20h60a1dgr.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：为了提高记录分析数据的准确性，请在DevTools的设置面板中勾选&lt;em&gt;High resolution CPU profiling&lt;/em&gt;的选项，之后，你就能够以十分之一毫秒的度量来查看烈焰图的数据。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;面板的顶部展示了整个记录过程的概观。你可以用鼠标选择指定区域，并放大这个区域。你也可以通过点击空白区域和拖动你的鼠标来向左右滚动。详细视图的时间量度会相应的伸缩。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/bmiddle/4da583a7jw1elvixe8hpej20h609d0u5.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;在详细视图中，函数的调用栈被表示为一个堆栈块。处于上面的块是被处在下面的函数块调用。鼠标悬浮在一个函数快上面将会显示函数名和耗时数据：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/bmiddle/4da583a7jw1elvixfnoeuj209y07gaaf.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Name&lt;/strong&gt;－函数的名称。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Self time&lt;/strong&gt;－函数完成当前调用的时间，只包括函数本身的语句，不包括它调用的其它函数的时间。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Total time&lt;/strong&gt;－函数完成调用的时间，包括它调用的其它函数的时间。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Aggregated self time&lt;/strong&gt;－整个记录过程中，函数调用的总时间，不包括该函数调用其它函数的时间。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Aggregated total time&lt;/strong&gt;－函数调用的总时间，包括该函数调用其它函数的时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;烈焰图上的颜色是随机的，然而在整个调用过程中函数的颜色都会一致的。这让你能够轻易地查看函数的执行过程，认出异常值。时间轴上颜色的使用跟函数消耗资源是无关联的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/bmiddle/4da583a7jw1elvixh49baj20ag030jrf.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;点击函数块能够在Sources面板中打开包含它的JavaScript文件，调转到函数定义的行。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://developer.chrome.com/devtools/docs/cpu-profiling&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;原文地址&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;###JavaScript分析数据图表介绍&lt;/p&gt;
+&lt;p&gt;使用谷歌Chrome浏览器，打开V8测试套件页面，点击&lt;code&gt;开始分析&lt;/code&gt;按钮或者按&lt;span class=&quot;kbd&quot;&gt;Cmd&lt;/span&gt;＋&lt;span class=&quot;kbd&quot;&gt;E&lt;/span&gt;快捷键开始记录JavascriptCPU分析。现在，刷新V8测试套件页面。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Chrome DevTools" scheme="http://yoursite.com/tags/Chrome-DevTools/"/>
+    
+      <category term="JavaScript Performance" scheme="http://yoursite.com/tags/JavaScript-Performance/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Angularjs自定义指令小试</title>
+    <link href="http://yoursite.com/2014/10/26/Angularjs%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E5%B0%8F%E8%AF%95/"/>
+    <id>http://yoursite.com/2014/10/26/Angularjs自定义指令小试/</id>
+    <published>2014-10-26T14:39:54.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;##简介&lt;br&gt;指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;指令标记在一个DOM元素上（例如一个属性、一个元素名称、注释或者CSS类），告诉Angularjs的HTML编译器（$compile）将指定的行为附加到DOM元素上或者甚至转换DOM元素和它的子元素。&lt;/p&gt;
+&lt;p&gt;Angular附带了一系列内建的指令，例如&lt;code&gt;ngBind&lt;/code&gt;、&lt;code&gt;ngModel&lt;/code&gt;和&lt;code&gt;ngClass&lt;/code&gt;，就像你创建控制器和服务，你可以为Angular创建自己的指令来使用。当Angular引导你的应用时，HTML编译器会遍历DOM元素来匹配DOM对应的指令。&lt;/p&gt;
+&lt;p&gt;下面简单实现一个年月日下拉框联动选择的Angular自定义指令。&lt;/p&gt;
+&lt;p&gt;##声明指令&lt;br&gt;Angular使用&lt;code&gt;directive()&lt;/code&gt;这个方法来定义指令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;angular.module(&amp;apos;myApp&amp;apos;,[])
+    .directive(&amp;apos;myDirective&amp;apos;,function(){
+        //定义指令的内容
+    });
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;directive()&lt;/code&gt;方法接受两个参数：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;name（字符串）。指令的名称。&lt;/li&gt;
+&lt;li&gt;factory_function。该函数返回一个定义了指令的全部行为的对象。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;当Angular启动应用的时候，会把第一个参数作为名称来注册第二个参数返回的对象。Angular会解析DOM元素中使用这个名称的地方，并在这个地方引用对应的指令。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div my-directive&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;注意&lt;/code&gt;：定义的指令名称为驼峰式的字符串，但是使用的时候要用横杆替换。&lt;/p&gt;
+&lt;p&gt;##指令的配置项&lt;/p&gt;
+&lt;p&gt;本例子使用到的指令配置项如下&lt;/p&gt;
+&lt;p&gt;####restrict&lt;/p&gt;
+&lt;p&gt;restrict是一个可选的参数，它告诉Angular该指令在DOM中可以以何种形式被声明。默认值为&lt;code&gt;A&lt;/code&gt;，即以属性的形式来进行声明。该配置项的可选值如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;E（元素）
+&amp;lt;my-directive&amp;gt;&amp;lt;/my-directive&amp;gt;
+A（属性，默认值）
+&amp;lt;div my-directive&amp;gt;&amp;lt;/div&amp;gt;
+C（类名）
+&amp;lt;div class=&amp;quot;my-directive&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+M（注释）
+&amp;lt;!--directive:my-directive--&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以上可选值可以独立使用，也可以混合使用。但是请注意，如果目标网页应用有兼容低版本IE浏览器的需求时，请勿只使用&lt;code&gt;E&lt;/code&gt;选项，明智点的方法是同时使用&lt;code&gt;EA&lt;/code&gt;选项。&lt;/p&gt;
+&lt;p&gt;####replace&lt;/p&gt;
+&lt;p&gt;replace是一个可选的参数，如果设置了其值必须是true，因为默认值就是false。默认值表示指令中定义的模板会被当作自元素插入到调用此指令的元素内部。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div my-directive&amp;gt;&amp;lt;/div&amp;gt;
+.directive(&amp;apos;myDirective&amp;apos;,function(){
+    return {
+        template: &amp;apos;&amp;lt;div&amp;gt;Some stuff here&amp;lt;/div&amp;gt;&amp;apos;
+    }
+});
+
+调用结果如下
+&amp;lt;div my-directive&amp;gt;
+    &amp;lt;div&amp;gt;Some stuff here&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当replace的值设为true的时候&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;.directive(&amp;apos;myDirective&amp;apos;,function(){
+    return {
+        replace: true,
+        template: &amp;apos;&amp;lt;div&amp;gt;Some stuff here&amp;lt;/div&amp;gt;&amp;apos;
+    }
+});
+
+结果如下
+&amp;lt;div&amp;gt;Some stuff here&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####scope&lt;br&gt;该选项用于设置指令的作用域信息。选项可以被设为true或者一个对象。默认值为false。&lt;/p&gt;
+&lt;p&gt;当选项被设成true的时候，表示会从父作用域继承并创建一个新的作用域对象。&lt;/p&gt;
+&lt;p&gt;scope的选项也可以是一个空对象，这表示隔离作用域。隔离作用域是scope三个选项中最难理解的一个，但也是最强大的。楼主能力有限，并且本例子不使用该选项，所以在此略过。&lt;/p&gt;
+&lt;p&gt;scope的最后一个选项是绑定策略。Angular提供了几种方法能够将指令内部的隔离作用域同指令外部的作用域进行绑定。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;本地作用域属性：@ or @attr。将本地作用域同DOM属性的值绑定，指令内部作用域可以使用外部作用域的变量。
+双向绑定：= or =attr。将本地作用域上的属性同父级作用域上的属性进行双向数据绑定。
+父级作用域绑定：&amp;amp; or &amp;amp;attr。对父级作用域进行绑定，以便在指令作用域中运行函数。对这个值进行设置时会声称一个指向父级作用域的包装函数。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####controller&lt;br&gt;该选项表示指令的控制器，用来控制指令的逻辑行为。控制器中有一些特殊的服务可以被注入到指令当中&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;$scope。与指令相关联的当前作用域。&lt;/li&gt;
+&lt;li&gt;$element。当前指令对应的元素。&lt;/li&gt;
+&lt;li&gt;$attrs。 当前元素的属性组成的对象。&lt;/li&gt;
+&lt;li&gt;$transclude。嵌入连接函数会与对应的嵌入作用域进行预绑定。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;####template&lt;br&gt;该选项可选值如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;一段HTML文本。&lt;/li&gt;
+&lt;li&gt;可以接受两个参数，参数为tElement和tAttrs，并返回一个代表模板的字符串。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;##逻辑&lt;br&gt;年月日下拉框联动选择的Angular自定义指令目标是创建三个下拉框，第一个表示年份，第二个表示月份，第三个表示日期，年月日下拉框必须能够联动，并且当选择闰年的二月份的时候，日下拉框必须有29的选项。同时该指令能够将选择的结果返回给父作用域。&lt;/p&gt;
+&lt;p&gt;年月日下拉框联动选择（以下简称qbDate）指令的模板如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;template: &amp;apos;\
+      &amp;lt;div&amp;gt;\
+        &amp;lt;select ng-model=&amp;quot;year&amp;quot;&amp;gt;\
+            &amp;lt;option value=&amp;quot;&amp;quot;&amp;gt;&amp;lt;/option&amp;gt;\
+            &amp;lt;option ng-repeat=&amp;quot;item in yearList&amp;quot; value=&amp;quot;{{item}}&amp;quot;&amp;gt;{{item}}&amp;lt;/option&amp;gt;\
+        &amp;lt;/select&amp;gt;\
+        &amp;lt;select ng-model=&amp;quot;month&amp;quot;&amp;gt;\
+            &amp;lt;option value=&amp;quot;&amp;quot;&amp;gt;&amp;lt;/option&amp;gt;\
+            &amp;lt;option ng-repeat=&amp;quot;item in monthList track by $index&amp;quot; value=&amp;quot;{{item}}&amp;quot;&amp;gt;{{item}}&amp;lt;/option&amp;gt;\
+        &amp;lt;/select&amp;gt;\
+        &amp;lt;select ng-model=&amp;quot;day&amp;quot;&amp;gt;\
+            &amp;lt;option&amp;gt;&amp;lt;/option&amp;gt;\
+            &amp;lt;option ng-repeat=&amp;quot;item in dayList track by $index&amp;quot; value=&amp;quot;{{item}}&amp;quot;&amp;gt;{{item}}&amp;lt;/option&amp;gt;\
+        &amp;lt;/select&amp;gt;\
+      &amp;lt;/div&amp;gt;\
+    &amp;apos;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;qbDate的控制器逻辑代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;controller: function($scope,$element){
+    console.log($scope.year,$scope.month,$scope.day);
+    $scope.yearList = [];
+    for(var i = 1900;i&amp;lt;=2030;i++){
+        $scope.yearList.push(i);
+    }
+    $scope.monthList = [];
+    $scope.dayList = [];
+    for(var i = 1;i&amp;lt;=12;i++){
+        $scope.monthList.push(i);
+    }
+    $scope.$watch(&amp;apos;year&amp;apos;,function(newValue,oldValue){
+        if(newValue){
+            if(newValue.length &amp;gt; 4){
+                $scope.year = oldValue;
+            }
+            $scope.dayList = [];
+            $scope.month = &amp;apos;&amp;apos;;
+            $scope.day = &amp;apos;&amp;apos;;
+
+        }
+
+    });
+    $scope.$watch(&amp;apos;month&amp;apos;,function(newValue,oldValue){
+        var months31 = [1,3,5,7,8,10,12];
+        var months30 = [4,6,9,11];
+        var month = parseInt(newValue);
+        var maxDay = 31;
+        if(months31.indexOf(month) &amp;gt; 0){
+            maxDay = 31;
+        } else if (months30.indexOf(month) &amp;gt; 0){
+            maxDay = 30;
+        } else{
+            var year = parseInt($scope.year);
+            if((year%4==0 &amp;amp;&amp;amp; year%100!=0)||(year%100==0 &amp;amp;&amp;amp; year%400==0)){
+                maxDay=29;
+            }else{
+                maxDay=28;
+            }
+        }
+        for(var i = 1;i&amp;lt;=maxDay;i++){
+            $scope.dayList.push(i);
+        }
+    });
+},
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;qbDate的作用域设置如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;scope: {
+        year: &amp;apos;=yearModel&amp;apos;,
+        month: &amp;apos;=monthModel&amp;apos;,
+        day: &amp;apos;=dayModel&amp;apos;
+    },
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用的时候这么用：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div qb-date year-model=&amp;quot;year&amp;quot; month-model=&amp;quot;month&amp;quot; day-model=&amp;quot;day&amp;quot;&amp;gt;&amp;lt;div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;结合qbDate的作用域设置详情，qbDate 的作用域里面的year属性将绑定到qbDate指令的属性yearModel，而yearModel的值为qbDate指令父作用域year的值。由于qbDate指令是双向绑定的，所以指令内部的值变化将会反应到父作用域的值变化。&lt;/p&gt;
+&lt;p&gt;##源码&lt;br&gt;本例子源码已经放在&lt;a href=&quot;http://jsfiddle.net/fnghwsj/p3x9ufhe/3/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JSFiddle&lt;/a&gt;上。&lt;/p&gt;
+&lt;p&gt;仓促赶工，如有谬误，还望指正。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##简介&lt;br&gt;指令（Directives）是Angularjs非常强大的属性之一，使用指令可以创建很多共用的组建，用于减轻代码的重复性和实现复杂逻辑。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="AngularJS" scheme="http://yoursite.com/tags/AngularJS/"/>
+    
+      <category term="Directives" scheme="http://yoursite.com/tags/Directives/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AngularJS动态路由</title>
+    <link href="http://yoursite.com/2014/08/02/AngularJS%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1/"/>
+    <id>http://yoursite.com/2014/08/02/AngularJS动态路由/</id>
+    <published>2014-08-02T07:49:48.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;##前言&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;AngularJS是一款开源 JavaScript函式库，由Google维护，用来协助单一页面应用程式运行的。它的目标是透过MVC模式 (MVC) 功能增强基于浏览器的应用，使开发和测试变得更加容易&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;本例子使用的是AngularJS 1.2.2版本。&lt;/p&gt;
+&lt;p&gt;##简单的动态路由&lt;br&gt;AngularJS提供动态路由控制，就是根据地址栏链接不同调用不同的模板来呈现在页面。&lt;br&gt;使用动态路由需要调用&lt;a href=&quot;https://docs.angularjs.org/api/ngRoute&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ngRoute&lt;/a&gt;模块,ngRoute模块为angular应用提供了路由选择、深链接服务和指令。&lt;/p&gt;
+&lt;p&gt;####安装&lt;br&gt;在主页面（一般是index.html页面）引用如下两个js文件&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;
+&amp;lt;script src=&amp;quot;angular-route.js&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####路由选择定义&lt;br&gt;创建一个app.js文件：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/**
+ * Created by Arthur WANG on 14-8-2.
+ */
+var app = angular.module(&amp;apos;app&amp;apos;, [&amp;apos;ngRoute&amp;apos;]);//创建名为app的模块
+
+//配置动态路由
+app.config([&amp;apos;$routeProvider&amp;apos;, function ($routeProvider) {
+    $routeProvider
+        .when(&amp;apos;/about&amp;apos;, {//当解析到/about路径的时候，会调用viws/about.html模板和使用aboutCtrl控制器
+            templateUrl: &amp;apos;views/about.html&amp;apos;,
+            controller: &amp;apos;aboutCtrl&amp;apos;
+        })
+        .when(&amp;apos;/contact&amp;apos;, {
+            templateUrl: &amp;apos;views/contact.html&amp;apos;,
+            controller: &amp;apos;contactCtrl&amp;apos;
+        }).otherwise({//其他路径时跳转到主页
+            redirectTo: &amp;apos;/&amp;apos;
+        });
+}]);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在主页面中引用以上js文件。&lt;/p&gt;
+&lt;p&gt;####控制器&lt;br&gt;这里，我们打算进入about页面时调用aboutCtrl控制器。所以我们创建一个aboutCtrl.js，如下所示：&lt;br&gt;    /**&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; * Created by Arthur WANG on 14-8-2.
+ */
+app.controller(&amp;apos;aboutCtrl&amp;apos;, [&amp;apos;$scope&amp;apos;, function ($scope) {
+    $scope.author = &amp;quot;Arthur WANG&amp;quot;;
+    $scope.name = &amp;quot;AngularJS&amp;quot;;
+}]);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####视图&lt;br&gt;路径&lt;code&gt;/about&lt;/code&gt;将会调用&lt;code&gt;views/about.html&lt;/code&gt;，在视图里面填上要呈现的内容。&lt;/p&gt;
+&lt;p&gt;####主页面&lt;br&gt;在主页面里，依次引用上面写的js文件&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;script src=&amp;quot;app.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;controllers/aboutCtrl.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;同时，建议将&lt;code&gt;ng-app=”app”&lt;/code&gt;指令放置在&lt;code&gt;&amp;lt;html&amp;gt;&lt;/code&gt;标签上。&lt;br&gt;然后在需要动态替换视图的地方添加如下代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!--Div.ng-view将会被模板替换--&amp;gt;
+&amp;lt;div ng-view&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样，一个简单的AngularJS动态路由就搭建完毕。&lt;/p&gt;
+&lt;p&gt;##随路由改变而变化的页面标题&lt;/p&gt;
+&lt;p&gt;如果想要路由变化的时候，页面title也跟着变化，可以如下设置：&lt;/p&gt;
+&lt;p&gt;1、 为每个$routeProvider的条件添加title属性:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$routeProvider
+    .when(&amp;apos;/about&amp;apos;, {//当解析到/about路径的时候，会调用viws/about.html模板和使用aboutCtrl控制器
+        title: &amp;apos;关于&amp;apos;,
+        templateUrl: &amp;apos;views/about.html&amp;apos;,
+        controller: &amp;apos;aboutCtrl&amp;apos;
+    })
+    .otherwise({
+        title: &amp;apos;首页&amp;apos;,
+        redirectTo: &amp;apos;/&amp;apos;
+    });
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2、 在app.js的后面添加如下代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//页面title跟着变化
+app.run([&amp;apos;$location&amp;apos;,&amp;apos;$rootScope&amp;apos;,function($location,$rootScope){
+    $rootScope.$on(&amp;apos;$routeChangeSuccess&amp;apos;, function (event, current, previous) {
+        $rootScope.title = current.title;
+    });
+}]);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;3、 主页面的title修改为如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;title ng-bind=&amp;quot;&amp;apos;AngularJS&amp;amp;mdash;&amp;apos; + title&amp;quot;&amp;gt;&amp;lt;/title&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在这里，请注意，必须把&lt;code&gt;ng-app&lt;/code&gt;指令设置到&lt;code&gt;&amp;lt;html&amp;gt;&lt;/code&gt;标签处，这样子AngularJS才会将这个页面解析出来。&lt;/p&gt;
+&lt;p&gt;##One route,many views&lt;/p&gt;
+&lt;p&gt;以上的例子是一个路由对应一个视图，在这种情况下，如果有许多路由和视图，就得在&lt;code&gt;app.js&lt;/code&gt;里面配置很多路由条件，每次新增一个路由视图的时候都得配置路由条件。&lt;/p&gt;
+&lt;p&gt;其实，&lt;a href=&quot;http://www.github.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Github&lt;/a&gt;上有位&lt;a href=&quot;https://github.com/GrumpyWizards&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;牛人&lt;/a&gt;另辟蹊径，整出了一个&lt;code&gt;One route,many views&lt;/code&gt;的例子，详情请移步&lt;a href=&quot;https://github.com/GrumpyWizards/ngDynamicRouting&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ngDynamicRouting&lt;/a&gt;项目。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ps&lt;/code&gt;:本示例已经放在Github上，地址为&lt;a href=&quot;https://github.com/wonsikin/ngDynamicRoutingDEMO&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ngDynamicRoutingDEMO&lt;/a&gt;，欢迎指正。&lt;/p&gt;
+&lt;p&gt;##参考&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.ituring.com.cn/article/38394&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;常见前端MVC框架比较&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://angularjs.org&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AngularJS官网&lt;/a&gt;，建议翻墙看&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##前言&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;AngularJS是一款开源 JavaScript函式库，由Google维护，用来协助单一页面应用程式运行的。它的目标是透过MVC模式 (MVC) 功能增强基于浏览器的应用，使开发和测试变得更加容易&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="AngularJS" scheme="http://yoursite.com/tags/AngularJS/"/>
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="MVC" scheme="http://yoursite.com/tags/MVC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git与远程资源库同步简析</title>
+    <link href="http://yoursite.com/2014/07/24/Git%E4%B8%8E%E8%BF%9C%E7%A8%8B%E8%B5%84%E6%BA%90%E5%BA%93%E5%90%8C%E6%AD%A5%E7%AE%80%E6%9E%90/"/>
+    <id>http://yoursite.com/2014/07/24/Git与远程资源库同步简析/</id>
+    <published>2014-07-24T11:06:31.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;目前，我参与的公司的一个项目把版本控制放到Github上了。多人协作开发的工程中，需要时常从服务器上更新代码。Git中有两种更新代码的方法：&lt;code&gt;fetch&lt;/code&gt;和&lt;code&gt;pull&lt;/code&gt;。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;###fetch 和 pull的区别&lt;br&gt;1.&lt;code&gt;git fetch&lt;/code&gt;:从远程获取最新版本，不会自动merge。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git fetch origin master #从远程获取最新版本
+git log -p master..origin/master #比较本地与远程的差别
+git merge origin/master #合并
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2.&lt;code&gt;git pull&lt;/code&gt;:从远程获取最新版本，并且自动合并&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git pull origin master
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上述两种方法中，&lt;code&gt;git fetch&lt;/code&gt;比较安全，能够在合并之前查看本地与远程的区别。&lt;br&gt;使用&lt;code&gt;git pull&lt;/code&gt;的话，有的时候会因为本地有改动而执行失败。&lt;/p&gt;
+&lt;p&gt;###git stash&lt;br&gt;如果要获取最新版本的时候本地已经有改动了，而且这些改动是有意义的，怎么办呢？&lt;/p&gt;
+&lt;p&gt;可以使用&lt;code&gt;git stash&lt;/code&gt;暂时搁置当前已做的改动。具体如下&lt;/p&gt;
+&lt;p&gt;1、先把本地改动加到staging area:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git add .
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2、将改动搁置:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git stash
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;3、找回之前搁置的改动:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git stash apply
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;4、查看所有的搁置版本:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git stash list
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;5、stash的其他用法还有如下:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git stash apply stash@{1} #找回栈中的第二个
+git stash pop #找回第一个
+git stash drop &amp;lt;id&amp;gt; #删除一个stash
+git stash clear #删除所有stash
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;###参考&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/hudashi/article/details/7664457&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.csdn.net/hudashi/article/details/7664457&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/qinjienj/article/details/7475890&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.csdn.net/qinjienj/article/details/7475890&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.bootcss.com/p/git-guide/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Git建议指南&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;目前，我参与的公司的一个项目把版本控制放到Github上了。多人协作开发的工程中，需要时常从服务器上更新代码。Git中有两种更新代码的方法：&lt;code&gt;fetch&lt;/code&gt;和&lt;code&gt;pull&lt;/code&gt;。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【翻译】PHP和node.js对比</title>
+    <link href="http://yoursite.com/2014/07/12/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91php%E5%92%8Cnodejs%E5%AF%B9%E6%AF%94/"/>
+    <id>http://yoursite.com/2014/07/12/【翻译】php和nodejs对比/</id>
+    <published>2014-07-12T10:45:56.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;当提到Web编程，在我大部分的时间里，我都是使用ASP.NET或者LAMP技术。现在，一种新的技术叫做node.js。它是一种轻量级的开发平台，在服务端运行Javascript代码，据说通过异步I/O方法提高性能。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;新理论认为同步或者阻塞性I/O工作像如下所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/4da583a7tw1eia784efdpj20e209u74t.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I/O是Web事务中非常典型的高代价的部分。当一个请求到达Apache Web服务器的时候，服务器将请求传给PHP解释器解析成任何动态内容。现在，棘手的问题来了—假使PHP解析想要从磁盘或者数据库读取一些内容或者写一些内容，那会是整条链子上最慢的一环。当你调用PHP函数&lt;code&gt;file_get_contents()&lt;/code&gt;的时候，服务器全部的线程都会被阻塞，直到内容被取回。服务器将不能做任何事情直到你的脚本拿到文件内容。考虑下同时从不同用户那里发起许多类似请求到你的服务器的时候将会发生什么？他们会因为线程阻塞在I/O中，服务器没有任何线程可以用来处理任务而处在等待的队列中！&lt;/p&gt;
+&lt;p&gt;node.js提出了一个独特的卖点。因为node.js在它几乎所有的函数中实现异步I/O。在上面描述的场景中，服务器中的线程将会在文件检索函数（&lt;code&gt;fs.readFile&lt;/code&gt;）被调用后立马被释放。然后，一旦I/O读写完毕，node就会调用一个函数（早前从&lt;code&gt;fs.readFile&lt;/code&gt;传递过来的）传递数据参数。同一时刻，珍贵的线程能被用来服务其它线程。&lt;/p&gt;
+&lt;p&gt;这就是关于node.js的理论。但是在猿工界，我不是一个能够接受新事物的人，因为node.js被吹得天花乱坠而且每个人都在用它。不，我要自己查明和验证node.js的真实情况。我想看看这个理论是否能够经受实践检验。&lt;/p&gt;
+&lt;p&gt;所以我给自己定的工作就是写两个相同的脚本来进行基准测试：一个使用PHP（发布在Apache2上），另一个使用Javascript（发布在node.js上）。测试非常简单，脚本要实现的目标如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;接收请求。&lt;/li&gt;
+&lt;li&gt;生成一串大小为108kb的随机字符串。&lt;/li&gt;
+&lt;li&gt;将字符串写在磁盘上的一个文件中。&lt;/li&gt;
+&lt;li&gt;然后从磁盘中读回内容。&lt;/li&gt;
+&lt;li&gt;在响应流中返回字符串。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这是第一个脚本，&lt;code&gt;index.php&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+    //index.php
+    $s=&amp;quot;&amp;quot;; //generate a random string of 108KB and a random filename
+    $fname = chr(rand(0,57)+65).chr(rand(0,57)+65).chr(rand(0,57)+65).chr(rand(0,57)+65).&amp;apos;.txt&amp;apos;;
+    for($i=0;$i&amp;lt;108000;$i++)
+    {
+        $n=rand(0,57)+65;
+        $s = $s.chr($n);
+    }
+
+    //write s to a file
+    file_put_contents($fname,$s);
+    $result = file_get_contents($fname);
+    echo $result;
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后这是第二个脚本，&lt;code&gt;server.js&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//server.js
+var http = require(&amp;apos;http&amp;apos;);
+var server = http.createServer(handler);
+
+function handler(request, response) {
+    //console.log(&amp;apos;request received!&amp;apos;);
+    response.writeHead(200, {&amp;apos;Content-Type&amp;apos;: &amp;apos;text/plain&amp;apos;});
+
+    s=&amp;quot;&amp;quot;; //generate a random string of 108KB and a random filename
+    fname = String.fromCharCode(Math.floor(65 + (Math.random()*(122-65)) )) +
+        String.fromCharCode(Math.floor(65 + (Math.random()*(122-65)) )) +
+        String.fromCharCode(Math.floor(65 + (Math.random()*(122-65)) )) +
+        String.fromCharCode(Math.floor(65 + (Math.random()*(122-65)) )) + &amp;quot;.txt&amp;quot;;
+
+    for(i=0;i&amp;lt;108000;i++)
+    {
+        n=Math.floor(65 + (Math.random()*(122-65)) );
+        s+=String.fromCharCode(n);
+    }
+
+    //write s to a file
+    var fs = require(&amp;apos;fs&amp;apos;);
+    fs.writeFile(fname, s, function(err, fd) {
+            if (err) throw err;
+            //console.log(&amp;quot;The file was saved!&amp;quot;);
+            //read back from the file
+            fs.readFile(fname, function (err, data) {
+                if (err) throw err;
+                result = data;
+                response.end(result);
+            });
+        }
+    );
+}
+
+server.listen(8124);
+console.log(&amp;apos;Server running at http://127.0.0.1:8124/&amp;apos;);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;接着运行Apache基准测试工具，给两个脚本发起2000次请求（200个并发）。当我看到运行结束的时间统计数据，我和我的小伙伴都惊呆了：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#PHP:
+Concurrency Level:      200
+Time taken for tests:   574.796 seconds
+Complete requests:      2000
+
+#node.js:
+Concurrency Level:      200
+Time taken for tests:   41.887 seconds
+Complete requests:      2000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;真相大白。node.js比PHP快了十四倍多！这个结果是令人惊讶的，它简明地意味着在不久的将来，node.js将会成为编写性能驱动的应用的事实标准，这是毫无疑问的！&lt;/p&gt;
+&lt;p&gt;我同意node.js的生态系统还没有广泛地发展，很多用来数据库连接、网络接入、工具类node模块正在积极地开发中。但是尽管如此，在看到这个结果之后，我们无须担心。任何花在node.js开发上的额外努力都是值得的。PHP也许仍然能保有“Web之王”的地位，但是随着node.js的到来，我觉得那种情况不会持续很长时间。&lt;/p&gt;
+&lt;p&gt;####参考&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Node.js&quot; title=&quot;https://en.wikipedia.org/wiki/Node.js&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://en.wikipedia.org/wiki/Node.js&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://notes.ericjiang.com/posts/751&quot; title=&quot;http://notes.ericjiang.com/posts/751&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://notes.ericjiang.com/posts/751&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://nodejs.org&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://nodejs.org&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://code.google.com/p/node-js-vs-apache-php-benchmark/wiki/Tests&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://code.google.com/p/node-js-vs-apache-php-benchmark/wiki/Tests&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;####原文信息&lt;br&gt;链接：&lt;a href=&quot;http://www.prahladyeri.com/2014/06/php-vs-node-js-real-statistics/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;PHP vs node.js: The REAL statistics&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;作者：Prahlad Yeri&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;当提到Web编程，在我大部分的时间里，我都是使用ASP.NET或者LAMP技术。现在，一种新的技术叫做node.js。它是一种轻量级的开发平台，在服务端运行Javascript代码，据说通过异步I/O方法提高性能。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Node.js" scheme="http://yoursite.com/tags/Node-js/"/>
+    
+      <category term="PHP" scheme="http://yoursite.com/tags/PHP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring MVC注解小例子</title>
+    <link href="http://yoursite.com/2014/06/19/spring-mvc%E6%B3%A8%E8%A7%A3%E5%B0%8F%E4%BE%8B%E5%AD%90/"/>
+    <id>http://yoursite.com/2014/06/19/spring-mvc注解小例子/</id>
+    <published>2014-06-19T07:07:57.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;##前言&lt;br&gt;本文将用注解的形式实现Spring MVC的功能。对于Spring MVC的入门，可以参考本人的前一篇博文。作为一位程序猿界的新人，如有谬误，欢迎指正。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;##引用jar包&lt;br&gt;在项目中引用如下jar包：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;.
+├──lib
+|  ├── commons-logging-1.0.4.jar
+|  ├── spring-aop.jar
+|  ├── spring-beans.jar
+|  ├── spring-context.jar
+|  ├── spring-context-support.jar
+|  ├── spring-core.jar
+|  ├── spring-expression.jar
+|  ├── spring-web.jar
+|  ├── spring-webmvc.jar
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##web.xml配置&lt;br&gt;本例子中，我们使用自定义的配置文件，拦截规则是&lt;code&gt;/&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;servlet&amp;gt;
+    &amp;lt;servlet-name&amp;gt;springMVC&amp;lt;/servlet-name&amp;gt;
+    &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet-class&amp;gt;
+    &amp;lt;init-param&amp;gt;
+        &amp;lt;!-- 这里指定配置文件为WEB-INF下面的springMVC.xml --&amp;gt;
+        &amp;lt;param-name&amp;gt;contextConfigLocation&amp;lt;/param-name&amp;gt;
+        &amp;lt;param-value&amp;gt;/WEB-INF/springMVC.xml&amp;lt;/param-value&amp;gt;
+    &amp;lt;/init-param&amp;gt;
+    &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt;
+&amp;lt;/servlet&amp;gt;
+&amp;lt;servlet-mapping&amp;gt;
+    &amp;lt;servlet-name&amp;gt;springMVC&amp;lt;/servlet-name&amp;gt;
+    &amp;lt;url-pattern&amp;gt;/&amp;lt;/url-pattern&amp;gt;
+&amp;lt;/servlet-mapping&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##springMVC.xml配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot; ?&amp;gt;
+&amp;lt;beans xmlns=&amp;quot;http://www.springframework.org/schema/beans&amp;quot;
+  xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xmlns:p=&amp;quot;http://www.springframework.org/schema/p&amp;quot;
+  xmlns:context=&amp;quot;http://www.springframework.org/schema/context&amp;quot;
+  xmlns:mvc=&amp;quot;http://www.springframework.org/schema/mvc&amp;quot;
+  xsi:schemaLocation=&amp;quot;  
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd&amp;quot;&amp;gt;
+
+    &amp;lt;context:component-scan base-package=&amp;quot;com.wonsikin&amp;quot; /&amp;gt;
+
+    &amp;lt;mvc:annotation-driven /&amp;gt;
+
+    &amp;lt;!-- 视图解释器 --&amp;gt;
+    &amp;lt;bean id=&amp;quot;viewResolver&amp;quot;
+        class=&amp;quot;org.springframework.web.servlet.view.InternalResourceViewResolver&amp;quot;&amp;gt;
+        &amp;lt;property name=&amp;quot;viewClass&amp;quot;
+            value=&amp;quot;org.springframework.web.servlet.view.JstlView&amp;quot; /&amp;gt;
+        &amp;lt;property name=&amp;quot;prefix&amp;quot; value=&amp;quot;/WEB-INF/jsp/&amp;quot; /&amp;gt;
+        &amp;lt;property name=&amp;quot;suffix&amp;quot; value=&amp;quot;.jsp&amp;quot; /&amp;gt;
+    &amp;lt;/bean&amp;gt;
+
+    &amp;lt;bean
+        class=&amp;quot;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter&amp;quot;&amp;gt;
+        &amp;lt;property name=&amp;quot;messageConverters&amp;quot;&amp;gt;
+            &amp;lt;list&amp;gt;
+                &amp;lt;bean
+                    class=&amp;quot;org.springframework.http.converter.ByteArrayHttpMessageConverter&amp;quot; /&amp;gt;
+
+                &amp;lt;bean
+                    class=&amp;quot;org.springframework.http.converter.ResourceHttpMessageConverter&amp;quot; /&amp;gt;
+            &amp;lt;/list&amp;gt;
+        &amp;lt;/property&amp;gt;
+    &amp;lt;/bean&amp;gt;
+&amp;lt;/beans&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;&amp;lt; context:component-scan base-package=”com.wonsikin” /&amp;gt;&lt;/code&gt;表示自动扫描的包名。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt; mvc:annotation-driven /&amp;gt;&lt;/code&gt;表示默认的注解映射的支持。如何替换 &lt;code&gt;&amp;lt; mvc:annotation-driven /&amp;gt;&lt;/code&gt;？请参考&lt;a href=&quot;http://elf8848.iteye.com/blog/875830/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;赵磊的博客&lt;/a&gt;的第十九节。&lt;/p&gt;
+&lt;p&gt;##模型（Model）&lt;br&gt;创建一个登录用户的模型，如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package com.wonsikin.view;
+
+public class LoginUser {
+
+    private String username;
+
+    private String password;
+
+    /**
+    *getter,setter
+    */
+    ......
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##控制器（Controller）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package com.wonsikin.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.wonsikin.view.LoginUser;
+
+
+@Controller
+@RequestMapping(&amp;quot;/wonsikin&amp;quot;)
+public class LoginController {
+
+    @RequestMapping(&amp;quot;/login&amp;quot;)
+    public ModelAndView login(@ModelAttribute LoginUser user) throws Exception {
+        System.out.println(user.getUsername());
+        return new ModelAndView(&amp;quot;loginInfo&amp;quot;,&amp;quot;username&amp;quot;,user.getUsername());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注解&lt;code&gt;@Controller&lt;/code&gt;声明该类为一个Action组件。&lt;/p&gt;
+&lt;p&gt;类名上面的注解&lt;code&gt;@RequestMapping(“/wonsikin”)&lt;/code&gt;类似Struts2的命名空间（namespace），用来声明该类下的方法的父路径为&lt;code&gt;/wonsikin&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;方法上面的注解&lt;code&gt;@RequestMapping(“/login”)&lt;/code&gt;表示调用该方法的路径。&lt;/p&gt;
+&lt;p&gt;方法中的参数的注解&lt;code&gt;@ModelAttribute&lt;/code&gt;表示该前台传过来的参数会被自动解析成一个模型。类似Struts2的模型驱动。&lt;/p&gt;
+&lt;p&gt;一个控制器里面同时多个方法处理的情况跟这个差不多，无非就是多几个方法，多配置一些路径。在此不赘述。&lt;/p&gt;
+&lt;p&gt;##REST风格的路径&lt;br&gt;现在的互联网，REST风格非常流行，很多互联网类型的应用都很喜欢这样的URL。实现这样的功能需要一个注解&lt;code&gt;@PathVariable&lt;/code&gt;。同时我们会比较另一个注解&lt;code&gt;@RequestParam&lt;/code&gt;，因为这两个注解在功能上非常相似。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@RequestParam&lt;/code&gt;用来获取路径中传过来的参数，也就是问号后面的参数。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@PathVariable&lt;/code&gt;则是用来获取路径中的变量参数。&lt;/p&gt;
+&lt;p&gt;举个栗子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package com.wonsikin.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+
+@Controller
+@RequestMapping(&amp;quot;/userCtl&amp;quot;)
+public class UserController {
+
+    @RequestMapping(&amp;quot;/{userId}/add&amp;quot;)
+    public ModelAndView add(@PathVariable String userId,@RequestParam String action){
+        System.out.println(userId);
+        System.out.println(action);
+        Map&amp;lt;String, Object&amp;gt; map = new HashMap&amp;lt;String, Object&amp;gt;();
+        map.put(&amp;quot;userId&amp;quot;, userId);
+        map.put(&amp;quot;action&amp;quot;, action);
+        return new ModelAndView(&amp;quot;variable&amp;quot;,&amp;quot;map&amp;quot;,map);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当我们向服务器发送请求如下请求时&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://localhost:8081/SpringMVCAnnotation/userCtl/12345/add?action=add
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;后台截取到的变量分别是&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;userId：12345
+action：add
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##静态文件的访问&lt;br&gt;由于我们的拦截规则是&lt;code&gt;/&lt;/code&gt;，这就会导致一些静态文件无法获取到。只需在&lt;code&gt;springMVC.xml&lt;/code&gt;中添加如下配置即可：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- 允许对静态资源文件的访问 --&amp;gt;
+&amp;lt;mvc:default-servlet-handler/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;事实上，解决静态文件无法访问的方法有多种，详情可以参考&lt;a href=&quot;http://elf8848.iteye.com/blog/875830/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;赵磊的博客&lt;/a&gt;第七小节。&lt;/p&gt;
+&lt;p&gt;##结语&lt;br&gt;Spring的注解非常强大，用好注解能减轻我们配置XML的负担。&lt;/p&gt;
+&lt;p&gt;##参考&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://elf8848.iteye.com/blog/875830/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;赵磊的博客&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/13715811/requestparam-vs-pathvariable&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;StackOverflow上关于@RequestParam和@PathVariable区别的回答&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##前言&lt;br&gt;本文将用注解的形式实现Spring MVC的功能。对于Spring MVC的入门，可以参考本人的前一篇博文。作为一位程序猿界的新人，如有谬误，欢迎指正。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="MVC" scheme="http://yoursite.com/tags/MVC/"/>
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+      <category term="Java Web" scheme="http://yoursite.com/tags/Java-Web/"/>
+    
+      <category term="annotation" scheme="http://yoursite.com/tags/annotation/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring MVC 简单例子</title>
+    <link href="http://yoursite.com/2014/06/18/spring-mvc%E7%AE%80%E5%8D%95%E4%BE%8B%E5%AD%90/"/>
+    <id>http://yoursite.com/2014/06/18/spring-mvc简单例子/</id>
+    <published>2014-06-18T07:37:07.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;##简介&lt;br&gt;Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;##创建项目&lt;br&gt;用Eclipse创建一个Web项目。本例子命名为SpringMVC。&lt;/p&gt;
+&lt;p&gt;##引用jar包&lt;br&gt;本例子使用的Spring版本是4.0.2。以下列出的jar包就只包含名字，不带版本号。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;.
+├──lib
+|  ├── commons-logging-1.0.4.jar
+|  ├── spring-context.jar
+|  ├── spring-context-support.jar
+|  ├── spring-core.jar
+|  ├── spring-expression.jar
+|  ├── spring-web.jar
+|  ├── spring-webmvc.jar
+|  ├── spring-beans.jar
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##web.xml配置&lt;br&gt;要使用Spring MVC，配置DispatcherServlet是第一步。它拦截我们自己定义的请求，依据我们定义的规则分发到目标Controller（既Action类）来处理。&lt;/p&gt;
+&lt;p&gt;例子1：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;servlet&amp;gt;
+    &amp;lt;servlet-name&amp;gt;springmvc&amp;lt;/servlet-name&amp;gt;
+    &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet-class&amp;gt;
+    &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt;
+&amp;lt;/servlet&amp;gt;
+&amp;lt;servlet-mapping&amp;gt;
+    &amp;lt;servlet-name&amp;gt;springmvc&amp;lt;/servlet-name&amp;gt;
+    &amp;lt;url-pattern&amp;gt;*.do&amp;lt;/url-pattern&amp;gt;
+&amp;lt;/servlet-mapping&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;&lt;url-pattern&gt;*.do&lt;/url-pattern&gt;&lt;/code&gt;表示会拦截所有以do为后缀的请求。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;&lt;/code&gt;表示DispatcherServlet的名字是springmvc。DispatcherServlet可以有多个，通过名字来区别。&lt;/p&gt;
+&lt;p&gt;在DispatcherServlet的初始化过程中，框架会在web应用的&lt;code&gt;WEB-INF&lt;/code&gt;文件夹下寻找名为&lt;code&gt;[servlet-name]-servlet.xml&lt;/code&gt; 的配置文件，生成文件中定义的bean。&lt;/p&gt;
+&lt;p&gt;当然，你也可以自己指定配置文件名，不使用默认的配置文件名。如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;servlet&amp;gt;  
+    &amp;lt;servlet-name&amp;gt;springMVC&amp;lt;/servlet-name&amp;gt;  
+    &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet-class&amp;gt;  
+    &amp;lt;init-param&amp;gt;  
+        &amp;lt;param-name&amp;gt;contextConfigLocation&amp;lt;/param-name&amp;gt;  
+        &amp;lt;param-value&amp;gt;classpath*:/springMVC.xml&amp;lt;/param-value&amp;gt;  
+    &amp;lt;/init-param&amp;gt;  
+    &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt;  
+&amp;lt;/servlet&amp;gt;  
+&amp;lt;servlet-mapping&amp;gt;  
+    &amp;lt;servlet-name&amp;gt;springMVC&amp;lt;/servlet-name&amp;gt;  
+    &amp;lt;url-pattern&amp;gt;/&amp;lt;/url-pattern&amp;gt;  
+&amp;lt;/servlet-mapping&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中&lt;code&gt;&lt;param-value&gt;**.xml&lt;/param-value&gt;&lt;/code&gt;可以有多种配置写法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;不写,使用默认值:/WEB-INF/&lt;servlet-name&gt;-servlet.xml&lt;/servlet-name&gt;&lt;/li&gt;
+&lt;li&gt;&lt;param-value&gt;/WEB-INF/classes/springMVC.xml&lt;/param-value&gt;&lt;/li&gt;
+&lt;li&gt;&lt;param-value&gt;classpath*:springMVC-mvc.xml&lt;/param-value&gt;&lt;/li&gt;
+&lt;li&gt;多个值用逗号分隔&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;PS:&lt;/code&gt;本例子使用的是默认的配置文件名。&lt;/p&gt;
+&lt;p&gt;##springmvc-servlet.xml配置&lt;br&gt;直接上代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;beans xmlns=&amp;quot;http://www.springframework.org/schema/beans&amp;quot;
+    xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xmlns:p=&amp;quot;http://www.springframework.org/schema/p&amp;quot;
+    xmlns:context=&amp;quot;http://www.springframework.org/schema/context&amp;quot;
+    xsi:schemaLocation=&amp;quot;  
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd&amp;quot;&amp;gt;
+
+        &amp;lt;!-- 视图解释器 --&amp;gt;
+        &amp;lt;bean id=&amp;quot;viewResolver&amp;quot; class=&amp;quot;org.springframework.web.servlet.view.InternalResourceViewResolver&amp;quot;&amp;gt;
+            &amp;lt;property name=&amp;quot;viewClass&amp;quot; value=&amp;quot;org.springframework.web.servlet.view.JstlView&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;prefix&amp;quot; value=&amp;quot;/WEB-INF/jsp/&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;suffix&amp;quot; value=&amp;quot;.jsp&amp;quot; /&amp;gt;&amp;lt;!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  --&amp;gt;
+        &amp;lt;/bean&amp;gt;
+
+        &amp;lt;!-- 控制器 --&amp;gt;
+        &amp;lt;bean id=&amp;quot;loginController&amp;quot; class=&amp;quot;com.wsj.controller.LoginController&amp;quot;&amp;gt;
+            &amp;lt;property name=&amp;quot;username&amp;quot;&amp;gt;
+                &amp;lt;value&amp;gt;admin&amp;lt;/value&amp;gt;
+            &amp;lt;/property&amp;gt;
+            &amp;lt;property name=&amp;quot;password&amp;quot;&amp;gt;
+                &amp;lt;value&amp;gt;admin&amp;lt;/value&amp;gt;
+            &amp;lt;/property&amp;gt;
+        &amp;lt;/bean&amp;gt;
+
+        &amp;lt;!-- 路径和控制器的映射 --&amp;gt;
+        &amp;lt;bean id=&amp;quot;simpleUrlHandlerMapping&amp;quot; class=&amp;quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&amp;quot;&amp;gt;
+            &amp;lt;property name=&amp;quot;mappings&amp;quot;&amp;gt;
+                &amp;lt;props&amp;gt;
+                    &amp;lt;prop key=&amp;quot;/login.do&amp;quot;&amp;gt;loginController&amp;lt;/prop&amp;gt;
+                &amp;lt;/props&amp;gt;
+            &amp;lt;/property&amp;gt;
+        &amp;lt;/bean&amp;gt;
+&amp;lt;/beans&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##控制器&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package com.wsj.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+/**
+ * 该示例下，一个controller只有一个方法
+ * */
+public class LoginController implements Controller{
+
+    private String username;
+
+    private String password;
+
+    @Override
+    public ModelAndView handleRequest(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        // TODO Auto-generated method stub
+        String _username = request.getParameter(&amp;quot;username&amp;quot;);
+        String _pwd =  request.getParameter(&amp;quot;password&amp;quot;);
+        if(username.equals(_username) &amp;amp;&amp;amp; password.equals(_pwd)){
+            return new ModelAndView(&amp;quot;success&amp;quot;);
+        }
+        return new ModelAndView(&amp;quot;fail&amp;quot;);
+    }
+
+    /**
+    *getter、setter方法
+    */
+    ......
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;代码中的控制器实现&lt;code&gt;Controller&lt;/code&gt;接口。当&lt;code&gt;login.do&lt;/code&gt;的请求分发到该控制器时，默认执行&lt;code&gt;handleRequest&lt;/code&gt;的方法。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;return new ModelAndView(“success”)&lt;/code&gt;表示跳转到&lt;code&gt;success.jsp&lt;/code&gt;页面。&lt;/p&gt;
+&lt;p&gt;##视图与运行&lt;br&gt;本例子中的视图只有success.jsp和fail.jsp，分别表示登录成功和失败的页面。具体内容就不贴出来了。&lt;/p&gt;
+&lt;p&gt;在浏览器地址中输入&lt;a href=&quot;localhost:8081/SpringMVC/login.do?username=admin&amp;amp;password=admin&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;localhost:8081/SpringMVC/login.do?username=admin&amp;amp;password=admin&lt;/a&gt;即可调用成功页面。&lt;/p&gt;
+&lt;p&gt;##能处理多方法的控制器&lt;br&gt;一个控制器只处理一个方法，感觉总有点奢侈浪费。Spring MVC是支持一个控制器处理多个方法的。&lt;/p&gt;
+&lt;p&gt;在WEB-INF/jsp里面创建一个名为multi的jsp页面：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;%@ page language=&amp;quot;java&amp;quot; import=&amp;quot;java.util.*&amp;quot; pageEncoding=&amp;quot;ISO-8859-1&amp;quot;%&amp;gt;
+&amp;lt;%
+String path = request.getContextPath();
+String basePath = request.getScheme()+&amp;quot;://&amp;quot;+request.getServerName()+&amp;quot;:&amp;quot;+request.getServerPort()+path+&amp;quot;/&amp;quot;;
+%&amp;gt;
+
+&amp;lt;!DOCTYPE HTML PUBLIC &amp;quot;-//W3C//DTD HTML 4.01 Transitional//EN&amp;quot;&amp;gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;base href=&amp;quot;&amp;lt;%=basePath%&amp;gt;&amp;quot;&amp;gt;
+
+    &amp;lt;title&amp;gt;My JSP &amp;apos;multi.jsp&amp;apos; starting page&amp;lt;/title&amp;gt;
+
+    &amp;lt;meta http-equiv=&amp;quot;pragma&amp;quot; content=&amp;quot;no-cache&amp;quot;&amp;gt;
+    &amp;lt;meta http-equiv=&amp;quot;cache-control&amp;quot; content=&amp;quot;no-cache&amp;quot;&amp;gt;
+    &amp;lt;meta http-equiv=&amp;quot;expires&amp;quot; content=&amp;quot;0&amp;quot;&amp;gt;
+    &amp;lt;meta http-equiv=&amp;quot;keywords&amp;quot; content=&amp;quot;keyword1,keyword2,keyword3&amp;quot;&amp;gt;
+    &amp;lt;meta http-equiv=&amp;quot;description&amp;quot; content=&amp;quot;This is my page&amp;quot;&amp;gt;
+    &amp;lt;!--
+    &amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;styles.css&amp;quot;&amp;gt;
+    --&amp;gt;
+
+  &amp;lt;/head&amp;gt;
+
+  &amp;lt;body&amp;gt;
+    &amp;lt;h1&amp;gt;请求的方法是：${method }&amp;lt;/h1&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;创建一个继承&lt;code&gt;MultiActionController&lt;/code&gt;的控制器：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package com.wsj.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+public class UserController extends MultiActionController {
+
+    public ModelAndView add(HttpServletRequest request,
+            HttpServletResponse response) {
+        System.out.println(&amp;quot;Add&amp;quot;);
+        return new ModelAndView(&amp;quot;/multi&amp;quot;, &amp;quot;method&amp;quot;, &amp;quot;add&amp;quot;);
+    }
+
+    public ModelAndView update(HttpServletRequest request,
+            HttpServletResponse response) {
+        System.out.println(&amp;quot;Update&amp;quot;);
+        return new ModelAndView(&amp;quot;/multi&amp;quot;, &amp;quot;method&amp;quot;, &amp;quot;update&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;代码中，两个方法都调用结束后都返回到&lt;code&gt;multi.jsp&lt;/code&gt;页面，同时传一个参数名为&lt;code&gt;method&lt;/code&gt;的参数，值分别为各自调用的方法名。&lt;/p&gt;
+&lt;p&gt;在&lt;code&gt;springmvc-servlet.xml&lt;/code&gt;中添加如下配置：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- 参数名称解析器，处理一个controller的多个方法。value=action，请求的时候指明action=&amp;quot;目标方法&amp;quot; --&amp;gt;
+&amp;lt;bean id=&amp;quot;paramMethodResolver&amp;quot; class=&amp;quot;org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver&amp;quot;&amp;gt;
+    &amp;lt;property name=&amp;quot;paramName&amp;quot; value=&amp;quot;action&amp;quot;/&amp;gt;
+&amp;lt;/bean&amp;gt;
+&amp;lt;!-- 控制器 --&amp;gt;
+&amp;lt;bean id=&amp;quot;userController&amp;quot; class=&amp;quot;com.wsj.controller.UserController&amp;quot;&amp;gt;
+    &amp;lt;property name=&amp;quot;methodNameResolver&amp;quot;&amp;gt;
+        &amp;lt;ref bean=&amp;quot;paramMethodResolver&amp;quot;/&amp;gt;
+    &amp;lt;/property&amp;gt;
+&amp;lt;/bean&amp;gt;
+&amp;lt;!-- 路径和控制器的映射 --&amp;gt;
+&amp;lt;bean id=&amp;quot;simpleUrlHandlerMapping&amp;quot; class=&amp;quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&amp;quot;&amp;gt;
+    &amp;lt;property name=&amp;quot;mappings&amp;quot;&amp;gt;
+        &amp;lt;props&amp;gt;
+            &amp;lt;prop key=&amp;quot;/login.do&amp;quot;&amp;gt;loginController&amp;lt;/prop&amp;gt;
+            &amp;lt;prop key=&amp;quot;/user.do&amp;quot;&amp;gt;userController&amp;lt;/prop&amp;gt;
+        &amp;lt;/props&amp;gt;
+    &amp;lt;/property&amp;gt;
+&amp;lt;/bean&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参数名称解析器（ParameterMethodNameResolver）是Spring自带的，我们注入即可使用。这个解析器是靠我们配置的&lt;code&gt;paramName&lt;/code&gt;的值&lt;code&gt;action&lt;/code&gt;来解析请求的。&lt;/p&gt;
+&lt;p&gt;请求的时候，请使用&lt;code&gt;user.do?action=add&lt;/code&gt;类似的来请求。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;PS:&lt;/code&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;用注解完成Spring MVC的笔记可以参考&lt;a href=&quot;http://www.wonsikin.com/2014/06/19/spring-mvc注解小例子/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;下一篇博文&lt;/a&gt;&lt;br&gt;##参考&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://elf8848.iteye.com/blog/875830/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;赵磊的博客&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://liuzidong.iteye.com/blog/897047&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;咫尺天涯&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.blogbus.com/wanping-logs/235898608.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;catherine的心路历程&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##简介&lt;br&gt;Spring自从创建以来，功能愈来愈丰富，从原本的依赖注入（DI）和面向切面编程（AOP）等简单功能发展成了具有MVC、ORM等功能的全能战士，大有一统江湖的态势。本文是个人的学习笔记，仅供参考。本人才疏学浅，如有谬误，还望指正，不胜感激涕零！&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="MVC" scheme="http://yoursite.com/tags/MVC/"/>
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+      <category term="Java Web" scheme="http://yoursite.com/tags/Java-Web/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Struts2通用文件下载示例</title>
+    <link href="http://yoursite.com/2014/06/10/struts2%E9%80%9A%E7%94%A8%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E7%A4%BA%E4%BE%8B/"/>
+    <id>http://yoursite.com/2014/06/10/struts2通用文件下载示例/</id>
+    <published>2014-06-10T09:28:20.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;#Struts2通用文件下载示例&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;###Action类&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public String download() {
+    InputStream is = readDocsManager.getOneDoc(parent, name);
+    HttpServletResponse response = HttpResponseHolder.getResponse();
+    OutputStream out = null;
+    try {
+        //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型  
+        response.setContentType(&amp;quot;multipart/form-data&amp;quot;);  
+        //2.设置文件头：最后一个参数是设置下载文件名
+        response.setHeader(&amp;quot;Content-Disposition&amp;quot;, &amp;quot;inline;fileName=&amp;quot;+new String(name.getBytes(),&amp;quot;ISO8859-1&amp;quot;));
+        out = response.getOutputStream();
+        byte[] buf = new byte[1024];
+        int size = -1;
+        while ((size = is.read(buf)) != -1) {
+            out.write(buf, 0, size);
+        }
+        response.flushBuffer();
+    } catch (Exception e) {
+        logger.error(e.getMessage(),e);
+    }finally{
+        IOUtils.closeQuietly(is);
+        IOUtils.closeQuietly(out);
+
+    }
+    return &amp;quot;download&amp;quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;代码&lt;code&gt;readDocsManager.getOneDoc(parent,name)&lt;/code&gt;是根据路径和名称读取文件，并返回一个&lt;code&gt;InputStream&lt;/code&gt;的对象。&lt;/p&gt;
+&lt;p&gt;###struts.xml中的配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;action name=&amp;quot;docAction&amp;quot; class=&amp;quot;onlineDocsAction&amp;quot;&amp;gt;
+    &amp;lt;result name=&amp;quot;download&amp;quot; type=&amp;quot;httpheader&amp;quot;&amp;gt;
+    &amp;lt;/result&amp;gt;
+&amp;lt;/action&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意返回的类型是&lt;code&gt;httpheader&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;###中文转码问题&lt;/p&gt;
+&lt;p&gt;文件上传下载的时候，请一定要注意中文的转码，否则后台会报&lt;code&gt;FileNotFoundException&lt;/code&gt;的错误。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;#Struts2通用文件下载示例&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+      <category term="Struts2" scheme="http://yoursite.com/tags/Struts2/"/>
+    
+      <category term="File download" scheme="http://yoursite.com/tags/File-download/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo搭建静态博客网站简要教程</title>
+    <link href="http://yoursite.com/2014/05/27/hexo%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99%E7%AE%80%E8%A6%81%E6%95%99%E7%A8%8B/"/>
+    <id>http://yoursite.com/2014/05/27/hexo搭建静态博客网站简要教程/</id>
+    <published>2014-05-27T01:45:10.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;Hexo 是一个快速的、简单的和强大的博客框架，它使用markdown或者其他渲染引擎来解析你的博文，然后用漂亮的主题生成静态文件。这一切所花的时间也就几秒钟而已！&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;##依赖包&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;安装 &lt;a href=&quot;http://nodejs.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Node.js&lt;/a&gt; 。&lt;/li&gt;
+&lt;li&gt;安装 &lt;a href=&quot;http://msysgit.github.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Git&lt;/a&gt; ，默认桌面上生成Git BASH,Git BASH为windows提供一个模仿BASHi方法，所以支持的命令是Linux或者UNIX下的命令。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;##安装Hexo框架&lt;br&gt;打开Git BASH，进入命令行界面。输入如下命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;npm install hexo -g
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;一般情况下很快就能完成安装，如果出现安装卡住的现象，可以到 &lt;a href=&quot;https://www.npmjs.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.npmjs.org/&lt;/a&gt; 下载相应的包，再重新运行上面的命令。&lt;/p&gt;
+&lt;p&gt;##初始化目录&lt;br&gt;这里以D盘下的blog目录为例，输入如下命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;cd d:
+&amp;gt;&amp;gt;&amp;gt;hexo init blog
+&amp;gt;&amp;gt;&amp;gt;cd blog
+&amp;gt;&amp;gt;&amp;gt;npm install
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样子就初始化一个hexo目录。然后就能看到如下的目录：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;.
+├── _config.yml
+├── package.json
+├── scaffolds
+├── source
+|  ├── _drafts
+|  └── _posts
+└── themes
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##本地查看&lt;br&gt;在命令行中输入如下命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;hexo generate
+&amp;gt;&amp;gt;&amp;gt;hexo server
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;第一个命令表示生成静态博客网站，第二个命令表示启动服务器。以上两个命令可以简写成如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;hexo g
+&amp;gt;&amp;gt;&amp;gt;hexo s
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在浏览器中输入&lt;a href=&quot;http://localhost:4000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://localhost:4000&lt;/a&gt; ，就可以查看网站的样子。&lt;/p&gt;
+&lt;p&gt;更多命令信息，可查看 &lt;a href=&quot;http://hexo.io/docs/commands.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo官网&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;##部署到Github上&lt;br&gt;这里假设你已经有了 &lt;a href=&quot;htps://www.github.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Github&lt;/a&gt; 账号，并且已经将本地电脑添加到Github上的信任名单中了。如未，请查看 &lt;a href=&quot;http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374385852170d9c7adf13c30429b9660d0eb689dd43a000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;廖雪峰的官网&lt;/a&gt; 。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在Github上创建资源库，建议命名为[你的用户名].github.io。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;打开blog目录下的 &lt;code&gt;_config.yml&lt;/code&gt; ，按照如下修改：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;deploy:
+  type: github
+  repository: https://github.com/wonsikin/wonsikin.github.io.git
+  branch: master
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;保存完毕后运行如下命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;hexo g
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  每次修改本地配置文件时都运行以上命令&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;发布到Github上面，运行如下命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;hexo deploy //可以简写成&amp;gt;&amp;gt;&amp;gt;hexo d
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;按照提示输入Github的用户名和账号。&lt;/li&gt;
+&lt;li&gt;部署成功后，在地址栏中输入[你的用户名].github.io，就可以查看到部署到Github上面的网站。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;##发布文章&lt;/p&gt;
+&lt;p&gt;运行如下命令，可以发布一条博客：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;hexo new &amp;quot;Article title&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后在 &lt;code&gt;source/_posts&lt;/code&gt; 文件夹中打开这个文件，配置开头，填写文章内容，重新运行生成和部署命令，就能够在网站中看到发布的博库。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;PS&lt;/code&gt; ：hexo中博客内容的书写语法是 &lt;a href=&quot;http://wowubuntu.com/markdown/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;markdown&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;##绑定个人域名&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先你得有自己的域名。&lt;/li&gt;
+&lt;li&gt;在 &lt;a href=&quot;http://www.dnspod.cn&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;www.dnspod.cn&lt;/a&gt; 上注册，使用该网站的域名解析服务。&lt;/li&gt;
+&lt;li&gt;如下图配置 &lt;code&gt;CNAME&lt;/code&gt; 和 &lt;code&gt;A记录&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;   &lt;img src=&quot;http://ww3.sinaimg.cn/large/4da583a7gw1egsqng6l9dj20m50973zh.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;   记住&lt;code&gt;NS记录&lt;/code&gt;的两个值，待会儿要用。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;进入域名提供商的管理页面，在&lt;code&gt;DNS管理&lt;/code&gt;一项，选择&lt;code&gt;自定义DNS&lt;/code&gt;，填写刚才的两个NS记录：&lt;/p&gt;
+&lt;p&gt; &lt;img src=&quot;http://ww3.sinaimg.cn/large/4da583a7gw1egsqop94ccj20m909edgi.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;在hexo博客目录下的 &lt;code&gt;source&lt;/code&gt; 文件夹里面，创建 &lt;cname&gt; 文件，里面填写个人域名。&lt;/cname&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;##更新－141025&lt;br&gt;Hexo升级到2.8之后，运行会HexoError错误。&lt;br&gt;    &lt;img src=&quot;http://ww4.sinaimg.cn/bmiddle/4da583a7jw1elns7yco3nj20wi0myjy1.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;解决方法为:找到报错的文件(上图红框内文字所示)，查看是否存在如下内容&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;archive_b: Archives: %s
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后修改为&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;archive_b: “Archives: %s“
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;即用引号包裹带有&lt;code&gt;%&lt;/code&gt;的设置。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;PS:&lt;/code&gt; 更多优化信息，稍后添加！&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Hexo 是一个快速的、简单的和强大的博客框架，它使用markdown或者其他渲染引擎来解析你的博文，然后用漂亮的主题生成静态文件。这一切所花的时间也就几秒钟而已！&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+    
+      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
+    
+      <category term="blog" scheme="http://yoursite.com/tags/blog/"/>
+    
+      <category term="Node.js" scheme="http://yoursite.com/tags/Node-js/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【翻译】使用谷歌开发者工具调试异步JavaScript</title>
+    <link href="http://yoursite.com/2014/05/14/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E4%BD%BF%E7%94%A8%E8%B0%B7%E6%AD%8C%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E8%B0%83%E8%AF%95%E5%BC%82%E6%AD%A5JavaScript/"/>
+    <id>http://yoursite.com/2014/05/14/【翻译】使用谷歌开发者工具调试异步JavaScript/</id>
+    <published>2014-05-14T09:44:46.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;###&lt;strong&gt;介绍&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;幸运地，现在在谷歌开发者工具（Canary版本），你可以看到异步JavaScript回调函数的完整调用堆栈。&lt;/p&gt;
+&lt;center&gt;&lt;br&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async.gif&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/center&gt;&lt;br&gt;&lt;center&gt;&lt;strong&gt;&lt;em&gt;一个快速的异步调用堆栈事例&lt;/em&gt;&lt;/strong&gt;&lt;br&gt;（我们将会很快的分解这个事例的工作流程）&lt;/center&gt;
+
+&lt;p&gt;一旦你在谷歌开发者工具中启用异步调用堆栈的功能，你将能够适时地转进在你的网页应用中的各种各样的断点中。然后遍历事件监听器、setInterval、setTimeout、XMLHttpRequest、promises、requestAnimationFrame、MutationObservers等等的完整堆栈踪迹。&lt;/p&gt;
+&lt;p&gt;随着你在遍历堆栈踪迹的过程中，你也可以分析运行时执行的代码的特定断点处任意变量的值。这就像一个时光机，能让你查看各种表达式！&lt;/p&gt;
+&lt;p&gt;让我们启用这个功能，然后看一看几个场景。&lt;/p&gt;
+&lt;p&gt;###&lt;strong&gt;在Chrome浏览器（Canary版本）中启用异步调试&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;通过在Chrome浏览器（35版本或更高）中启用异步调试这个功能来尝试这个新特性。点中谷歌开发者工具中的 &lt;strong&gt;Source&lt;/strong&gt; 面板。&lt;/p&gt;
+&lt;p&gt;接下来在右手边的 &lt;strong&gt;Call Stack&lt;/strong&gt; 面板，有一个“Async”的复选框。点击复选框可以打开或者关闭异步调试的功能。（尽管一旦打开了它，你可能不再想要关闭它了。）&lt;/p&gt;
+&lt;center&gt;&lt;br&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/enable-async-toggle.gif&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/center&gt;
+
+&lt;p&gt;###&lt;strong&gt;捕获延时计时器事件和XHR响应回应&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;你也许以前在Gmail中看到以下场景：&lt;/p&gt;
+&lt;center&gt;&lt;br&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/gmail-retrying.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/center&gt;
+
+&lt;p&gt;如果在发送请求的时候出现问题（不是服务器出现问题就是客户端出现网络连通性问题），Gmail将会在短暂之后自动地尝试重新发送信息。&lt;/p&gt;
+&lt;p&gt;为了查看异步调用堆栈式如何帮助我们分析延时计时器事件和XHR响应，我重新创造了一个&lt;a href=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr/demo.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;虚拟Gmail事例&lt;/a&gt;的流程，完整的JavaScript代码能够在上面的链接找到，但是整个流程就像下面所示：&lt;/p&gt;
+&lt;center&gt;&lt;br&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-async-flow.gif&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/center&gt;&lt;br&gt;&lt;center&gt;&lt;strong&gt;&lt;em&gt;在上面的图解中，用蓝色高亮的方法是这个新性能最有益的主要热点，因为这些方法是异步工作的&lt;/em&gt;&lt;/strong&gt;&lt;/center&gt;
+
+&lt;p&gt;在早期版本的开发者工具，仅仅查看调用堆栈面板，在&lt;code&gt;postOnFail()&lt;/code&gt;中的断点只能给你一点点&lt;code&gt;postOnFail()&lt;/code&gt;被从哪里调用出来的信息而已。然而当你打开了 &lt;strong&gt;异步调用&lt;/strong&gt; 的功能，你会看到不一样的地方：&lt;/p&gt;
+&lt;div&gt;&lt;figure style=&quot;float:left;width:49%;text-align: center;display: block;margin-bottom: 1em;&quot;&gt;&lt;figcaption style=&quot;font-size: 15px;margin-bottom: 20px;font-weight: bold;font-style: italic;&quot;&gt;以前&lt;/figcaption&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-before.gif&quot; width=&quot;320&quot;&gt;&lt;figcaption style=&quot;margin: 1em auto 2em auto;&quot;&gt;&lt;em&gt;没有启用&lt;/em&gt; 异步功能的Call Stack面板。&lt;br&gt;&lt;p&gt;你能够看到 &lt;code&gt;postOnFail()&lt;/code&gt; 是从一个AJAX回调函数创造的，但是没有更详细的信息&lt;/p&gt;&lt;/figcaption&gt;&lt;/figure&gt;&lt;br&gt;&lt;figure style=&quot;float:right;width:49%;text-align: center;display: block;margin-bottom: 1em;&quot;&gt;&lt;figcaption style=&quot;font-size: 15px;margin-bottom: 20px;font-weight: bold;font-style: italic;&quot;&gt;之后&lt;/figcaption&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-click.gif&quot; width=&quot;320&quot;&gt;&lt;figcaption&gt;&lt;em&gt;启用&lt;/em&gt; 异步功能的Call Stack面板。&lt;br&gt;&lt;p&gt;你能够看到XHR是由&lt;code&gt;submitHandler()&lt;/code&gt;创造的，&lt;code&gt;submitHandler()&lt;/code&gt;是在scripts.js中绑定的单击处理器，Nice！&lt;/p&gt;&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;&lt;br&gt;&lt;div style=&quot;margin-top:800px;width:100%;&quot;&gt;&lt;br&gt;随着异步调用堆栈的打开，你能够查看到全部的调用堆栈来明了地了解请求是由上面示例的&lt;code&gt;submitHandler()&lt;/code&gt;创造的或者是下面示例中的&lt;code&gt;retrySubmit()&lt;/code&gt;创造的：&lt;br&gt;&lt;/div&gt;&lt;br&gt;&lt;center&gt;&lt;br&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/xhr-after-retry-shortened.gif&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/center&gt;&lt;br&gt;&lt;br&gt;从Call Stack面板中，你也可以断定断点事件的发起是否比一个UI事件例如“点击”早，或者一个&lt;code&gt;setTimeout()&lt;/code&gt;的时延，或者任何常用的异步回调事件。&lt;br&gt;&lt;br&gt;&lt;br&gt;###&lt;strong&gt;监听表达式的异步方式&lt;/strong&gt;&lt;br&gt;&lt;br&gt;当你遍历整个调用堆栈，你的监听表达式也将会更新，以反映那时的状态。&lt;br&gt;&lt;br&gt;&lt;center&gt;&lt;br&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/watch-expressions.gif&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/center&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;###&lt;strong&gt;从过去的作用域评估代码&lt;/strong&gt;&lt;br&gt;&lt;br&gt;除了能够简化监听表达式，你也能够通过谷歌开发者工具的JavaScript控制台面板中的之前作用域与你的代码互动。&lt;br&gt;&lt;br&gt;想象一下你就是&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E7%A5%9E%E7%A7%98%E5%8D%9A%E5%A3%AB&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;神秘博士&lt;/a&gt;并且你需要一些帮助来比较时钟上从穿梭时光获取的过去时间到“现在”获取的时间。在谷歌开发者工具的控制台中，你可以简单地评估、存储以及跨不同的执行点做任何运算。&lt;br&gt;&lt;br&gt;&lt;center&gt;&lt;br&gt;&lt;img src=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/time-travel.gif&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/center&gt;&lt;br&gt;&lt;center&gt;&lt;br&gt;&lt;strong&gt;&lt;em&gt;使用JavaScript控制台结合异步调用堆栈来调试你的代码。点击查看上面的&lt;a href=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/past-scope/demo.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DEMO&lt;/a&gt;&lt;/em&gt;&lt;/strong&gt;&lt;br&gt;&lt;/center&gt;&lt;br&gt;&lt;br&gt;保持在谷歌开发者工具中操作你的表达式将会从不得不转到源代码、编辑和刷新浏览器中节省你的时间。&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;原文链接&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;a style=&quot;margin-right: 25px;cursor:pointer;&quot;&gt;&lt;img style=&quot;width: 80px;height: 80px;border: 3px solid #FFF;box-shadow: 0 1px 2px rgba(0,0,0,0.4);border-radius: 100%;position: relative;&quot; src=&quot;http://www.html5rocks.com/static/images/profiles/pearlchen.png&quot; itemprop=&quot;photo&quot; alt=&quot;Pearl Chen&quot; title=&quot;Pearl Chen&quot;&gt;&lt;/a&gt;&lt;div class=&quot;authors&quot;&gt;&lt;strong&gt;By&lt;/strong&gt; Pearl Chen &lt;/div&gt;&lt;div class=&quot;date&quot;&gt;&lt;time pubdate=&quot;&quot;&gt;&lt;strong&gt;Published:&lt;/strong&gt; March 26th, 2014&lt;/time&gt;&lt;/div&gt;&lt;div class=&quot;date&quot;&gt;&lt;time class=&quot;updated&quot;&gt;&lt;strong&gt;Updated:&lt;/strong&gt; March 31st, 2014&lt;/time&gt;&lt;/div&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;###&lt;strong&gt;介绍&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;JavaScript之所以如此与众不同是因为它拥有如下强大的特性：通过回调函数使得JavaScript能够异步工作。指定异步回调能够让你写出事件驱动的代码，但是也让跟踪缺陷（bug）变成一种痛不欲生的经历，因为JavaScript代码没有按照线性方式执行。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="Chrome DevTools" scheme="http://yoursite.com/tags/Chrome-DevTools/"/>
+    
+      <category term="Async" scheme="http://yoursite.com/tags/Async/"/>
+    
+      <category term="Debug" scheme="http://yoursite.com/tags/Debug/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JAVA图片压缩代码实现</title>
+    <link href="http://yoursite.com/2014/05/12/JAVA%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://yoursite.com/2014/05/12/JAVA图片压缩代码实现/</id>
+    <published>2014-05-12T07:35:27.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;想用拍出来的照片传到部落格上当做首页的封面，无奈原照片太大了，直接放上去必定很占用带宽，于是想到了对原图进行压缩。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;以下代码是在网络上查找到的，并且运行通过的&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package com.wonsikin.pic;
+
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: Arthur WANG
+ * Date: 14-5-12
+ * Time: 下午2:11
+ * To change this template use File | Settings | File Templates.
+ */
+public class CompressPicDemo {
+    private File file = null; //文件对象
+    private String inputDir;  //原图路径
+    private String outputDir; //生成图路径
+    private String inputFileName; //原图名称
+    private String outputFileName; //生成图名称
+    private int outputWidth = 100;  //默认生成图宽度
+    private int outputHeight = 100; //默认生成图高度
+    private boolean proportion = true; //是否等比例缩放
+
+    public CompressPicDemo() {
+        //初始化变量
+        inputDir = &amp;quot;&amp;quot;;
+        outputDir = &amp;quot;&amp;quot;;
+        inputFileName = &amp;quot;&amp;quot;;
+        outputFileName = &amp;quot;&amp;quot;;
+        outputWidth = 100;
+        outputHeight = 100;
+    }
+
+    public void setInputDir(String inputDir) {
+        this.inputDir = inputDir;
+    }
+
+    public void setOutputDir(String outputDir) {
+        this.outputDir = outputDir;
+    }
+
+    public void setInputFileName(String inputFileName) {
+        this.inputFileName = inputFileName;
+    }
+
+    public void setOutputFileName(String outputFileName) {
+        this.outputFileName = outputFileName;
+    }
+
+    public void setOutputWidth(int outputWidth) {
+        this.outputWidth = outputWidth;
+    }
+
+    public void setOutputHeight(int outputHeight) {
+        this.outputHeight = outputHeight;
+    }
+
+    public void setWidthAndHeight(int width, int height){
+        this.outputWidth = width;
+        this.outputHeight = height;
+    }
+
+    /**
+     * 获得图片大小
+     * 传入参数 path ：图片路径
+     * */
+    public long getPicSize(String path){
+        file = new File(path);
+        return file.length();
+    }
+
+    /*
+    * 图片处理
+    * **/
+    public String compressPic(){
+        try{
+            //获得原图片
+            file = new File(inputDir + inputFileName);
+            if(!file.exists()){
+                return &amp;quot;&amp;quot;;
+            }
+            Image img = ImageIO.read(file);
+            //判断图片格式是否正确
+            if (img.getWidth(null) == -1 ){
+                System.out.println(&amp;quot;Can&amp;apos;t read,retry!&amp;quot;+ &amp;quot;&amp;lt;BR&amp;gt;&amp;quot;);
+                return &amp;quot;No&amp;quot;;
+            } else {
+                int newWidth;
+                int newHeight;
+                // 判断是否等比例缩放
+                if(this.proportion == true ){
+                    double rate1 = ((double) img.getWidth(null)) / (double) outputWidth + 0.1;
+                    double rate2 = ((double) img.getHeight(null)) / (double) outputHeight + 0.1;
+                    double rate = rate1 &amp;gt; rate2 ? rate1 : rate2;
+                    newWidth = (int) (((double) img.getWidth(null))/rate);
+                    newHeight = (int) (((double) img.getHeight(null))/rate);
+                } else{
+                    newWidth = img.getWidth(null);
+                    newHeight = img.getHeight(null);
+                }
+                BufferedImage tag = new BufferedImage((int) newWidth, (int) newHeight, BufferedImage.TYPE_INT_RGB);
+                /*
+                 * Image.SCALE_SMOOTH 的缩略算法 生成缩略图片的平滑度的
+                 * 优先级比速度高 生成的图片质量比较好 但速度慢
+                 */
+                tag.getGraphics().drawImage(img.getScaledInstance(newWidth,newHeight,Image.SCALE_SMOOTH), 0,0,null);
+                FileOutputStream out = new FileOutputStream(outputDir + outputFileName);
+                /* JPEGImageEncoder可适用于其他图片类型的转换 */
+                JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+                encoder.encode(tag);
+                out.close();
+            }
+
+
+        } catch (IOException e){
+            e.printStackTrace();
+
+        }
+        return &amp;quot;OK&amp;quot;;
+    }
+
+    public String compressPic(String inputDir, String outputDir, String inputFileName, String outputFileName) {
+        this.inputDir = inputDir;
+        this.outputDir = outputDir;
+        this.inputFileName = inputFileName;
+        this.outputFileName = outputFileName;
+        return compressPic();
+    }
+
+    public String compressPicDemo(String inputDir, String outputDir, String inputFileName, String outputFileName, int outputWidth, int outputHeight, boolean proportion) {
+        this.inputDir = inputDir;
+        this.outputDir = outputDir;
+        this.inputFileName = inputFileName;
+        this.outputFileName = outputFileName;
+        setWidthAndHeight(outputWidth,outputHeight);
+        this.proportion = proportion;
+
+        return compressPic();
+
+    }
+
+    public static void main(String[] args){
+        CompressPicDemo mypic = new CompressPicDemo();
+        System.out.println(&amp;quot;Start&amp;quot;);
+        mypic.compressPicDemo(&amp;quot;C:\\&amp;quot;,&amp;quot;C:\\test\\&amp;quot;,&amp;quot;1.jpg&amp;quot;,&amp;quot;r2.jpg&amp;quot;,1366,960, false);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;原文链接： &lt;a href=&quot;http://www.qcoke.com/?p=1162&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;可乐加糖 &amp;amp; COLA&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;想用拍出来的照片传到部落格上当做首页的封面，无奈原照片太大了，直接放上去必定很占用带宽，于是想到了对原图进行压缩。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+      <category term="Image compression" scheme="http://yoursite.com/tags/Image-compression/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用新浪微博做图床外链的方法</title>
+    <link href="http://yoursite.com/2014/04/22/%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A%E5%81%9A%E5%9B%BE%E5%BA%8A%E5%A4%96%E9%93%BE%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2014/04/22/使用新浪微博做图床外链的方法/</id>
+    <published>2014-04-22T03:40:52.000Z</published>
+    <updated>2016-03-28T12:58:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;###1、图片上传前准备###&lt;br&gt;如果不打算在上传的图片上打上新浪微博的水印，可以在“个人设置”里的“偏好设置”中的“图片水印设置”，不勾选水印内容的三个选项，保存！&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;###2、在新浪微博上传图片，然后复制图片链接###&lt;/p&gt;
+&lt;p&gt;###3、根据不同需求选择不同尺寸的图片###&lt;br&gt;ww1.sinaimg.cn/&lt;span style=&quot;color: #EA6153;font-weight: bold;&quot;&gt;thumbnail&lt;/span&gt;/4da583a7gw1efo8amddupj21kw0w01kx.jpg&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/thumbnail/4da583a7gw1efo8amddupj21kw0w01kx.jpg&quot; alt=&quot;南京理工的二月兰花海&quot;&gt;&lt;br&gt;ww1.sinaimg.cn/&lt;span style=&quot;color: #EA6153;font-weight: bold;&quot;&gt;small&lt;/span&gt;/4da583a7gw1efo8amddupj21kw0w01kx.jpg&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/small/4da583a7gw1efo8amddupj21kw0w01kx.jpg&quot; alt=&quot;南京理工的二月兰花海&quot;&gt;&lt;br&gt;ww1.sinaimg.cn/&lt;span style=&quot;color: #EA6153;font-weight: bold;&quot;&gt;bmiddle&lt;/span&gt;/4da583a7gw1efo8amddupj21kw0w01kx.jpg&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/bmiddle/4da583a7gw1efo8amddupj21kw0w01kx.jpg&quot; alt=&quot;南京理工的二月兰花海&quot;&gt;&lt;br&gt;ww1.sinaimg.cn/&lt;span style=&quot;color: #EA6153;font-weight: bold;&quot;&gt;large&lt;/span&gt;/4da583a7gw1efo8amddupj21kw0w01kx.jpg&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/4da583a7gw1efo8amddupj21kw0w01kx.jpg&quot; alt=&quot;南京理工的二月兰花海&quot;&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;###1、图片上传前准备###&lt;br&gt;如果不打算在上传的图片上打上新浪微博的水印，可以在“个人设置”里的“偏好设置”中的“图片水印设置”，不勾选水印内容的三个选项，保存！&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="weibo" scheme="http://yoursite.com/tags/weibo/"/>
+    
+      <category term="image" scheme="http://yoursite.com/tags/image/"/>
+    
+      <category term="tech" scheme="http://yoursite.com/tags/tech/"/>
+    
+  </entry>
+  
+</feed>
