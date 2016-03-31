@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-03-28T13:30:53.000Z</updated>
+  <updated>2016-03-30T03:52:17.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>dependencies of package.json</title>
+    <link href="http://yoursite.com/2016/03/30/post/"/>
+    <id>http://yoursite.com/2016/03/30/post/</id>
+    <published>2016-03-30T03:44:16.000Z</published>
+    <updated>2016-03-30T03:52:17.000Z</updated>
+    
+    <content type="html">&lt;p&gt;Dependencies are specified in a simple object that maps a package name to a version range. The version range is a string which has one or more space-separated descriptors. Dependencies can also be identified with a tarball or git URL.&lt;/p&gt;
+&lt;p&gt;Please do not put test harnesses or transpilers in your dependencies object. See devDependencies, below.&lt;/p&gt;
+&lt;p&gt;See semver for more details about specifying version ranges.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;. version Must match version exactly
+&lt;/em&gt;. &amp;gt;version Must be greater than version&lt;br&gt;&lt;em&gt;. &amp;gt;=version etc
+&lt;/em&gt;. &lt;version *.=&quot;&quot; &lt;=&quot;version&quot; ~version=&quot;&quot; &quot;approximately=&quot;&quot; equivalent=&quot;&quot; to=&quot;&quot; version&quot;=&quot;&quot; see=&quot;&quot; semver=&quot;&quot; ^version=&quot;&quot; &quot;compatible=&quot;&quot; with=&quot;&quot; 1.2.x=&quot;&quot; 1.2.0,=&quot;&quot; 1.2.1,=&quot;&quot; etc.,=&quot;&quot; but=&quot;&quot; not=&quot;&quot; 1.3.0=&quot;&quot; http:=&quot;&quot; ...=&quot;&quot; &#39;urls=&quot;&quot; as=&quot;&quot; dependencies&#39;=&quot;&quot; below=&quot;&quot; *=&quot;&quot; matches=&quot;&quot; any=&quot;&quot; version=&quot;&quot; &quot;&quot;=&quot;&quot; (just=&quot;&quot; an=&quot;&quot; empty=&quot;&quot; string)=&quot;&quot; same=&quot;&quot; version1=&quot;&quot; -=&quot;&quot; version2=&quot;&quot;&gt;=version1 &amp;lt;=version2.&lt;br&gt;&lt;em&gt;. range1 || range2 Passes if either range1 or range2 are satisfied.
+&lt;/em&gt;. git… See ‘Git URLs as Dependencies’ below&lt;br&gt;&lt;em&gt;. user/repo See ‘GitHub URLs’ below
+&lt;/em&gt;. tag A specific version tagged and published as tag See npm-tag&lt;br&gt;&lt;em&gt;. path/path/path See Local Paths below
+&lt;/em&gt;. For example, these are all valid:&lt;/version&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight json&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123; &lt;span class=&quot;attr&quot;&gt;&quot;dependencies&quot;&lt;/span&gt; :&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#123; &lt;span class=&quot;attr&quot;&gt;&quot;foo&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;1.0.0 - 2.9999.9999&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;bar&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;&amp;gt;=1.0.2 &amp;lt;2.1.2&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;baz&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;&amp;gt;1.0.2 &amp;lt;=2.3.4&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;boo&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;2.0.1&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;qux&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;&amp;lt;1.0.0 || &amp;gt;=2.3.1 &amp;lt;2.4.5 || &amp;gt;=2.5.2 &amp;lt;3.0.0&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;asd&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;http://asdf.com/asdf.tar.gz&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;til&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;~1.2&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;elf&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;~1.2.3&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;two&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;2.x&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;thr&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;3.3.x&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;lat&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;latest&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  , &lt;span class=&quot;attr&quot;&gt;&quot;dyl&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;file:../dyl&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/22343224/difference-between-tilde-and-caret-in-package-json&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://stackoverflow.com/questions/22343224/difference-between-tilde-and-caret-in-package-json&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://docs.npmjs.com/files/package.json&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://docs.npmjs.com/files/package.json&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Dependencies are specified in a simple object that maps a package name to a version range. The version range is a string which has one or
+    
+    </summary>
+    
+    
+      <category term="node" scheme="http://yoursite.com/tags/node/"/>
+    
+      <category term="npm" scheme="http://yoursite.com/tags/npm/"/>
+    
+      <category term="dependencies" scheme="http://yoursite.com/tags/dependencies/"/>
+    
+  </entry>
   
   <entry>
     <title>【翻译】On the ES6 module syntax</title>
@@ -571,9 +606,9 @@ bower install angular-mocks --save-dev
     
       <category term="AngularJS" scheme="http://yoursite.com/tags/AngularJS/"/>
     
-      <category term="Test" scheme="http://yoursite.com/tags/Test/"/>
-    
       <category term="Karma" scheme="http://yoursite.com/tags/Karma/"/>
+    
+      <category term="Test" scheme="http://yoursite.com/tags/Test/"/>
     
   </entry>
   
@@ -678,9 +713,9 @@ files: [
     
       <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
     
-      <category term="Test" scheme="http://yoursite.com/tags/Test/"/>
-    
       <category term="Karma" scheme="http://yoursite.com/tags/Karma/"/>
+    
+      <category term="Test" scheme="http://yoursite.com/tags/Test/"/>
     
   </entry>
   
@@ -2004,33 +2039,6 @@ public class CompressPicDemo {
       <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
     
       <category term="Image compression" scheme="http://yoursite.com/tags/Image-compression/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用新浪微博做图床外链的方法</title>
-    <link href="http://yoursite.com/2014/04/22/%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A%E5%81%9A%E5%9B%BE%E5%BA%8A%E5%A4%96%E9%93%BE%E7%9A%84%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2014/04/22/使用新浪微博做图床外链的方法/</id>
-    <published>2014-04-22T03:40:52.000Z</published>
-    <updated>2016-03-28T12:58:40.000Z</updated>
-    
-    <content type="html">&lt;p&gt;###1、图片上传前准备###&lt;br&gt;如果不打算在上传的图片上打上新浪微博的水印，可以在“个人设置”里的“偏好设置”中的“图片水印设置”，不勾选水印内容的三个选项，保存！&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;###2、在新浪微博上传图片，然后复制图片链接###&lt;/p&gt;
-&lt;p&gt;###3、根据不同需求选择不同尺寸的图片###&lt;br&gt;ww1.sinaimg.cn/&lt;span style=&quot;color: #EA6153;font-weight: bold;&quot;&gt;thumbnail&lt;/span&gt;/4da583a7gw1efo8amddupj21kw0w01kx.jpg&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/thumbnail/4da583a7gw1efo8amddupj21kw0w01kx.jpg&quot; alt=&quot;南京理工的二月兰花海&quot;&gt;&lt;br&gt;ww1.sinaimg.cn/&lt;span style=&quot;color: #EA6153;font-weight: bold;&quot;&gt;small&lt;/span&gt;/4da583a7gw1efo8amddupj21kw0w01kx.jpg&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/small/4da583a7gw1efo8amddupj21kw0w01kx.jpg&quot; alt=&quot;南京理工的二月兰花海&quot;&gt;&lt;br&gt;ww1.sinaimg.cn/&lt;span style=&quot;color: #EA6153;font-weight: bold;&quot;&gt;bmiddle&lt;/span&gt;/4da583a7gw1efo8amddupj21kw0w01kx.jpg&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/bmiddle/4da583a7gw1efo8amddupj21kw0w01kx.jpg&quot; alt=&quot;南京理工的二月兰花海&quot;&gt;&lt;br&gt;ww1.sinaimg.cn/&lt;span style=&quot;color: #EA6153;font-weight: bold;&quot;&gt;large&lt;/span&gt;/4da583a7gw1efo8amddupj21kw0w01kx.jpg&lt;br&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/4da583a7gw1efo8amddupj21kw0w01kx.jpg&quot; alt=&quot;南京理工的二月兰花海&quot;&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;###1、图片上传前准备###&lt;br&gt;如果不打算在上传的图片上打上新浪微博的水印，可以在“个人设置”里的“偏好设置”中的“图片水印设置”，不勾选水印内容的三个选项，保存！&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="weibo" scheme="http://yoursite.com/tags/weibo/"/>
-    
-      <category term="image" scheme="http://yoursite.com/tags/image/"/>
-    
-      <category term="tech" scheme="http://yoursite.com/tags/tech/"/>
     
   </entry>
   
