@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-03-30T03:52:17.000Z</updated>
+  <updated>2016-06-06T03:02:22.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,125 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>VS Code 搭建 Go 开发IDE</title>
+    <link href="http://yoursite.com/2016/06/06/VS-Code-%E6%90%AD%E5%BB%BA-Go-%E5%BC%80%E5%8F%91IDE/"/>
+    <id>http://yoursite.com/2016/06/06/VS-Code-搭建-Go-开发IDE/</id>
+    <published>2016-06-06T03:00:45.000Z</published>
+    <updated>2016-06-06T03:02:22.000Z</updated>
+    
+    <content type="html">&lt;p&gt;本文主要介绍的是如何使用VS Code 搭建一个进行Go开发的IDE。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Note&lt;/code&gt;: 本文的所有操作都是在 OS X系统上进行的。&lt;/p&gt;
+&lt;h1 id=&quot;VS-Code-介绍&quot;&gt;&lt;a href=&quot;#VS-Code-介绍&quot; class=&quot;headerlink&quot; title=&quot;VS Code 介绍&quot;&gt;&lt;/a&gt;VS Code 介绍&lt;/h1&gt;&lt;p&gt;VS Code 是微软开源的一个编辑器软件。刚面世的时候侧重于 C# 和前端开发，随着版本迭代和新功能出现，特别是支持安装第三方插件，VS Code 也支持其它语言的开发。&lt;/p&gt;
+&lt;p&gt;​VS Code 原生支持智能提示、方法补全的语言有：JavaScript, JSON, HTML, CSS, LESS, SASS。如果装上下文提到的 Go 插件，也是能够支持 Go 语言的智能提示和方法补全。&lt;/p&gt;
+&lt;p&gt;VS Code 最牛逼的地方是 它和 Atom 都是基于 Electron 构建的应用，但是相比于 Atom 常被诟病的卡卡卡，VS Code 打开超大文件几乎秒开。&lt;/p&gt;
+&lt;p&gt;不足的地方是 VS Code 的第三方插件的丰富度不及 Atom，但是假以时日，随着更多人关注它，VS Code 的第三方插件肯定会越来越丰富。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;下载安装&quot;&gt;&lt;a href=&quot;#下载安装&quot; class=&quot;headerlink&quot; title=&quot;下载安装&quot;&gt;&lt;/a&gt;下载安装&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://code.visualstudio.com/c?utm_expid=101350005-17.ZUysucFlStyPwU4hcu0waA.2&amp;amp;utm_referrer=https%3A%2F%2Fcode.visualstudio.com%2Fdocs%2Fcustomization%2Fthemes&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官网地址&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;常用快捷键&quot;&gt;&lt;a href=&quot;#常用快捷键&quot; class=&quot;headerlink&quot; title=&quot;常用快捷键&quot;&gt;&lt;/a&gt;常用快捷键&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;⌘+⇧+P&lt;/code&gt; / &lt;code&gt;F1&lt;/code&gt; 万能键&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;F12&lt;/code&gt; 跳转到声明的地方&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;⌘+⇧+F&lt;/code&gt;全文搜索&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;⌘+P&lt;/code&gt;快速切换文件&lt;/li&gt;
+&lt;li&gt;⌘+点击指定文件，将此文件在分屏栏打开&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;⌘+D&lt;/code&gt;多选&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;⌘+E&lt;/code&gt; 打开命令行，其他指令其实都是基于命令行的，可直接在输入框输入?来查询指令&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;⌃+G&lt;/code&gt;跳转到指定行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;⌃+tab&lt;/code&gt;快速切换到上一个文件,多次按(⇧)tab可以来回选择,也可以直接点击文件顶部名称来显示历史文件列表进行切换&lt;/li&gt;
+&lt;li&gt;⌥+点击多处可以多光标操作&lt;h1 id=&quot;安装-Go-插件&quot;&gt;&lt;a href=&quot;#安装-Go-插件&quot; class=&quot;headerlink&quot; title=&quot;安装 Go 插件&quot;&gt;&lt;/a&gt;安装 Go 插件&lt;/h1&gt;&lt;code&gt;vscode-go&lt;/code&gt; 是 VS Code 编辑器上非常好用的一个 golang 插件，它包括以下特性：&lt;/li&gt;
+&lt;li&gt;Colorization 代码着彩色&lt;/li&gt;
+&lt;li&gt;Completion Lists 代码自动完成（使用gocode）&lt;/li&gt;
+&lt;li&gt;Snippets  代码片段&lt;/li&gt;
+&lt;li&gt;Quick Info 快速提示信息（使用godef）&lt;/li&gt;
+&lt;li&gt;Goto Definition 跳转到定义（使用godef）&lt;/li&gt;
+&lt;li&gt;Find References  搜索参考引用（使用go-find-references）&lt;/li&gt;
+&lt;li&gt;File outline 文件大纲（使用go-outline）&lt;/li&gt;
+&lt;li&gt;Workspace symbol search 工作区符号搜索（使用 go-symbols）&lt;/li&gt;
+&lt;li&gt;Rename 重命名（使用gorename）&lt;/li&gt;
+&lt;li&gt;Build-on-save 保存构建（使用go build和go test）&lt;/li&gt;
+&lt;li&gt;Format 代码格式化（使用goreturns或goimports或gofmt）&lt;/li&gt;
+&lt;li&gt;Add Imports  添加引用（使用 gopkgs）&lt;/li&gt;
+&lt;li&gt;Debugging 调试代码（使用delve）&lt;/li&gt;
+&lt;li&gt;这里默认你已经安装了golang环境。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;IDE 截图 &lt;img src=&quot;https://camo.githubusercontent.com/1f3ca22272de5e24287295486fa29f24ef28c512/687474703a2f2f692e67697068792e636f6d2f785469546e64444856334765497936614e612e676966&quot; alt=&quot;IDE&quot;&gt;&lt;/p&gt;
+&lt;p&gt;使用快捷方式(&lt;code&gt;⌘+P&lt;/code&gt;)打开命令面板，输入以下命令，然后点击回车键，VS Code就开始安装Go插件。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ext install Go&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;安装完成后，按照以下说明配置一些 Go 设置。&lt;/p&gt;
+&lt;p&gt;打开 &lt;code&gt;Preferences&lt;/code&gt; -&amp;gt; &lt;code&gt;User Settings&lt;/code&gt;，主界面右边面板的 &lt;code&gt;settings.json&lt;/code&gt; 输入以下配置：&lt;/p&gt;
+&lt;figure class=&quot;highlight json&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.buildOnSave&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.lintOnSave&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.vetOnSave&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.buildFlags&quot;&lt;/span&gt;: [],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.lintFlags&quot;&lt;/span&gt;: [],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.vetFlags&quot;&lt;/span&gt;: [],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.useCodeSnippetsOnFunctionSuggest&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.formatOnSave&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.formatTool&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;goreturns&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.goroot&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;/usr/local/go&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;go.gopath&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;/opt/gowork&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;&quot;files.autoSave&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;onFocusChange&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;注意上面的 &lt;code&gt;go.goroot&lt;/code&gt; 和 &lt;code&gt;go.gopath&lt;/code&gt;的值，以本季系统的 &lt;code&gt;GOROOT&lt;/code&gt; 和 &lt;code&gt;GOPATH&lt;/code&gt; 为准。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;vscode-go&lt;/code&gt; 依赖下面列出的工具，如果缺失某些工具的话，安装完 &lt;code&gt;vscode-go&lt;/code&gt; 之后打开一个go文件，在编辑器的右下角会出现 &lt;code&gt;Analysis Tools Missing&lt;/code&gt; 的警告，点击它就会自动安装缺失的工具。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;gocode: go get -u -v github.com/nsf/gocode&lt;/li&gt;
+&lt;li&gt;godef: go get -u -v github.com/rogpeppe/godef&lt;/li&gt;
+&lt;li&gt;golint: go get -u -v github.com/golang/lint/golint&lt;/li&gt;
+&lt;li&gt;go-outline: go get -u -v github.com/lukehoban/go-outline&lt;/li&gt;
+&lt;li&gt;goreturns: go get -u -v sourcegraph.com/sqs/goreturns&lt;/li&gt;
+&lt;li&gt;gorename: go get -u -v golang.org/x/tools/cmd/gorename&lt;/li&gt;
+&lt;li&gt;gopkgs: go get -u -v github.com/tpng/gopkgs&lt;/li&gt;
+&lt;li&gt;go-symbols: go get -u -v github.com/newhook/go-symbols&lt;/li&gt;
+&lt;li&gt;guru: go get -u -v golang.org/x/tools/cmd/guru&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当然也可以直接在命令行中输入以下命令安装：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v github.com/nsf/gocode&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v github.com/rogpeppe/godef&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v github.com/golang/lint/golint&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v github.com/lukehoban/go-outline&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v sourcegraph.com/sqs/goreturns&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v golang.org/x/tools/cmd/gorename&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v github.com/tpng/gopkgs&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v github.com/newhook/go-symbols&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;go get -u -v golang.org/x/tools/cmd/guru&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;安装-delve&quot;&gt;&lt;a href=&quot;#安装-delve&quot; class=&quot;headerlink&quot; title=&quot;安装 delve&quot;&gt;&lt;/a&gt;安装 delve&lt;/h1&gt;&lt;p&gt;delve 只支持 Go 1.5以上版本，并且 Go 1.5版本的安装步骤和 Go 1.6是不一样的，相对来说 Go 1.6版本安装比较简单。&lt;/p&gt;
+&lt;h2 id=&quot;Go-1-6&quot;&gt;&lt;a href=&quot;#Go-1-6&quot; class=&quot;headerlink&quot; title=&quot;Go 1.6&quot;&gt;&lt;/a&gt;Go 1.6&lt;/h2&gt;&lt;p&gt;如果系统安装了 &lt;code&gt;HomeBrew&lt;/code&gt;， 直接执行以下命令即可：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ brew install go-delve/delve/delve&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;code&gt;NOTE&lt;/code&gt;: 按照此步骤安装delve，如果在稍后运行Go程序的时候出现 &lt;code&gt;runtime/internal/sys 找不到&lt;/code&gt; 的错误，这是因为上一步的操作另外安装了Go环境，然后覆盖了之前的。可以执行以下命令卸载 &lt;code&gt;brew&lt;/code&gt; 安装的 Go 环境：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ brew uninstall Go&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;Go-1-5&quot;&gt;&lt;a href=&quot;#Go-1-5&quot; class=&quot;headerlink&quot; title=&quot;Go 1.5&quot;&gt;&lt;/a&gt;Go 1.5&lt;/h2&gt;&lt;h3 id=&quot;创建一个自签名的证书&quot;&gt;&lt;a href=&quot;#创建一个自签名的证书&quot; class=&quot;headerlink&quot; title=&quot;创建一个自签名的证书&quot;&gt;&lt;/a&gt;创建一个自签名的证书&lt;/h3&gt;&lt;p&gt;创建自签名的步骤如下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;打开应用 &lt;code&gt;Keychain Access&lt;/code&gt; (&lt;code&gt;/Applications/Utilities/Keychain Access.app&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;打开菜单 &lt;code&gt;/Keychain Access/Certificate Assistant/Create a Certificate...&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;选择一个名称 (比如 &lt;code&gt;dlv-cert&lt;/code&gt; ), 设置选项 &lt;code&gt;Identity Type&lt;/code&gt; 为 &lt;code&gt;Self Signed Root&lt;/code&gt;, 设置选项 &lt;code&gt;Certificate Type&lt;/code&gt; 为 &lt;code&gt;Code Signing&lt;/code&gt; 然后勾选 &lt;code&gt;Let me override defaults&lt;/code&gt;。 点击 &lt;code&gt;Continue&lt;/code&gt;。 你可以把 &lt;code&gt;Validity Period&lt;/code&gt; 从 365天扩展到3650天。&lt;/li&gt;
+&lt;li&gt;连续点击多次 &lt;code&gt;Continue&lt;/code&gt; 按钮知道到达 &lt;code&gt;Specify a Location For The Certificate&lt;/code&gt; 面板, 然后将选项 &lt;code&gt;Keychain&lt;/code&gt; 设置为 &lt;code&gt;System&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;如果你无法将证书以 &lt;code&gt;System keychain&lt;/code&gt; 的形式存储，你可以将它创建为 &lt;code&gt;login keychain&lt;/code&gt;，然后导出。接着再以 &lt;code&gt;System keychain&lt;/code&gt; 的形式导入。&lt;/li&gt;
+&lt;li&gt;创讲完后，在左边的 &lt;code&gt;keychains&lt;/code&gt; 列表选择 &lt;code&gt;System&lt;/code&gt; 选项，你能看到你刚刚创建的证书。鼠标右键证书，然后选择 &lt;code&gt;Get Info&lt;/code&gt;， 打开 &lt;code&gt;Trust&lt;/code&gt; 项, 将 &lt;code&gt;Code Signing&lt;/code&gt; 设置为 &lt;code&gt;Always Trust&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;Yosemite 系统需要额外的操作： keychains 列表，选择 category Keys -&amp;gt; dlv-cert -&amp;gt; right click -&amp;gt; GetInfo -&amp;gt; Access Control -&amp;gt; 选择 &lt;code&gt;Allow all applications to access this item&lt;/code&gt; -&amp;gt; 保存变更。&lt;/li&gt;
+&lt;li&gt;你必须将 &lt;code&gt;Keychain Access&lt;/code&gt; 应用退出，这样子才能使用到证书并且重启当前正在运行的 &lt;code&gt;taskgated&lt;/code&gt; 进程。你可以选择重启你的电脑。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;创建目录 &lt;code&gt;mkdir $GOPATH/src/github.com/derekparker &amp;amp;&amp;amp; cd $GOPATH/src/github.com/derekparker&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;克隆项目并且打开 &lt;code&gt;git clone https://github.com/derekparker/delve.git &amp;amp;&amp;amp; cd delve&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Go 1.5 需要执行的命令。 &lt;code&gt;export GO15VENDOREXPERIMENT=1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;开始安装 &lt;code&gt;CERT=dlv-cert make install&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;如何断点调试&quot;&gt;&lt;a href=&quot;#如何断点调试&quot; class=&quot;headerlink&quot; title=&quot;如何断点调试&quot;&gt;&lt;/a&gt;如何断点调试&lt;/h1&gt;&lt;p&gt;调试模式 &lt;img src=&quot;https://camo.githubusercontent.com/68208a6fb64ec6fd62130fdc9d1846ce2ee32528/687474703a2f2f692e67697068792e636f6d2f336f4564754f3952783661776b64733465732e676966&quot; alt=&quot;调试模式&quot;&gt;&lt;/p&gt;
+&lt;p&gt;第一次进入断点调试的时候，需要配置一些调试信息，步骤如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在 VS Code 中，切换到debug面板，快捷键是 &lt;code&gt;⌘+⇧+D&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;点击左上角的齿轮图标（Open launch.json）。&lt;/li&gt;
+&lt;li&gt;选择 Go 环境。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/4da583a7jw1f4jj3eq25gj20zi08jjrx.jpg&quot; alt=&quot;如何配置调试信息&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;launch.json&lt;/code&gt; 配置信息如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight json&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;&quot;version&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;0.2.0&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;&quot;configurations&quot;&lt;/span&gt;: [&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Phantom&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;type&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;go&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;request&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;launch&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;mode&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;debug&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;remotePath&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;port&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1234&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;host&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;program&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;$&amp;#123;workspaceRoot&amp;#125;&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;env&quot;&lt;/span&gt;: &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;attr&quot;&gt;&quot;QUICKPAY_ENV&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;testing&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;&quot;args&quot;&lt;/span&gt;: []&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在需要调试的代码附近打个断点后，按 &lt;code&gt;F5&lt;/code&gt; 即可开始断点调试了。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文主要介绍的是如何使用VS Code 搭建一个进行Go开发的IDE。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Note&lt;/code&gt;: 本文的所有操作都是在 OS X系统上进行的。&lt;/p&gt;
+&lt;h1 id=&quot;VS-Code-介绍&quot;&gt;&lt;a href=&quot;#VS-Code-介绍&quot; class=&quot;headerlink&quot; title=&quot;VS Code 介绍&quot;&gt;&lt;/a&gt;VS Code 介绍&lt;/h1&gt;&lt;p&gt;VS Code 是微软开源的一个编辑器软件。刚面世的时候侧重于 C# 和前端开发，随着版本迭代和新功能出现，特别是支持安装第三方插件，VS Code 也支持其它语言的开发。&lt;/p&gt;
+&lt;p&gt;​VS Code 原生支持智能提示、方法补全的语言有：JavaScript, JSON, HTML, CSS, LESS, SASS。如果装上下文提到的 Go 插件，也是能够支持 Go 语言的智能提示和方法补全。&lt;/p&gt;
+&lt;p&gt;VS Code 最牛逼的地方是 它和 Atom 都是基于 Electron 构建的应用，但是相比于 Atom 常被诟病的卡卡卡，VS Code 打开超大文件几乎秒开。&lt;/p&gt;
+&lt;p&gt;不足的地方是 VS Code 的第三方插件的丰富度不及 Atom，但是假以时日，随着更多人关注它，VS Code 的第三方插件肯定会越来越丰富。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="http://yoursite.com/tags/Go/"/>
+    
+      <category term="VS Code" scheme="http://yoursite.com/tags/VS-Code/"/>
+    
+      <category term="Go Debug" scheme="http://yoursite.com/tags/Go-Debug/"/>
+    
+      <category term="IDE" scheme="http://yoursite.com/tags/IDE/"/>
+    
+  </entry>
   
   <entry>
     <title>dependencies of package.json</title>
@@ -1860,185 +1979,6 @@ public class UserController extends MultiActionController {
       <category term="Async" scheme="http://yoursite.com/tags/Async/"/>
     
       <category term="Debug" scheme="http://yoursite.com/tags/Debug/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA图片压缩代码实现</title>
-    <link href="http://yoursite.com/2014/05/12/JAVA%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/"/>
-    <id>http://yoursite.com/2014/05/12/JAVA图片压缩代码实现/</id>
-    <published>2014-05-12T07:35:27.000Z</published>
-    <updated>2016-03-28T12:58:40.000Z</updated>
-    
-    <content type="html">&lt;p&gt;想用拍出来的照片传到部落格上当做首页的封面，无奈原照片太大了，直接放上去必定很占用带宽，于是想到了对原图进行压缩。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;以下代码是在网络上查找到的，并且运行通过的&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;package com.wonsikin.pic;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-/**
- * Created with IntelliJ IDEA.
- * User: Arthur WANG
- * Date: 14-5-12
- * Time: 下午2:11
- * To change this template use File | Settings | File Templates.
- */
-public class CompressPicDemo {
-    private File file = null; //文件对象
-    private String inputDir;  //原图路径
-    private String outputDir; //生成图路径
-    private String inputFileName; //原图名称
-    private String outputFileName; //生成图名称
-    private int outputWidth = 100;  //默认生成图宽度
-    private int outputHeight = 100; //默认生成图高度
-    private boolean proportion = true; //是否等比例缩放
-
-    public CompressPicDemo() {
-        //初始化变量
-        inputDir = &amp;quot;&amp;quot;;
-        outputDir = &amp;quot;&amp;quot;;
-        inputFileName = &amp;quot;&amp;quot;;
-        outputFileName = &amp;quot;&amp;quot;;
-        outputWidth = 100;
-        outputHeight = 100;
-    }
-
-    public void setInputDir(String inputDir) {
-        this.inputDir = inputDir;
-    }
-
-    public void setOutputDir(String outputDir) {
-        this.outputDir = outputDir;
-    }
-
-    public void setInputFileName(String inputFileName) {
-        this.inputFileName = inputFileName;
-    }
-
-    public void setOutputFileName(String outputFileName) {
-        this.outputFileName = outputFileName;
-    }
-
-    public void setOutputWidth(int outputWidth) {
-        this.outputWidth = outputWidth;
-    }
-
-    public void setOutputHeight(int outputHeight) {
-        this.outputHeight = outputHeight;
-    }
-
-    public void setWidthAndHeight(int width, int height){
-        this.outputWidth = width;
-        this.outputHeight = height;
-    }
-
-    /**
-     * 获得图片大小
-     * 传入参数 path ：图片路径
-     * */
-    public long getPicSize(String path){
-        file = new File(path);
-        return file.length();
-    }
-
-    /*
-    * 图片处理
-    * **/
-    public String compressPic(){
-        try{
-            //获得原图片
-            file = new File(inputDir + inputFileName);
-            if(!file.exists()){
-                return &amp;quot;&amp;quot;;
-            }
-            Image img = ImageIO.read(file);
-            //判断图片格式是否正确
-            if (img.getWidth(null) == -1 ){
-                System.out.println(&amp;quot;Can&amp;apos;t read,retry!&amp;quot;+ &amp;quot;&amp;lt;BR&amp;gt;&amp;quot;);
-                return &amp;quot;No&amp;quot;;
-            } else {
-                int newWidth;
-                int newHeight;
-                // 判断是否等比例缩放
-                if(this.proportion == true ){
-                    double rate1 = ((double) img.getWidth(null)) / (double) outputWidth + 0.1;
-                    double rate2 = ((double) img.getHeight(null)) / (double) outputHeight + 0.1;
-                    double rate = rate1 &amp;gt; rate2 ? rate1 : rate2;
-                    newWidth = (int) (((double) img.getWidth(null))/rate);
-                    newHeight = (int) (((double) img.getHeight(null))/rate);
-                } else{
-                    newWidth = img.getWidth(null);
-                    newHeight = img.getHeight(null);
-                }
-                BufferedImage tag = new BufferedImage((int) newWidth, (int) newHeight, BufferedImage.TYPE_INT_RGB);
-                /*
-                 * Image.SCALE_SMOOTH 的缩略算法 生成缩略图片的平滑度的
-                 * 优先级比速度高 生成的图片质量比较好 但速度慢
-                 */
-                tag.getGraphics().drawImage(img.getScaledInstance(newWidth,newHeight,Image.SCALE_SMOOTH), 0,0,null);
-                FileOutputStream out = new FileOutputStream(outputDir + outputFileName);
-                /* JPEGImageEncoder可适用于其他图片类型的转换 */
-                JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-                encoder.encode(tag);
-                out.close();
-            }
-
-
-        } catch (IOException e){
-            e.printStackTrace();
-
-        }
-        return &amp;quot;OK&amp;quot;;
-    }
-
-    public String compressPic(String inputDir, String outputDir, String inputFileName, String outputFileName) {
-        this.inputDir = inputDir;
-        this.outputDir = outputDir;
-        this.inputFileName = inputFileName;
-        this.outputFileName = outputFileName;
-        return compressPic();
-    }
-
-    public String compressPicDemo(String inputDir, String outputDir, String inputFileName, String outputFileName, int outputWidth, int outputHeight, boolean proportion) {
-        this.inputDir = inputDir;
-        this.outputDir = outputDir;
-        this.inputFileName = inputFileName;
-        this.outputFileName = outputFileName;
-        setWidthAndHeight(outputWidth,outputHeight);
-        this.proportion = proportion;
-
-        return compressPic();
-
-    }
-
-    public static void main(String[] args){
-        CompressPicDemo mypic = new CompressPicDemo();
-        System.out.println(&amp;quot;Start&amp;quot;);
-        mypic.compressPicDemo(&amp;quot;C:\\&amp;quot;,&amp;quot;C:\\test\\&amp;quot;,&amp;quot;1.jpg&amp;quot;,&amp;quot;r2.jpg&amp;quot;,1366,960, false);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;原文链接： &lt;a href=&quot;http://www.qcoke.com/?p=1162&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;可乐加糖 &amp;amp; COLA&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;想用拍出来的照片传到部落格上当做首页的封面，无奈原照片太大了，直接放上去必定很占用带宽，于是想到了对原图进行压缩。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
-    
-      <category term="Image compression" scheme="http://yoursite.com/tags/Image-compression/"/>
     
   </entry>
   
