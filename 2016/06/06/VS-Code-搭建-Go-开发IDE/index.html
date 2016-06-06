@@ -74,7 +74,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
 <meta property="og:image" content="https://camo.githubusercontent.com/1f3ca22272de5e24287295486fa29f24ef28c512/687474703a2f2f692e67697068792e636f6d2f785469546e64444856334765497936614e612e676966">
 <meta property="og:image" content="https://camo.githubusercontent.com/68208a6fb64ec6fd62130fdc9d1846ce2ee32528/687474703a2f2f692e67697068792e636f6d2f336f4564754f3952783661776b64733465732e676966">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/4da583a7jw1f4jj3eq25gj20zi08jjrx.jpg">
-<meta property="og:updated_time" content="2016-06-06T03:02:22.000Z">
+<meta property="og:updated_time" content="2016-06-06T03:32:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VS Code 搭建 Go 开发IDE">
 <meta name="twitter:description" content="本文主要介绍的是如何使用VS Code 搭建一个进行Go开发的IDE。
@@ -363,6 +363,11 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
 <p><code>launch.json</code> 配置信息如下：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Phantom"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"go"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"mode"</span>: <span class="string">"debug"</span>,</span><br><span class="line">            <span class="attr">"remotePath"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">1234</span>,</span><br><span class="line">            <span class="attr">"host"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;workspaceRoot&#125;"</span>,</span><br><span class="line">            <span class="attr">"env"</span>: &#123;</span><br><span class="line">                <span class="attr">"QUICKPAY_ENV"</span>: <span class="string">"testing"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"args"</span>: []</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在需要调试的代码附近打个断点后，按 <code>F5</code> 即可开始断点调试了。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.cnblogs.com/zsy/p/5224524.html" target="_blank" rel="external">http://www.cnblogs.com/zsy/p/5224524.html</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=lukehoban.Go" target="_blank" rel="external">https://marketplace.visualstudio.com/items?itemName=lukehoban.Go</a></li>
+<li><a href="https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md" target="_blank" rel="external">https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md</a></li>
+</ol>
 
       
     </div>
@@ -392,8 +397,8 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/30/post/" rel="next" title="dependencies of package.json">
-                <i class="fa fa-chevron-left"></i> dependencies of package.json
+              <a href="/2016/03/28/【翻译】On the ES6 module syntax/" rel="next" title="【翻译】On the ES6 module syntax">
+                <i class="fa fa-chevron-left"></i> 【翻译】On the ES6 module syntax
               </a>
             
           </div>
@@ -489,7 +494,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -499,7 +504,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">45</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -566,7 +571,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VS-Code-介绍"><span class="nav-number">1.</span> <span class="nav-text">VS Code 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装"><span class="nav-number">1.1.</span> <span class="nav-text">下载安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用快捷键"><span class="nav-number">1.2.</span> <span class="nav-text">常用快捷键</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-Go-插件"><span class="nav-number">2.</span> <span class="nav-text">安装 Go 插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-delve"><span class="nav-number">3.</span> <span class="nav-text">安装 delve</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-1-6"><span class="nav-number">3.1.</span> <span class="nav-text">Go 1.6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-1-5"><span class="nav-number">3.2.</span> <span class="nav-text">Go 1.5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个自签名的证书"><span class="nav-number">3.2.1.</span> <span class="nav-text">创建一个自签名的证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">3.2.2.</span> <span class="nav-text">安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何断点调试"><span class="nav-number">4.</span> <span class="nav-text">如何断点调试</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VS-Code-介绍"><span class="nav-number">1.</span> <span class="nav-text">VS Code 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装"><span class="nav-number">1.1.</span> <span class="nav-text">下载安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用快捷键"><span class="nav-number">1.2.</span> <span class="nav-text">常用快捷键</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-Go-插件"><span class="nav-number">2.</span> <span class="nav-text">安装 Go 插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-delve"><span class="nav-number">3.</span> <span class="nav-text">安装 delve</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-1-6"><span class="nav-number">3.1.</span> <span class="nav-text">Go 1.6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-1-5"><span class="nav-number">3.2.</span> <span class="nav-text">Go 1.5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个自签名的证书"><span class="nav-number">3.2.1.</span> <span class="nav-text">创建一个自签名的证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">3.2.2.</span> <span class="nav-text">安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何断点调试"><span class="nav-number">4.</span> <span class="nav-text">如何断点调试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

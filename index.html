@@ -321,112 +321,6 @@
             
               
                 
-                <a class="post-title-link" href="/2016/03/30/post/" itemprop="url">
-                  dependencies of package.json
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-30T11:44:16+08:00" content="2016-03-30">
-              2016-03-30
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/30/post/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/30/post/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Dependencies are specified in a simple object that maps a package name to a version range. The version range is a string which has one or more space-separated descriptors. Dependencies can also be identified with a tarball or git URL.</p>
-<p>Please do not put test harnesses or transpilers in your dependencies object. See devDependencies, below.</p>
-<p>See semver for more details about specifying version ranges.</p>
-<p><em>. version Must match version exactly
-</em>. &gt;version Must be greater than version<br><em>. &gt;=version etc
-</em>. <version *.="" <="version" ~version="" "approximately="" equivalent="" to="" version"="" see="" semver="" ^version="" "compatible="" with="" 1.2.x="" 1.2.0,="" 1.2.1,="" etc.,="" but="" not="" 1.3.0="" http:="" ...="" 'urls="" as="" dependencies'="" below="" *="" matches="" any="" version="" ""="" (just="" an="" empty="" string)="" same="" version1="" -="" version2="">=version1 &lt;=version2.<br><em>. range1 || range2 Passes if either range1 or range2 are satisfied.
-</em>. git… See ‘Git URLs as Dependencies’ below<br><em>. user/repo See ‘GitHub URLs’ below
-</em>. tag A specific version tagged and published as tag See npm-tag<br><em>. path/path/path See Local Paths below
-</em>. For example, these are all valid:</version></p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"dependencies"</span> :</span><br><span class="line">  &#123; <span class="attr">"foo"</span> : <span class="string">"1.0.0 - 2.9999.9999"</span></span><br><span class="line">  , <span class="attr">"bar"</span> : <span class="string">"&gt;=1.0.2 &lt;2.1.2"</span></span><br><span class="line">  , <span class="attr">"baz"</span> : <span class="string">"&gt;1.0.2 &lt;=2.3.4"</span></span><br><span class="line">  , <span class="attr">"boo"</span> : <span class="string">"2.0.1"</span></span><br><span class="line">  , <span class="attr">"qux"</span> : <span class="string">"&lt;1.0.0 || &gt;=2.3.1 &lt;2.4.5 || &gt;=2.5.2 &lt;3.0.0"</span></span><br><span class="line">  , <span class="attr">"asd"</span> : <span class="string">"http://asdf.com/asdf.tar.gz"</span></span><br><span class="line">  , <span class="attr">"til"</span> : <span class="string">"~1.2"</span></span><br><span class="line">  , <span class="attr">"elf"</span> : <span class="string">"~1.2.3"</span></span><br><span class="line">  , <span class="attr">"two"</span> : <span class="string">"2.x"</span></span><br><span class="line">  , <span class="attr">"thr"</span> : <span class="string">"3.3.x"</span></span><br><span class="line">  , <span class="attr">"lat"</span> : <span class="string">"latest"</span></span><br><span class="line">  , <span class="attr">"dyl"</span> : <span class="string">"file:../dyl"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://stackoverflow.com/questions/22343224/difference-between-tilde-and-caret-in-package-json" target="_blank" rel="external">http://stackoverflow.com/questions/22343224/difference-between-tilde-and-caret-in-package-json</a><br><a href="https://docs.npmjs.com/files/package.json" target="_blank" rel="external">https://docs.npmjs.com/files/package.json</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2016/03/28/【翻译】On the ES6 module syntax/" itemprop="url">
                   【翻译】On the ES6 module syntax
                 </a>
@@ -1200,6 +1094,105 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/11/01/【翻译】分析JavaScript性能/" itemprop="url">
+                  【翻译】分析JavaScript性能
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2014-11-01T15:48:54+08:00" content="2014-11-01">
+              2014-11-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/11/01/【翻译】分析JavaScript性能/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/01/【翻译】分析JavaScript性能/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>###JavaScript分析数据图表介绍</p>
+<p>使用谷歌Chrome浏览器，打开V8测试套件页面，点击<code>开始分析</code>按钮或者按<span class="kbd">Cmd</span>＋<span class="kbd">E</span>快捷键开始记录JavascriptCPU分析。现在，刷新V8测试套件页面。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/11/01/【翻译】分析JavaScript性能/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1245,7 +1238,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1255,7 +1248,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">45</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
