@@ -1,0 +1,785 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JavaScript,Date,Chrome,Windows,OS X,moment.js," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WonSikin's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="前言我所在的项目SM负责扫码支付的处理，所有的数据都存储在 MongoDB 中，因为这段时间的业务发展，数据库越来越大，同时也感觉到了查询的速度越来越慢。后端同事加班加点变得频繁，使用各种方法来给解决 MongoDB 查询慢的问题，能加索引的加索引，能优化查询语句的优化。另外公司也请来了一位 MongoDB 的大牛来讲解一些 MongoDB 的最佳体验。比如我接下来要讲的：时间数据的存储。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何传送时间参数到服务端">
+<meta property="og:url" content="http://yoursite.com/2016/06/07/如何传送时间参数到后台/index.html">
+<meta property="og:site_name" content="WonSikin's Blog">
+<meta property="og:description" content="前言我所在的项目SM负责扫码支付的处理，所有的数据都存储在 MongoDB 中，因为这段时间的业务发展，数据库越来越大，同时也感觉到了查询的速度越来越慢。后端同事加班加点变得频繁，使用各种方法来给解决 MongoDB 查询慢的问题，能加索引的加索引，能优化查询语句的优化。另外公司也请来了一位 MongoDB 的大牛来讲解一些 MongoDB 的最佳体验。比如我接下来要讲的：时间数据的存储。">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/4da583a7gw1f5as4mxu7fj21bw0fuaeu.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4da583a7gw1f5as4mjs81j21kw0dun10.jpg">
+<meta property="og:updated_time" content="2016-07-03T12:29:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何传送时间参数到服务端">
+<meta name="twitter:description" content="前言我所在的项目SM负责扫码支付的处理，所有的数据都存储在 MongoDB 中，因为这段时间的业务发展，数据库越来越大，同时也感觉到了查询的速度越来越慢。后端同事加班加点变得频繁，使用各种方法来给解决 MongoDB 查询慢的问题，能加索引的加索引，能优化查询语句的优化。另外公司也请来了一位 MongoDB 的大牛来讲解一些 MongoDB 的最佳体验。比如我接下来要讲的：时间数据的存储。">
+<meta name="twitter:image" content="http://ww4.sinaimg.cn/large/4da583a7gw1f5as4mxu7fj21bw0fuaeu.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 如何传送时间参数到服务端 | WonSikin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">WonSikin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何传送时间参数到服务端
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-06-07T18:47:32+08:00" content="2016-06-07">
+              2016-06-07
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/07/如何传送时间参数到后台/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/07/如何传送时间参数到后台/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>我所在的项目SM负责扫码支付的处理，所有的数据都存储在 <code>MongoDB</code> 中，因为这段时间的业务发展，数据库越来越大，同时也感觉到了查询的速度越来越慢。<br>后端同事加班加点变得频繁，使用各种方法来给解决 <code>MongoDB</code> 查询慢的问题，能加索引的加索引，能优化查询语句的优化。<br>另外公司也请来了一位 <code>MongoDB</code> 的大牛来讲解一些 <code>MongoDB</code> 的最佳体验。<br>比如我接下来要讲的：时间数据的存储。</p>
+<a id="more"></a>
+<h3 id="服务端的时间类型设置"><a href="#服务端的时间类型设置" class="headerlink" title="服务端的时间类型设置"></a>服务端的时间类型设置</h3><p>SM项目是我和另外两个前同事一起搭建起来的，当初的技术选型（Polymer + Golang +  <code>MongoDB</code> ）对我们来说都是第一次在生产项目上的应用，所以有一些不规范的使用。<br>比如在时间数据的存储上，我们直接在数据库存储了类似 “YYYY-MM-DD hh:mm:ss” 的字符串。经过大牛的点拨后，我们意识到这是一个非常糟糕的处理方法。</p>
+<p>正好最近有个新需求，需要给一个结构体增加时间方面的字段。于是我这么设计了结构体的属性：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Agent <span class="keyword">struct</span> &#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    ContractStartDate *time.Time <span class="string">`bson:"contractStartDate,omitempty" json:"contractStartDate,string"`</span>  <span class="comment">// 合同开始日期</span></span><br><span class="line">    ContractEndDate   *time.Time <span class="string">`bson:"contractEndDate,omitempty" json:"contractEndDate,string"`</span>      <span class="comment">// 合同结束日期</span></span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这里的时间的类型必须定义为指针，所择会出现前端传送空的时间到服务器的时候，服务器自动把时间解析成耶稣诞生的时点了。</p>
+<p>存进<code>MongoDB</code>数据库的时间如下所示，自带时区属性，便于项目国际化拓展。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    &quot;contractStartDate&quot; : ISODate(&quot;2014-05-01T00:00:00.000+0800&quot;),</span><br><span class="line">    &quot;contractEndDate&quot; : ISODate(&quot;2017-05-31T00:00:00.000+0800&quot;),</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="前端时间传送到服务端的选择"><a href="#前端时间传送到服务端的选择" class="headerlink" title="前端时间传送到服务端的选择"></a>前端时间传送到服务端的选择</h3><p>如何将前端的时间参数发送给服务端，并且服务端正确解析呢？</p>
+<p>如果是POST请求，并且参数都是放到body里面的话，此时的数据一般是JSON字符串。<br>JavaScript中的Date类型的数据转成JSON字符串的形式如下。<br>因为都是符合ISO标准的字符串，服务端是能够正确解析的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  "contractStartDate":"2016-05-31T16:00:00.000Z",</span><br><span class="line">  "contractEndDate":"2016-06-29T16:00:00.000Z",</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果是GET请求，并且时间参数放在query后面呢？这时候就没有像上面那么简单了，下面这两张图是分别在windows和mac平台上的谷歌浏览器中发起的请求。<br>可以看到，在两个平台上，JavaScript中的Date对象作为query参数是不一样的，那么问题来了，挖…不，该怎么破？<br>我这边的建议是使用一些操作时间的类库，比如 <a href="http://momentjs.com" target="_blank" rel="external">momentjs</a>。</p>
+<h6 id="windows下Chrome浏览器"><a href="#windows下Chrome浏览器" class="headerlink" title="windows下Chrome浏览器"></a>windows下Chrome浏览器</h6><p><img src="http://ww4.sinaimg.cn/large/4da583a7gw1f5as4mxu7fj21bw0fuaeu.jpg" alt="windows下Chrome浏览器"></p>
+<h6 id="Mac下Chrome浏览器"><a href="#Mac下Chrome浏览器" class="headerlink" title="Mac下Chrome浏览器"></a>Mac下Chrome浏览器</h6><p><img src="http://ww1.sinaimg.cn/large/4da583a7gw1f5as4mjs81j21kw0dun10.jpg" alt="Mac下Chrome浏览器"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag">#JavaScript</a>
+          
+            <a href="/tags/Date/" rel="tag">#Date</a>
+          
+            <a href="/tags/Chrome/" rel="tag">#Chrome</a>
+          
+            <a href="/tags/Windows/" rel="tag">#Windows</a>
+          
+            <a href="/tags/OS-X/" rel="tag">#OS X</a>
+          
+            <a href="/tags/moment-js/" rel="tag">#moment.js</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/06/VS-Code-搭建-Go-开发IDE/" rel="next" title="VS Code 搭建 Go 开发IDE">
+                <i class="fa fa-chevron-left"></i> VS Code 搭建 Go 开发IDE
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/06/07/如何传送时间参数到后台/"
+     data-title="如何传送时间参数到服务端"
+     data-content=""
+     data-url="http://yoursite.com/2016/06/07/如何传送时间参数到后台/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/07/如何传送时间参数到后台/"
+           data-title="如何传送时间参数到服务端" data-url="http://yoursite.com/2016/06/07/如何传送时间参数到后台/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               alt="WonSikin" />
+          <p class="site-author-name" itemprop="name">WonSikin</p>
+          <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-github-alt"></i> Github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.instagram.com/fnghwsj/" target="_blank">
+                  
+                    <i class="fa fa-instagram"></i> Instagram
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务端的时间类型设置"><span class="nav-number">2.</span> <span class="nav-text">服务端的时间类型设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前端时间传送到服务端的选择"><span class="nav-number">3.</span> <span class="nav-text">前端时间传送到服务端的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#windows下Chrome浏览器"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">windows下Chrome浏览器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Mac下Chrome浏览器"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">Mac下Chrome浏览器</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WonSikin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wonsikin"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
