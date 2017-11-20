@@ -1,0 +1,863 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="树莓派,IoT," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WonSikin's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="之前买了一块树莓派一直闲置着，本着折腾不浪费的精神，遂决定把它改造成一个可以科学上网的无线路由器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用树莓派打造翻墙路由器：从开始到放弃">
+<meta property="og:url" content="http://yoursite.com/2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/index.html">
+<meta property="og:site_name" content="WonSikin's Blog">
+<meta property="og:description" content="之前买了一块树莓派一直闲置着，本着折腾不浪费的精神，遂决定把它改造成一个可以科学上网的无线路由器。">
+<meta property="og:image" content="http://yoursite.com/images/Raspi-config.png">
+<meta property="og:updated_time" content="2016-12-02T09:02:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用树莓派打造翻墙路由器：从开始到放弃">
+<meta name="twitter:description" content="之前买了一块树莓派一直闲置着，本着折腾不浪费的精神，遂决定把它改造成一个可以科学上网的无线路由器。">
+<meta name="twitter:image" content="http://yoursite.com/images/Raspi-config.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 使用树莓派打造翻墙路由器：从开始到放弃 | WonSikin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">WonSikin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用树莓派打造翻墙路由器：从开始到放弃
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-12-02T18:00:10+08:00" content="2016-12-02">
+              2016-12-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前买了一块树莓派一直闲置着，本着折腾不浪费的精神，遂决定把它改造成一个可以科学上网的无线路由器。</p>
+<a id="more"></a>
+<p>准备清单：</p>
+<ol>
+<li>树莓派一枚</li>
+<li>无线网卡一枚，型号：<code>EP-N8508GS</code>，芯片是 <code>Realtek RTL8188CUS</code></li>
+<li>micro SD 卡一枚，至少4G</li>
+<li>树莓派官方系统<code>Raspbian</code>镜像</li>
+<li>电脑若干</li>
+<li>USB电源线和网线各一条</li>
+</ol>
+<p>这里需要注意的是我使用的无线网卡，芯片因为是 <code>Realtek RTL8188CUS</code> ，需要特殊处理，所以一开始花费了好多时间处理处理。为什么使用该芯片呢？首先，便宜；其次，很早以前就买好了。当然如果你是土豪，类似下面这位，你可以买一个兼容的芯片。</p>
+<h3 id="刷机"><a href="#刷机" class="headerlink" title="刷机"></a>刷机</h3><p>刷机使用的是Windows电脑，Linux电脑也是能够刷机的，之前刷<code>OpenWRT</code>系统的时候使用过，Mac系统还没试过。</p>
+<p>从树莓派<a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank" rel="external">官方网站</a>下载最新版本的 <code>Raspbian</code> 系统镜像，这里用的版本是 <code>RASPBIAN JESSIE</code> 完全版。</p>
+<p>电脑上下载 <code>Win32DiskImager</code> ，用来把镜像写入SD卡中。</p>
+<h3 id="Raspbian系统配置"><a href="#Raspbian系统配置" class="headerlink" title="Raspbian系统配置"></a>Raspbian系统配置</h3><p><img src="/images/Raspi-config.png" alt="raspi-confing"></p>
+<p>在终端中输入命令，会弹出上图的配置窗口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo raspi-config</div></pre></td></tr></table></figure>
+<p>主要配置以下几项：</p>
+<ul>
+<li>1 Expand Filesystem</li>
+<li>2 Change User Password</li>
+<li>5 Internationalisation Options<ul>
+<li>I1 Change Locale</li>
+<li>I2 Change Timezone</li>
+<li>I3 Change Keyboard Layout</li>
+<li>I4 Change Wi-fi Country</li>
+</ul>
+</li>
+<li>9 Advanced Options<ul>
+<li>A3 Memory Split：如果只是当做路由器使用，可以把GPU的内存改小点。我这里的设置是32.</li>
+<li>A0 Update:这一步需要系统联网</li>
+</ul>
+</li>
+</ul>
+<p>重启电脑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo shutdown -r now</div></pre></td></tr></table></figure>
+<h3 id="安装并配置-hostapd"><a href="#安装并配置-hostapd" class="headerlink" title="安装并配置 hostapd"></a>安装并配置 hostapd</h3><p><code>hostapd</code> 可以让无线网卡变成信号发射器，如果你的芯片是官方支持的，可以直接从软件源中安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install hostapd</div></pre></td></tr></table></figure>
+<p>我这边使用的无线网卡的芯片是官方不支持的，所以得自己安装。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">wget https://codeload.github.com/jenssegers/RTL8188-hostapd/zip/v2.0</div><div class="line"></div><div class="line">tar -zxvf v2.0.tar.gz</div><div class="line"></div><div class="line">cd RTL8188-hostapd-2.0/hostapd</div><div class="line"></div><div class="line">sudo make</div><div class="line"></div><div class="line">sudo make install</div><div class="line"></div><div class="line"># 启动命令</div><div class="line">sudo service hostapd restart</div></pre></td></tr></table></figure>
+<p>打开 <code>hostapd</code> 的配置文件，配置 <code>ssid</code>（Wi-fi名称）、<code>wpa_passphrase</code>（Wi-fi密码）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo nano /etc/hostapd/hostapd.conf</div></pre></td></tr></table></figure>
+<p>以下是我的配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># Basic configuration</div><div class="line"></div><div class="line">interface=wlan0</div><div class="line">ssid=CIL-F2E</div><div class="line">channel=1</div><div class="line">#bridge=br0</div><div class="line"></div><div class="line"># WPA and WPA2 configuration</div><div class="line"></div><div class="line">macaddr_acl=0</div><div class="line">auth_algs=1</div><div class="line">ignore_broadcast_ssid=0</div><div class="line">wpa=3</div><div class="line">wpa_passphrase=*********</div><div class="line">wpa_key_mgmt=WPA-PSK</div><div class="line">wpa_pairwise=TKIP</div><div class="line">rsn_pairwise=CCMP</div><div class="line"></div><div class="line"># Hardware configuration</div><div class="line"></div><div class="line">driver=rtl871xdrv</div><div class="line">ieee80211n=1</div><div class="line">hw_mode=g</div><div class="line">device_name=RTL8192CU</div><div class="line">manufacturer=Realtek</div></pre></td></tr></table></figure>
+<p>重启 <code>hostapd</code> 服务，并设置开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo service hostapd restart</div><div class="line">sudo update-rc.d hostapd defaults</div></pre></td></tr></table></figure>
+<h3 id="安装并配置-udhcpd"><a href="#安装并配置-udhcpd" class="headerlink" title="安装并配置 udhcpd"></a>安装并配置 udhcpd</h3><p><code>udhcpd</code> 可以让链接到Wi-fi设备的客户端通过<code>DHCP</code>获取到IP地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install udhcpd</div></pre></td></tr></table></figure>
+<p>修改 <code>udhcpd</code> 的配置文件 <code>/etc/udhcpd.conf</code> ：</p>
+<ul>
+<li>start 和 end： DHCP 分配的 IP 段的起始和结束 IP</li>
+<li>interface：修改成上一步配置的interface</li>
+<li>opt dns： DNS</li>
+<li>option subnet：子网掩码</li>
+<li>opt router：路由器 IP</li>
+</ul>
+<p>以下是我的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"># Sample udhcpd configuration file (/etc/udhcpd.conf)</div><div class="line"></div><div class="line"># The start and end of the IP lease block</div><div class="line">start		192.168.37.1	#default: 192.168.0.20</div><div class="line">end		192.168.37.254	#default: 192.168.0.254</div><div class="line"></div><div class="line"># The interface that udhcpd will use</div><div class="line">interface	wlan0		#default: eth0</div><div class="line"></div><div class="line">#Examles</div><div class="line">opt	dns	114.114.114.114</div><div class="line">option	subnet	255.255.255.0</div><div class="line">opt	router	192.168.37.1</div><div class="line">#opt	wins	192.168.37.10</div><div class="line">option	dns	8.8.8.8	# appened to above DNS servers for a total of 3</div><div class="line">#option	domain	local</div><div class="line">option	lease	864000		# 10 days of seconds</div></pre></td></tr></table></figure>
+<p>接着修改 <code>/etc/default/udhcpd</code>，注释掉 <code>DHCPD_ENABLED=&quot;no&quot;</code> 这一行。</p>
+<p>重启 <code>udhcpd</code> 服务，并设置开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo service udhcpd restart</div><div class="line">sudo update-rc.d udhcpd defaults</div></pre></td></tr></table></figure>
+<h3 id="配置-iptables-和网络接口"><a href="#配置-iptables-和网络接口" class="headerlink" title="配置 iptables 和网络接口"></a>配置 iptables 和网络接口</h3><p>打开网络接口配置文件 <code>/etc/network/interfaces</code> ，设置 <code>wlan0</code> 为静态IP:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">auto lo</div><div class="line">iface lo inet loopback</div><div class="line"></div><div class="line">iface eth0 inet dhcp</div><div class="line"></div><div class="line">allow-hotplug wlan0</div><div class="line"></div><div class="line">iface wlan0 inet static</div><div class="line">    address 192.168.37.1</div><div class="line">    netmask 255.255.255.0</div><div class="line">   # wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf</div></pre></td></tr></table></figure>
+<p>注意上面的 <code>wlan0</code> 配置，请勿加上 <code>gateway 192.168.x.x</code> 的配置，否则会导致其它设备连接得上树莓派，但是DNS解析不了的问题。</p>
+<p>使生效：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo ifdown wlan0</div><div class="line">sudo ifup wlan0</div></pre></td></tr></table></figure></p>
+<p>接着配置 <code>iptables</code> 。修改 <code>/etc/sysctl.conf</code> ，打开内核IP转发，在末尾添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">net.ipv4.ip_forward=1</div></pre></td></tr></table></figure>
+<p>然后，添加 <code>iptables</code> 规则，将 <code>wlan0</code> 的包通过 <code>eth0</code> 转发，在命令行中输入下列命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</div><div class="line">sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT</div><div class="line">sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT</div></pre></td></tr></table></figure>
+<p>由于 <code>iptables</code> 设置重启后将消失，常用的方法是先保存下来，然后在启动的时候加载规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">＃ 备份 iptables规则</div><div class="line">sudo sh -c &quot;iptables-save &gt; /etc/iptables.ipv4.nat&quot;</div></pre></td></tr></table></figure>
+<p>编辑 <code>/etc/network/interfaces</code>，添加下面这一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 启动的时候加载</div><div class="line">up iptables-restore &lt; /etc/iptables.ipv4.nat</div></pre></td></tr></table></figure>
+<p>以上，设置Wi-fi热点的配置就完成了，重启树莓派，用其它设备连接应该就能够上网了。</p>
+<h3 id="安装shadowsocks服务"><a href="#安装shadowsocks服务" class="headerlink" title="安装shadowsocks服务"></a>安装shadowsocks服务</h3><p>shadowsocks 是科学上网的一种非常有用的工具。以下内容的前提是需要有一个shadowsocks账号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#安装pip管理python包</div><div class="line">sudo apt-get install python-pip python-m2crypto</div><div class="line">#安装python版shadowsocks</div><div class="line">sudo pip install shadowsocks</div></pre></td></tr></table></figure>
+<p>创建shadowsocks的配置文件，可以在任意目录。以下以 /etc/shadowsocks/config.json 为例。编辑如下内容</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"server"</span>: <span class="string">"58.***.**.*"</span>,</div><div class="line">    <span class="attr">"server_port"</span>: <span class="number">8390</span>,</div><div class="line">    <span class="attr">"password"</span>: <span class="string">"********"</span>,</div><div class="line">    <span class="attr">"method"</span>: <span class="string">"aes-256-cfb"</span>,</div><div class="line">    <span class="attr">"local_address"</span>: <span class="string">"192.168.37.1"</span>,</div><div class="line">    <span class="attr">"local_port"</span>: <span class="number">1080</span>,</div><div class="line">    <span class="attr">"timeout"</span>: <span class="number">60</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>设置开机启动。编辑 /etc/rc.local。在exit前添加以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/sslocal -c /etc/shadowsocks/config.json &amp;</div></pre></td></tr></table></figure>
+<h3 id="放弃"><a href="#放弃" class="headerlink" title="放弃"></a>放弃</h3><p>改造后的树莓派路由器服务并不稳定，经常会出现连接不了网络，需要重新启动才能继续上网。<br>另外本来打算将改造后的路由器放在公司使用，但是因为公司网络策略升级，不允许随意搭建私人路由器，所以也就放弃继续改造下去。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://www.cnblogs.com/yondy/archive/2013/04/23/3033404.html" target="_blank" rel="external">树莓派raspbian安装配置</a></li>
+<li><a href="http://liberize.me/tech/turn-raspberry-pi-into-a-router.html" target="_blank" rel="external">将树莓派打造成无线路由器</a></li>
+<li><a href="https://www.jenssegers.be/43/realtek-rtl8188-based-access-point-on-raspberry-pi" target="_blank" rel="external">Realtek RTL8188 based access point on Raspberry Pi</a></li>
+<li><a href="https://lttt.blog.ustc.edu.cn/2015/06/11/shadowsocks%E6%A0%91%E8%8E%93%E6%B4%BE%E7%BF%BB%E5%A2%99.html" target="_blank" rel="external">shadowsocks树莓派翻墙</a></li>
+<li><a href="http://blog.anthonywong.net/2015/07/12/deploy-shadowsocks-chinadns-redsocks-raspberry-pi/" target="_blank" rel="external">deploy-shadowsocks-chinadns-redsocks-raspberry-pi</a></li>
+<li><a href="http://blog.anthonywong.net/2016/01/18/securing-dns-traffic-in-china/" target="_blank" rel="external">securing-dns-traffic-in-china</a></li>
+<li><a href="http://blog.creke.net/722.html" target="_blank" rel="external">SSH隧道与端口转发及内网穿透</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/树莓派/" rel="tag">#树莓派</a>
+          
+            <a href="/tags/IoT/" rel="tag">#IoT</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/07/如何传送时间参数到后台/" rel="next" title="如何传送时间参数到服务端">
+                <i class="fa fa-chevron-left"></i> 如何传送时间参数到服务端
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/08/NGINX安全性配置/" rel="prev" title="NGINX安全性配置">
+                NGINX安全性配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/"
+     data-title="使用树莓派打造翻墙路由器：从开始到放弃"
+     data-content=""
+     data-url="http://yoursite.com/2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/"
+           data-title="使用树莓派打造翻墙路由器：从开始到放弃" data-url="http://yoursite.com/2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/avatar.png"
+               alt="WonSikin" />
+          <p class="site-author-name" itemprop="name">WonSikin</p>
+          <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-github-alt"></i> Github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.instagram.com/fnghwsj/" target="_blank">
+                  
+                    <i class="fa fa-instagram"></i> Instagram
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#刷机"><span class="nav-number">1.</span> <span class="nav-text">刷机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Raspbian系统配置"><span class="nav-number">2.</span> <span class="nav-text">Raspbian系统配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装并配置-hostapd"><span class="nav-number">3.</span> <span class="nav-text">安装并配置 hostapd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装并配置-udhcpd"><span class="nav-number">4.</span> <span class="nav-text">安装并配置 udhcpd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-iptables-和网络接口"><span class="nav-number">5.</span> <span class="nav-text">配置 iptables 和网络接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装shadowsocks服务"><span class="nav-number">6.</span> <span class="nav-text">安装shadowsocks服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#放弃"><span class="nav-number">7.</span> <span class="nav-text">放弃</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WonSikin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wonsikin"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-88237835-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+var _mfq = _mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.async = true;
+    mf.src = "//cdn.mouseflow.com/projects/1ce40055-bb10-491f-bea6-ad3d299b24d5.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
+
+</body>
+</html>

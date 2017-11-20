@@ -91,27 +91,6 @@
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
   
     
   
@@ -196,6 +175,203 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/08/NGINX安全性配置/" itemprop="url">
+                  NGINX安全性配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-12-08T17:11:47+08:00" content="2016-12-08">
+              2016-12-08
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/08/NGINX安全性配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/08/NGINX安全性配置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本文将介绍一些SSL安全性的配置，以此提升网站的安全等级。先给出本博客的SSL配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen                      443 ssl;</div><div class="line">    server_name                 www.wonsikin.com;</div><div class="line">    server_tokens               off;</div><div class="line">	</div><div class="line">    # 中间证书 + 站点证书</div><div class="line">    ssl_certificate             /home/webapp/ssl/wonsikin.chained.crt;</div><div class="line">    # 生成证书的密钥</div><div class="line">    ssl_certificate_key         /home/webapp/ssl/wonsikin.com.key;</div><div class="line">    </div><div class="line">    ssl_ciphers                 EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;</div><div class="line">    ssl_prefer_server_ciphers   on;</div><div class="line"></div><div class="line">    ssl_protocols               TLSv1 TLSv1.1 TLSv1.2;</div><div class="line"></div><div class="line">    ssl_session_cache           shared:SSL:10m;</div><div class="line">    ssl_session_timeout         60m;</div><div class="line"></div><div class="line">    ssl_stapling                on;</div><div class="line">    ssl_stapling_verify         on;</div><div class="line">    resolver                    8.8.8.8 8.8.4.4 valid=300s;</div><div class="line">    resolver_timeout            5s;</div><div class="line"></div><div class="line">    access_log                  logs/wonsikin.log  main;</div><div class="line">    </div><div class="line">    if ($request_method !~ ^(GET|HEAD|POST|OPTIONS|DELETE|PUT)$ ) &#123;</div><div class="line">        return           		444;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        alias                   /home/webapp/wonsikin/;</div><div class="line">        index                   index.html;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/12/08/NGINX安全性配置/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/" itemprop="url">
+                  使用树莓派打造翻墙路由器：从开始到放弃
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-12-02T18:00:10+08:00" content="2016-12-02">
+              2016-12-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>之前买了一块树莓派一直闲置着，本着折腾不浪费的精神，遂决定把它改造成一个可以科学上网的无线路由器。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -994,204 +1170,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/02/08/使用Karma测试Angularjs代码/" itemprop="url">
-                  使用Karma测试AngularJS代码
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-02-08T18:03:15+08:00" content="2015-02-08">
-              2015-02-08
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/02/08/使用Karma测试Angularjs代码/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/08/使用Karma测试Angularjs代码/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>###前言<br>这是一篇难产的博文，从去年写到了今年……</p>
-<p>七月底到目前，已经使用了AngularJS开发了两三个项目。与之前使用的jQuery相比，Angualr非常强大，减少了一大堆的代码，印象最深的是它的双向数据绑定，一旦建立双向绑定，用户的任何变量操作都能立马同步到它绑定的变量，页面上的效果是这个值实时更新。这就意味着，当我们想要与后台服务器交互的时候，我们节省了收集数据的步骤，只需把绑定的对象放在参数里就行。</p>
-<p>然而，AngularJS的强大不止如此。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/02/08/使用Karma测试Angularjs代码/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/11/26/前端测试环境Karma简介/" itemprop="url">
-                  前端测试环境Karma简介
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2014-11-26T16:11:28+08:00" content="2014-11-26">
-              2014-11-26
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/11/26/前端测试环境Karma简介/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/26/前端测试环境Karma简介/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在开发软件的过程中，进行单元测试是非常不错的工作，也是有必要的工作。它帮助你觉得你的代码是无懈可击的，确保产品的可靠性。作为一名追求进步的的前端码农，学习前端的测试很有必要。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/11/26/前端测试环境Karma简介/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1229,7 +1207,7 @@
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               src="/avatar.png"
                alt="WonSikin" />
           <p class="site-author-name" itemprop="name">WonSikin</p>
           <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
@@ -1237,7 +1215,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1247,7 +1225,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -1319,7 +1297,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1430,6 +1408,33 @@
   
 
   
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-88237835-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+var _mfq = _mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.async = true;
+    mf.src = "//cdn.mouseflow.com/projects/1ce40055-bb10-491f-bea6-ad3d299b24d5.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
 
 </body>
 </html>

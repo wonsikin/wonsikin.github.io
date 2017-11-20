@@ -92,27 +92,6 @@
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
   
     
   
@@ -267,13 +246,13 @@
 </blockquote>
 <a id="more"></a>
 <p>箭头在一开始就已经成为JavaScript的一部分。在最开始的JavaScript教程就建议把行内脚本包裹在HTML注释里面。这将会阻止不支持JS的浏览器错误地将JS代码显示在文本中。你可能会这样子写：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language=<span class="string">"javascript"</span>&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">  document.bgColor = "brown";  // red</span><br><span class="line">// --&gt;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;script language=<span class="string">"javascript"</span>&gt;</div><div class="line">&lt;!--</div><div class="line">  document.bgColor = "brown";  // red</div><div class="line">// --&gt;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
 <p>旧的浏览器将会解析成两个不支持的标签和一段注释；而新的浏览器将会解析成JS代码。</p>
 <p>为了支持这种古怪的技巧，浏览器中的JavaScript引擎将会把字符 &lt;!– 当作单行注释的开始。这并不是在开玩笑，而是一直以来都是JavaScript语言的一部分，直到现在，不仅仅是在行内&lt;script&gt;标签的顶部能够正常运行，而且是在JS代码的任何地方，甚至包括在Node中。</p>
 <p>碰巧的是这种风格的注释第一次在ES6中被标准化。不过这不是我们在这里谈论的箭头。</p>
 <p>箭头序列 –&gt; 也表示一个单行注释。奇怪的是，在HTML中，–&gt;之前的字符表示注释的一部分，而在JS中，–&gt; 所在行后面剩下的部分表示注释。</p>
 <p>这变得更奇怪了。只有当 –&gt; 箭头出现在一行的开始部分，它才表示一个注释。这是因为在别的JS上下文中，–&gt; 是一个操作符，表示“goes to”。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countdown</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (n --&gt; <span class="number">0</span>)  <span class="comment">// "n goes to zero"</span></span><br><span class="line">    alert(n);</span><br><span class="line">  blastoff();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">countdown</span>(<span class="params">n</span>) </span>&#123;</div><div class="line">  <span class="keyword">while</span> (n --&gt; <span class="number">0</span>)  <span class="comment">// "n goes to zero"</span></div><div class="line">    alert(n);</div><div class="line">  blastoff();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><a href="http://codepen.io/anon/pen/oXZaBY?editors=001" target="_blank" rel="external">上面的代码是真的能够运行的。</a>当n变成0的时候，循环才会停止。这不是ES6的新特性，而是已有特性的组合，所以会带来一点误导。你能弄清楚这是怎么回事吗？照例你可以在<a href="http://stackoverflow.com/questions/1642028/what-is-the-name-of-the-operator" target="_blank" rel="external">Stack Overflow</a>上找到问题的答案。</p>
 <p>当然还有一个小于或等于的操作符，&lt;=。也许你能够在你的JS代码中找出更多的箭头，但是我们就此打住，你应该注意到我们遗落了一个箭头符号。</p>
 <table style="width: 250px;margin: 0 auto;"><br>    <tr style="border:1px solid #ddd;"><td>&lt;!–    single-line comment</td></tr><br>    <tr style="border:1px solid #ddd;"><td>–&gt;    “goes to” operator</td></tr><br>    <tr style="border:1px solid #ddd;"><td>&lt;=    less than or equal to</td></tr><br>    <tr style="border:1px solid #ddd;"><td>=&gt;    ???</td></tr><br></table>
@@ -283,13 +262,13 @@
 <p>###无处不在的函数表达式</p>
 <p>JavaScript中一个有趣的特性是，任何时候，当你需要一个函数，你只需在运行的代码的右侧输入函数就可以。</p>
 <p>举个例子，假设你正打算让用户点击了浏览器上特定按钮的时候，浏览器做点什么，于是你敲了下面的代码：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#confetti-btn"</span>).click(</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#confetti-btn"</span>).click(</div></pre></td></tr></table></figure>
 <p>jQuery的 .click() 方法需要一个参数：一个函数。没问题，你正好在右侧输入一个函数：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#confetti-btn"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  playTrumpet();</span><br><span class="line">  fireConfettiCannon();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#confetti-btn"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">  playTrumpet();</div><div class="line">  fireConfettiCannon();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>这样子写代码对我们现在来说是相当自然而然的。在JavaScript推广这种编程方式之前，很多语言都没有这种特征，所以我们会觉得很奇怪。当然Lisp早在1958年就有函数表达式，也称作lambda函数。但是像 C++、Python、C#以及Java在很长的时间里是没有函数表达式。</p>
 <p>现在，上面的四种语言不再没有lambda函数了。新出现的编程语言无一例外地拥有内建的lambda函数。我们得感谢JavaScript和早期的JavaScript程序员，因为他们无畏地建立了许多严重依赖lambda的函数库，并且使得这种特征被广泛地采纳。</p>
 <p>然而略带忧伤的是，上面我所提到的编程语言中，JavaScript的lambda函数语法被证明是最啰嗦的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// A very simple function in six languages.</span><br><span class="line">function (a) &#123; return a &gt; 0; &#125; // JS</span><br><span class="line">[](int a) &#123; return a &gt; 0; &#125;  // C++</span><br><span class="line">(lambda (a) (&gt; a 0))  ;; Lisp</span><br><span class="line">lambda a: a &gt; 0  # Python</span><br><span class="line">a =&gt; a &gt; 0  // C#</span><br><span class="line">a -&gt; a &gt; 0  // Java</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// A very simple function in six languages.</div><div class="line">function (a) &#123; return a &gt; 0; &#125; // JS</div><div class="line">[](int a) &#123; return a &gt; 0; &#125;  // C++</div><div class="line">(lambda (a) (&gt; a 0))  ;; Lisp</div><div class="line">lambda a: a &gt; 0  # Python</div><div class="line">a =&gt; a &gt; 0  // C#</div><div class="line">a -&gt; a &gt; 0  // Java</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -410,7 +389,7 @@
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               src="/avatar.png"
                alt="WonSikin" />
           <p class="site-author-name" itemprop="name">WonSikin</p>
           <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
@@ -418,7 +397,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -428,7 +407,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -517,7 +496,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -789,6 +768,33 @@
   
 
   
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-88237835-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+var _mfq = _mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.async = true;
+    mf.src = "//cdn.mouseflow.com/projects/1ce40055-bb10-491f-bea6-ad3d299b24d5.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
 
 </body>
 </html>

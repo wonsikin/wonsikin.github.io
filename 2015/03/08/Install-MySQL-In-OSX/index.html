@@ -92,27 +92,6 @@
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
   
     
   
@@ -266,11 +245,11 @@
 <p>#安装MySQL#<br>到官网下载最新版本的MySQL，写这边文章的时候Mac最新的MySQL版本为5.6.23.</p>
 <p>Mac下安装MySQL有两种方式，一种为压缩包形式 另一种为.dmg文件安装包。</p>
 <p>##压缩包形式的安装方法##</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mv mysql-5.1.45-osx10.6-x86_64 /usr/local/mysql</span><br><span class="line">$ cd /usr/local</span><br><span class="line">$ sudo chown -R mysql:mysql mysql</span><br><span class="line">$ cd mysql</span><br><span class="line">$ sudo scripts/mysql_install_db --user=mysql</span><br><span class="line">$ sudo chown -R root .</span><br><span class="line">$ sudo chown -R mysql data</span><br></pre></td></tr></table></figure>
-<p>修改密码，默认的密码为空，显然不大好<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ./mysql_secure_installation</span><br></pre></td></tr></table></figure></p>
-<p>启动MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ./mysqld_safe</span><br></pre></td></tr></table></figure></p>
-<p>输入刚才设置的root密码来登录MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ./mysql -u root -p 新密码</span><br></pre></td></tr></table></figure></p>
-<p>停止MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ./mysqld_safe stop</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ sudo mv mysql-5.1.45-osx10.6-x86_64 /usr/local/mysql</div><div class="line">$ cd /usr/local</div><div class="line">$ sudo chown -R mysql:mysql mysql</div><div class="line">$ cd mysql</div><div class="line">$ sudo scripts/mysql_install_db --user=mysql</div><div class="line">$ sudo chown -R root .</div><div class="line">$ sudo chown -R mysql data</div></pre></td></tr></table></figure>
+<p>修改密码，默认的密码为空，显然不大好<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo ./mysql_secure_installation</div></pre></td></tr></table></figure></p>
+<p>启动MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo ./mysqld_safe</div></pre></td></tr></table></figure></p>
+<p>输入刚才设置的root密码来登录MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo ./mysql -u root -p 新密码</div></pre></td></tr></table></figure></p>
+<p>停止MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo ./mysqld_safe stop</div></pre></td></tr></table></figure></p>
 <p>##安装包文件形式的安装方法##</p>
 <p>安装包文件的后缀为.dmg。双击该文件即可安装。</p>
 <p>###启动MySQL服务###</p>
@@ -278,7 +257,7 @@
 <li><p>如果你已经安装了MySQLStartupItem.pkg，重新启动电脑即可。</p>
 </li>
 <li><p>如果你有安装MySQLStartupItem.pkg或者不想启动电脑，运行：应用程序－实用工具－终端，在终端中输入命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /Library/StartupItems/MySQLCOM/MySQLCOM start，然后输入你的系统管理员密码即可。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo /Library/StartupItems/MySQLCOM/MySQLCOM start，然后输入你的系统管理员密码即可。</div></pre></td></tr></table></figure>
 </li>
 <li><p>最简单的方法就是打开系统偏好设置，会看到有一项MySQL，里面有一个启动MySQL的按钮。</p>
 </li>
@@ -286,12 +265,12 @@
 <p>###关闭MySQL###</p>
 <ol>
 <li><p>终端中输入命令,然后输入你的系统管理员密码即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /Library/StartupItems/MySQLCOM/MySQLCOM stop</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo /Library/StartupItems/MySQLCOM/MySQLCOM stop</div></pre></td></tr></table></figure>
 </li>
 <li><p>同启动MySQL服务的第三点</p>
 </li>
 </ol>
-<p>###更改MySQL root账户密码###<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/local/mysql/bin/mysqladmin -u root password</span><br></pre></td></tr></table></figure></p>
+<p>###更改MySQL root账户密码###<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo /usr/local/mysql/bin/mysqladmin -u root password</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -412,7 +391,7 @@
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               src="/avatar.png"
                alt="WonSikin" />
           <p class="site-author-name" itemprop="name">WonSikin</p>
           <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
@@ -420,7 +399,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -430,7 +409,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -519,7 +498,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -791,6 +770,33 @@
   
 
   
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-88237835-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+var _mfq = _mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.async = true;
+    mf.src = "//cdn.mouseflow.com/projects/1ce40055-bb10-491f-bea6-ad3d299b24d5.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
 
 </body>
 </html>

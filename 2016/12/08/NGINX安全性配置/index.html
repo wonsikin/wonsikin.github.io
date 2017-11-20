@@ -1,0 +1,808 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="NGINX,WEB安全,HTTPS,SSL,TLS," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WonSikin's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="本文将介绍一些SSL安全性的配置，以此提升网站的安全等级。先给出本博客的SSL配置：
+12345678910111213141516171819202122232425262728293031323334server &amp;#123;    listen                      443 ssl;    server_name                 www.wonsikin.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NGINX安全性配置">
+<meta property="og:url" content="http://yoursite.com/2016/12/08/NGINX安全性配置/index.html">
+<meta property="og:site_name" content="WonSikin's Blog">
+<meta property="og:description" content="本文将介绍一些SSL安全性的配置，以此提升网站的安全等级。先给出本博客的SSL配置：
+12345678910111213141516171819202122232425262728293031323334server &amp;#123;    listen                      443 ssl;    server_name                 www.wonsikin.">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/08/5849188fde57e.png">
+<meta property="og:updated_time" content="2016-12-09T08:57:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NGINX安全性配置">
+<meta name="twitter:description" content="本文将介绍一些SSL安全性的配置，以此提升网站的安全等级。先给出本博客的SSL配置：
+12345678910111213141516171819202122232425262728293031323334server &amp;#123;    listen                      443 ssl;    server_name                 www.wonsikin.">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2016/12/08/5849188fde57e.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> NGINX安全性配置 | WonSikin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">WonSikin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                NGINX安全性配置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-12-08T17:11:47+08:00" content="2016-12-08">
+              2016-12-08
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/08/NGINX安全性配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/08/NGINX安全性配置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文将介绍一些SSL安全性的配置，以此提升网站的安全等级。先给出本博客的SSL配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen                      443 ssl;</div><div class="line">    server_name                 www.wonsikin.com;</div><div class="line">    server_tokens               off;</div><div class="line">	</div><div class="line">    # 中间证书 + 站点证书</div><div class="line">    ssl_certificate             /home/webapp/ssl/wonsikin.chained.crt;</div><div class="line">    # 生成证书的密钥</div><div class="line">    ssl_certificate_key         /home/webapp/ssl/wonsikin.com.key;</div><div class="line">    </div><div class="line">    ssl_ciphers                 EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;</div><div class="line">    ssl_prefer_server_ciphers   on;</div><div class="line"></div><div class="line">    ssl_protocols               TLSv1 TLSv1.1 TLSv1.2;</div><div class="line"></div><div class="line">    ssl_session_cache           shared:SSL:10m;</div><div class="line">    ssl_session_timeout         60m;</div><div class="line"></div><div class="line">    ssl_stapling                on;</div><div class="line">    ssl_stapling_verify         on;</div><div class="line">    resolver                    8.8.8.8 8.8.4.4 valid=300s;</div><div class="line">    resolver_timeout            5s;</div><div class="line"></div><div class="line">    access_log                  logs/wonsikin.log  main;</div><div class="line">    </div><div class="line">    if ($request_method !~ ^(GET|HEAD|POST|OPTIONS|DELETE|PUT)$ ) &#123;</div><div class="line">        return           		444;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        alias                   /home/webapp/wonsikin/;</div><div class="line">        index                   index.html;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><h3 id="掩藏NGINX版本号"><a href="#掩藏NGINX版本号" class="headerlink" title="掩藏NGINX版本号"></a>掩藏NGINX版本号</h3><p>隐藏NGINX版本号可以增加黑客利用该版本已知的漏洞来攻击服务器的代价。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">server_tokens   off;</div></pre></td></tr></table></figure></p>
+<h3 id="禁用不安全的HTTP方法"><a href="#禁用不安全的HTTP方法" class="headerlink" title="禁用不安全的HTTP方法"></a>禁用不安全的HTTP方法</h3><p>TRACE 方法是让 Web 服务器端将之前的请求通信环回给客户端的方法。但是一般很少用到，而且容易引发XST（Cross-Site Tracing，跨站追踪）攻击。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if ($request_method !~ ^(GET|HEAD|POST|OPTIONS|DELETE|PUT)$ ) &#123;</div><div class="line">  return        444;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以上配置表明服务器会对GET、HEAD、POST、OPTIONS、DELETE、PUT返回444的状态码，444 是 Nginx 定义的响应状态码，会立即断开连接，没有响应正文。</p>
+<h3 id="openssl"><a href="#openssl" class="headerlink" title="openssl"></a>openssl</h3><p>心血漏洞（Heartbleed） 是一个于2014年4月公布的 OpenSSL 加密库的漏洞，它是一个被广泛使用的传输层安全（TLS）协议的实现。无论是服务器端还是客户端在 TLS 中使用了有缺陷的 OpenSSL，都可以被利用该缺陷。</p>
+<p>升级服务器安装的<code>openssl</code> 到最新版本可以避免这个漏洞。</p>
+<p><strong>注意</strong>：启用最新版本的openssl，需要把 NGINX 关闭，然后再开启，不是简单的 reload 就可以的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">./sbin/nginx -s stop</div><div class="line">./sbin/nginx</div><div class="line"></div><div class="line"># 执行以下命令是不能启用最新版本的openssl的</div><div class="line">./sbin/nginx -s reload</div></pre></td></tr></table></figure></p>
+<h3 id="加密套件"><a href="#加密套件" class="headerlink" title="加密套件"></a>加密套件</h3><p>设置更健壮的加密套件（cipher suite）来尽可能启用前向安全性（Forward Secrecy）。前向安全性（Forward Secrecy）用于在长期密钥被破解时确保会话密钥的完整性。PFS（完备的前向安全性）是指强制在每个/每次会话中推导新的密钥。<br>如何设置可以参考<a href="https://cipherli.st/" target="_blank" rel="external">Cipherli.st - Strong Ciphers for Apache, nginx and Lighttpd</a>这个网址。<br>推荐的<code>ssl_ciphers</code> 设置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssl_ciphers                 EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;</div></pre></td></tr></table></figure></p>
+<p>同时，确保也添加了如下的配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ssl_prefer_server_ciphers   on;</div><div class="line">ssl_session_cache           shared:SSL:10m;</div><div class="line">ssl_session_timeout         60m;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>TLS 会话恢复的目的是为了简化 TLS 握手，有两种方案：Session Cache 和 Session Ticket。他们都是将之前握手的 Session 存起来供后续连接使用，所不同是 Cache 存在服务端，占用服务端资源；Ticket 存在客户端，不占用服务端资源。另外目前主流浏览器都支持 Session Cache，而 Session Ticket 的支持度一般。</p>
+</blockquote>
+<p>TLS握手过程中选择一个加密算法时，一般使用客户端的首选算法。如果设置了上述配置，则会替代地使用服务器端的首选算法。</p>
+<h3 id="SSL协议"><a href="#SSL协议" class="headerlink" title="SSL协议"></a>SSL协议</h3><p>SSLv2 已被证实是不安全的，同时因为 TLS 1.0 在遭受到降级攻击时，会允许攻击者强制连接使用 SSLv3，从而禁用了前向安全性（forward secrecy）。所以<code>ssl_protocols</code> 的配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssl_protocols               TLSv1 TLSv1.1 TLSv1.2;</div></pre></td></tr></table></figure></p>
+<h3 id="OCSP-Stapling"><a href="#OCSP-Stapling" class="headerlink" title="OCSP Stapling"></a>OCSP Stapling</h3><p>当客户端连接到服务器的时候，客户端会使用 <code>Certificate Revocation List（CRL）</code> 或者 <code>Online Certificate Status Protocol（OCSP）记录</code>校验服务器证书的合法性。<code>CRL</code> 的问题是证书吊销列表已经变得很大，下载太费时。</p>
+<p><code>OCSP</code>相比之下就比较轻量级，因为一次只检索一条记录。但是副作用就是客户端连接服务器的时候，<code>OCSP</code> 请求必须发送到第三方<code>OCSP响应器（OCSP responder）</code>，这就可能会存在请求失败的隐患。实际上，证书颁发机构运转的OCSP响应器经常是不可靠的，以至于当浏览器没有及时收到响应的时候就会静默失败。</p>
+<p>解决方法是在TLS握手的时候允许服务器发送缓存的<code>OCSP</code>记录，以此绕过OCSP响应器。这种机制就叫做<code>OCSP Stapling</code>，它省掉了客户端和OCSP响应器之间的一个交互。大部分服务器会缓存OCSP响应将近48小时，然后在快过期的时候会连接到OCSP响应器检索最新的OCSP纪录。</p>
+<p>在NGINX中增加一下配置来启用<code>OCSP Stapling</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ssl_stapling                on;</div><div class="line">ssl_stapling_verify         on;</div><div class="line">resolver                    8.8.8.8 8.8.4.4 valid=300s;</div><div class="line">resolver_timeout            5s;</div></pre></td></tr></table></figure></p>
+<p>要使<code>OCSP Stapling</code>正常工作，需要知道服务器证书颁布者的证书。如果在<code>ssl_certificate</code>文件中没有包含中级证书（ intermediate certificates），需要在<code>ssl_trusted_certificate</code>文件中服务器证书颁布者的证书。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssl_trusted_certificate	    /etc/ssl/certs/domain.chain.stapling.pem;</div></pre></td></tr></table></figure></p>
+<p>可以使用以下命令测试<code>OCSP Stapling</code>是否正常：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl s_client -connect example.org:443 -tls1 -tlsextdebug -status</div></pre></td></tr></table></figure></p>
+<p>以上的配置就能够保证你的网站在 <a href="https://www.ssllabs.com/ssltest/analyze.html" target="_blank" rel="external">SSL Server Test (Powered by Qualys SSL Labs)</a>中的测试得到<strong>A</strong>的评分。</p>
+<p><img src="https://ooo.0o0.ooo/2016/12/08/5849188fde57e.png" alt="SSL Labs评分"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://www.open-open.com/lib/view/open1430794673710.html" target="_blank" rel="external">增强 nginx 的 SSL 安全性  - OPEN 开发经验库</a></li>
+<li><a href="https://raymii.org/s/tutorials/OCSP_Stapling_on_nginx.html" target="_blank" rel="external">OCSP Stapling on nginx - Raymii.org</a></li>
+<li><a href="https://imququ.com/post/my-nginx-conf.html" target="_blank" rel="external">本博客 Nginx 配置之完整篇 | JerryQu 的小站</a></li>
+<li><a href="https://imququ.com/post/my-nginx-conf-for-security.html" target="_blank" rel="external">本博客 Nginx 配置之安全篇 | JerryQu 的小站</a></li>
+<li><a href="https://imququ.com/post/why-can-not-turn-on-ocsp-stapling.html" target="_blank" rel="external">从无法开启 OCSP Stapling 说起 | JerryQu 的小站</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NGINX/" rel="tag">#NGINX</a>
+          
+            <a href="/tags/WEB安全/" rel="tag">#WEB安全</a>
+          
+            <a href="/tags/HTTPS/" rel="tag">#HTTPS</a>
+          
+            <a href="/tags/SSL/" rel="tag">#SSL</a>
+          
+            <a href="/tags/TLS/" rel="tag">#TLS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/02/使用树莓派打造翻墙路由器：从开始到放弃/" rel="next" title="使用树莓派打造翻墙路由器：从开始到放弃">
+                <i class="fa fa-chevron-left"></i> 使用树莓派打造翻墙路由器：从开始到放弃
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/12/08/NGINX安全性配置/"
+     data-title="NGINX安全性配置"
+     data-content=""
+     data-url="http://yoursite.com/2016/12/08/NGINX安全性配置/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/08/NGINX安全性配置/"
+           data-title="NGINX安全性配置" data-url="http://yoursite.com/2016/12/08/NGINX安全性配置/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/avatar.png"
+               alt="WonSikin" />
+          <p class="site-author-name" itemprop="name">WonSikin</p>
+          <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-github-alt"></i> Github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wonsikin" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.instagram.com/fnghwsj/" target="_blank">
+                  
+                    <i class="fa fa-instagram"></i> Instagram
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#掩藏NGINX版本号"><span class="nav-number">1.1.</span> <span class="nav-text">掩藏NGINX版本号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁用不安全的HTTP方法"><span class="nav-number">1.2.</span> <span class="nav-text">禁用不安全的HTTP方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#openssl"><span class="nav-number">1.3.</span> <span class="nav-text">openssl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加密套件"><span class="nav-number">1.4.</span> <span class="nav-text">加密套件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL协议"><span class="nav-number">1.5.</span> <span class="nav-text">SSL协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OCSP-Stapling"><span class="nav-number">1.6.</span> <span class="nav-text">OCSP Stapling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WonSikin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wonsikin"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-88237835-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+var _mfq = _mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.async = true;
+    mf.src = "//cdn.mouseflow.com/projects/1ce40055-bb10-491f-bea6-ad3d299b24d5.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
+
+</body>
+</html>

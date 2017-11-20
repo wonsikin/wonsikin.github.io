@@ -114,27 +114,6 @@
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
   
     
   
@@ -299,7 +278,7 @@
 <p>浏览器可以优化并行的动画动作，更合理的重新排列动作序列，并把能够合并的动作放在一个渲染周期内完成，从而呈现出更流畅的动画效果。</p>
 <p>参考： <a href="http://www.webhek.com/requestanimationframe" target="_blank" rel="external">HTML5探秘：用requestAnimationFrame优化Web动画</a></p>
 <p>###js对象封装###</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> variate1, variate2, variate3....;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> method1 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> method2 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> method3 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span>&#123;</span><br><span class="line">    publicMethod: method1,</span><br><span class="line">    method2: method2</span><br><span class="line">  &#125;</span><br><span class="line">&#125;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line">name.publicMethod();</span><br><span class="line">name.method2();</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义</span></div><div class="line"><span class="keyword">var</span> name = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> variate1, variate2, variate3....;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> method1 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">//do something</span></div><div class="line">  &#125;;</div><div class="line">  <span class="keyword">var</span> method2 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">//do something</span></div><div class="line">  &#125;;</div><div class="line">  <span class="keyword">var</span> method3 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">//do something</span></div><div class="line">  &#125;;</div><div class="line">  <span class="keyword">return</span>&#123;</div><div class="line">    <span class="attr">publicMethod</span>: method1,</div><div class="line">    <span class="attr">method2</span>: method2</div><div class="line">  &#125;</div><div class="line">&#125;();</div><div class="line"></div><div class="line"><span class="comment">//使用</span></div><div class="line">name.publicMethod();</div><div class="line">name.method2();</div></pre></td></tr></table></figure>
 <p>######好处######</p>
 <ol>
 <li>代码结构清晰</li>
@@ -319,10 +298,10 @@
 <p>参考： <a href="http://www.vaikan.com/30-best-practices-to-boost-your-web-application-performance/" target="_blank" rel="external">30个提高Web程序执行效率的好经验</a></p>
 <p>###动画核心(scrollTop属性)###</p>
 <p><code>scrollTop</code>属性设置或者返回一个元素在垂直方向上的滚动像素值</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> animate = <span class="function"><span class="keyword">function</span>(<span class="params">now</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!start) start = now;</span><br><span class="line">    <span class="keyword">var</span> t = now - start || <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//定义滚动动画，从第stepFlag开始到结束，头一个慢慢减速停止，剩下的无序滚动</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = stepFlag; i &lt; layout; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &lt;= stepFlag) &#123;</span><br><span class="line">            $reels[i].scrollTop = (speeds[i] / tMax / <span class="number">2</span> * (tMax - t) * (tMax - t)) % (employees.length * imgHeight) + r[i] * imgHeight | <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $reels[i].scrollTop += (<span class="built_in">Math</span>.random() &gt; <span class="number">0.5</span> ? <span class="number">-1</span> : <span class="number">1</span>) * imgHeight * <span class="built_in">Math</span>.random() * <span class="number">5</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> animate = <span class="function"><span class="keyword">function</span>(<span class="params">now</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!start) start = now;</div><div class="line">    <span class="keyword">var</span> t = now - start || <span class="number">0</span>;</div><div class="line">    <span class="comment">//定义滚动动画，从第stepFlag开始到结束，头一个慢慢减速停止，剩下的无序滚动</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = stepFlag; i &lt; layout; ++i) &#123;</div><div class="line">        <span class="keyword">if</span> (i &lt;= stepFlag) &#123;</div><div class="line">            $reels[i].scrollTop = (speeds[i] / tMax / <span class="number">2</span> * (tMax - t) * (tMax - t)) % (employees.length * imgHeight) + r[i] * imgHeight | <span class="number">0</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            $reels[i].scrollTop += (<span class="built_in">Math</span>.random() &gt; <span class="number">0.5</span> ? <span class="number">-1</span> : <span class="number">1</span>) * imgHeight * <span class="built_in">Math</span>.random() * <span class="number">5</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>参考：<a href="http://www.w3schools.com/jsref/prop_element_scrolltop.asp" target="_blank" rel="external">HTML DOM scrollTop Property</a></p>
 <p>###背景音乐(HTML5 audio)###</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//播放背景音乐</span></span><br><span class="line"><span class="keyword">var</span> playSong = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> song = <span class="built_in">document</span>.getElementById(<span class="string">'song'</span>);</span><br><span class="line">    song.volume = <span class="number">1</span>;</span><br><span class="line">    song.play();</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//暂停背景音乐</span></span><br><span class="line"><span class="keyword">var</span> stopSong = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//渐渐关小音量</span></span><br><span class="line">    <span class="keyword">var</span> song = <span class="built_in">document</span>.getElementById(<span class="string">'song'</span>);</span><br><span class="line">    <span class="keyword">var</span> fadeOut = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (song.volume &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            song.volume -= <span class="number">0.1</span>;</span><br><span class="line">            song.volume = <span class="built_in">parseFloat</span>(song.volume.toFixed(<span class="number">1</span>));</span><br><span class="line">            <span class="built_in">console</span>.log(song.volume);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            song.pause();</span><br><span class="line">            clearInterval(fadeOut);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">300</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//播放背景音乐</span></div><div class="line"><span class="keyword">var</span> playSong = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> song = <span class="built_in">document</span>.getElementById(<span class="string">'song'</span>);</div><div class="line">    song.volume = <span class="number">1</span>;</div><div class="line">    song.play();</div><div class="line">&#125;;</div><div class="line"><span class="comment">//暂停背景音乐</span></div><div class="line"><span class="keyword">var</span> stopSong = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">//渐渐关小音量</span></div><div class="line">    <span class="keyword">var</span> song = <span class="built_in">document</span>.getElementById(<span class="string">'song'</span>);</div><div class="line">    <span class="keyword">var</span> fadeOut = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (song.volume &gt; <span class="number">0</span>) &#123;</div><div class="line">            song.volume -= <span class="number">0.1</span>;</div><div class="line">            song.volume = <span class="built_in">parseFloat</span>(song.volume.toFixed(<span class="number">1</span>));</div><div class="line">            <span class="built_in">console</span>.log(song.volume);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            song.pause();</div><div class="line">            clearInterval(fadeOut);</div><div class="line">        &#125;</div><div class="line">    &#125;, <span class="number">300</span>);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>参考：<a href="http://www.w3schools.com/tags/tag_audio.asp" target="_blank" rel="external">HTML audio Tag</a></p>
 <p>#投票结果展示#<br><img src="http://ww4.sinaimg.cn/mw1024/4da583a7gw1ervpx871byj21hc0u07ft.jpg" alt=""></p>
 <p>###D3.js###<br>d3.js是一个优秀的数据可视化库，可以让我们方便快捷地实现数据到图形的变换。但是：</p>
@@ -496,7 +475,7 @@
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               src="/avatar.png"
                alt="WonSikin" />
           <p class="site-author-name" itemprop="name">WonSikin</p>
           <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
@@ -504,7 +483,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -514,7 +493,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -603,7 +582,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -875,6 +854,33 @@
   
 
   
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-88237835-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+var _mfq = _mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.async = true;
+    mf.src = "//cdn.mouseflow.com/projects/1ce40055-bb10-491f-bea6-ad3d299b24d5.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
 
 </body>
 </html>

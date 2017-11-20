@@ -105,27 +105,6 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?72e63d590953427d6f2ed4e2380b319e";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
   
     
   
@@ -311,10 +290,10 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
 </ul>
 <p>IDE 截图 <img src="https://camo.githubusercontent.com/1f3ca22272de5e24287295486fa29f24ef28c512/687474703a2f2f692e67697068792e636f6d2f785469546e64444856334765497936614e612e676966" alt="IDE"></p>
 <p>使用快捷方式(<code>⌘+P</code>)打开命令面板，输入以下命令，然后点击回车键，VS Code就开始安装Go插件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ext install Go</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ext install Go</div></pre></td></tr></table></figure>
 <p>安装完成后，按照以下说明配置一些 Go 设置。</p>
 <p>打开 <code>Preferences</code> -&gt; <code>User Settings</code>，主界面右边面板的 <code>settings.json</code> 输入以下配置：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"go.buildOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"go.lintOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"go.vetOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"go.buildFlags"</span>: [],</span><br><span class="line">  <span class="attr">"go.lintFlags"</span>: [],</span><br><span class="line">  <span class="attr">"go.vetFlags"</span>: [],</span><br><span class="line">  <span class="attr">"go.useCodeSnippetsOnFunctionSuggest"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">"go.formatOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"go.formatTool"</span>: <span class="string">"goreturns"</span>,</span><br><span class="line">  <span class="attr">"go.goroot"</span>: <span class="string">"/usr/local/go"</span>,</span><br><span class="line">  <span class="attr">"go.gopath"</span>: <span class="string">"/opt/gowork"</span>,</span><br><span class="line">  <span class="attr">"files.autoSave"</span>: <span class="string">"onFocusChange"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"go.buildOnSave"</span>: <span class="literal">true</span>,</div><div class="line">  <span class="attr">"go.lintOnSave"</span>: <span class="literal">true</span>,</div><div class="line">  <span class="attr">"go.vetOnSave"</span>: <span class="literal">true</span>,</div><div class="line">  <span class="attr">"go.buildFlags"</span>: [],</div><div class="line">  <span class="attr">"go.lintFlags"</span>: [],</div><div class="line">  <span class="attr">"go.vetFlags"</span>: [],</div><div class="line">  <span class="attr">"go.useCodeSnippetsOnFunctionSuggest"</span>: <span class="literal">false</span>,</div><div class="line">  <span class="attr">"go.formatOnSave"</span>: <span class="literal">true</span>,</div><div class="line">  <span class="attr">"go.formatTool"</span>: <span class="string">"goreturns"</span>,</div><div class="line">  <span class="attr">"go.goroot"</span>: <span class="string">"/usr/local/go"</span>,</div><div class="line">  <span class="attr">"go.gopath"</span>: <span class="string">"/opt/gowork"</span>,</div><div class="line">  <span class="attr">"files.autoSave"</span>: <span class="string">"onFocusChange"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>注意上面的 <code>go.goroot</code> 和 <code>go.gopath</code>的值，以本季系统的 <code>GOROOT</code> 和 <code>GOPATH</code> 为准。</p>
 <p><code>vscode-go</code> 依赖下面列出的工具，如果缺失某些工具的话，安装完 <code>vscode-go</code> 之后打开一个go文件，在编辑器的右下角会出现 <code>Analysis Tools Missing</code> 的警告，点击它就会自动安装缺失的工具。</p>
 <ul>
@@ -329,12 +308,12 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
 <li>guru: go get -u -v golang.org/x/tools/cmd/guru</li>
 </ul>
 <p>当然也可以直接在命令行中输入以下命令安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">go get -u -v github.com/nsf/gocode</span><br><span class="line">go get -u -v github.com/rogpeppe/godef</span><br><span class="line">go get -u -v github.com/golang/lint/golint</span><br><span class="line">go get -u -v github.com/lukehoban/go-outline</span><br><span class="line">go get -u -v sourcegraph.com/sqs/goreturns</span><br><span class="line">go get -u -v golang.org/x/tools/cmd/gorename</span><br><span class="line">go get -u -v github.com/tpng/gopkgs</span><br><span class="line">go get -u -v github.com/newhook/go-symbols</span><br><span class="line">go get -u -v golang.org/x/tools/cmd/guru</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">go get -u -v github.com/nsf/gocode</div><div class="line">go get -u -v github.com/rogpeppe/godef</div><div class="line">go get -u -v github.com/golang/lint/golint</div><div class="line">go get -u -v github.com/lukehoban/go-outline</div><div class="line">go get -u -v sourcegraph.com/sqs/goreturns</div><div class="line">go get -u -v golang.org/x/tools/cmd/gorename</div><div class="line">go get -u -v github.com/tpng/gopkgs</div><div class="line">go get -u -v github.com/newhook/go-symbols</div><div class="line">go get -u -v golang.org/x/tools/cmd/guru</div></pre></td></tr></table></figure>
 <h1 id="安装-delve"><a href="#安装-delve" class="headerlink" title="安装 delve"></a>安装 delve</h1><p>delve 只支持 Go 1.5以上版本，并且 Go 1.5版本的安装步骤和 Go 1.6是不一样的，相对来说 Go 1.6版本安装比较简单。</p>
 <h2 id="Go-1-6"><a href="#Go-1-6" class="headerlink" title="Go 1.6"></a>Go 1.6</h2><p>如果系统安装了 <code>HomeBrew</code>， 直接执行以下命令即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install go-delve/delve/delve</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew install go-delve/delve/delve</div></pre></td></tr></table></figure>
 <p><code>NOTE</code>: 按照此步骤安装delve，如果在稍后运行Go程序的时候出现 <code>runtime/internal/sys 找不到</code> 的错误，这是因为上一步的操作另外安装了Go环境，然后覆盖了之前的。可以执行以下命令卸载 <code>brew</code> 安装的 Go 环境：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew uninstall Go</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew uninstall Go</div></pre></td></tr></table></figure>
 <h2 id="Go-1-5"><a href="#Go-1-5" class="headerlink" title="Go 1.5"></a>Go 1.5</h2><h3 id="创建一个自签名的证书"><a href="#创建一个自签名的证书" class="headerlink" title="创建一个自签名的证书"></a>创建一个自签名的证书</h3><p>创建自签名的步骤如下</p>
 <ul>
 <li>打开应用 <code>Keychain Access</code> (<code>/Applications/Utilities/Keychain Access.app</code>)</li>
@@ -361,7 +340,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
 </ol>
 <p><img src="http://ww4.sinaimg.cn/large/4da583a7jw1f4jj3eq25gj20zi08jjrx.jpg" alt="如何配置调试信息"></p>
 <p><code>launch.json</code> 配置信息如下：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Phantom"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"go"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"mode"</span>: <span class="string">"debug"</span>,</span><br><span class="line">            <span class="attr">"remotePath"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">1234</span>,</span><br><span class="line">            <span class="attr">"host"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;workspaceRoot&#125;"</span>,</span><br><span class="line">            <span class="attr">"env"</span>: &#123;</span><br><span class="line">                <span class="attr">"QUICKPAY_ENV"</span>: <span class="string">"testing"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"args"</span>: []</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</div><div class="line">    <span class="attr">"configurations"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="attr">"name"</span>: <span class="string">"Phantom"</span>,</div><div class="line">            <span class="attr">"type"</span>: <span class="string">"go"</span>,</div><div class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</div><div class="line">            <span class="attr">"mode"</span>: <span class="string">"debug"</span>,</div><div class="line">            <span class="attr">"remotePath"</span>: <span class="string">""</span>,</div><div class="line">            <span class="attr">"port"</span>: <span class="number">1234</span>,</div><div class="line">            <span class="attr">"host"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;workspaceRoot&#125;"</span>,</div><div class="line">            <span class="attr">"env"</span>: &#123;</div><div class="line">                <span class="attr">"QUICKPAY_ENV"</span>: <span class="string">"testing"</span></div><div class="line">            &#125;,</div><div class="line">            <span class="attr">"args"</span>: []</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在需要调试的代码附近打个断点后，按 <code>F5</code> 即可开始断点调试了。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="http://www.cnblogs.com/zsy/p/5224524.html" target="_blank" rel="external">http://www.cnblogs.com/zsy/p/5224524.html</a></li>
@@ -490,7 +469,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="http://tp4.sinaimg.cn/1302692775/180/5754136503/1"
+               src="/avatar.png"
                alt="WonSikin" />
           <p class="site-author-name" itemprop="name">WonSikin</p>
           <p class="site-description motion-element" itemprop="description">The Blog of WonSikin</p>
@@ -498,7 +477,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -508,7 +487,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -597,7 +576,7 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -869,6 +848,33 @@ VS Code 介绍VS Code 是微软开源的一个编辑器软件。刚面世的时�
   
 
   
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-88237835-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+var _mfq = _mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.async = true;
+    mf.src = "//cdn.mouseflow.com/projects/1ce40055-bb10-491f-bea6-ad3d299b24d5.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
 
 </body>
 </html>
